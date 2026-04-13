@@ -1,0 +1,8 @@
+{
+  "name": "Aura AI - Premium Digital Showcase",
+  "description": "A high-end, Figma-inspired multipage website featuring Gemini-powered intelligence, interactive chatbot, and cinematic animations.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}

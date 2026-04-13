@@ -1,0 +1,11 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__github__create_repository",
+      "Bash(gh repo create:*)",
+      "Bash(git config:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

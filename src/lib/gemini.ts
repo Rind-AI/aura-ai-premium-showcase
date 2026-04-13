@@ -1,0 +1,72 @@
+import { GoogleGenAI } from "@google/genai";
+
+const apiKey = process.env.GEMINI_API_KEY;
+
+if (!apiKey) {
+  console.warn("GEMINI_API_KEY is not set. AI features will be disabled.");
+}
+
+export const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
+
+export const CHAT_MODEL = "gemini-3.1-pro-preview";
+export const FAST_MODEL = "gemini-3.1-flash-lite-preview";
+export const GROUNDING_MODEL = "gemini-3-flash-preview";
+
+export interface Message {
+  role: "user" | "model";
+  text: string;
+}
+
+export async function chatWithGemini(messages: Message[], systemInstruction?: string) {
+  if (!ai) throw new Error("AI not initialized");
+
+  const chat = ai.chats.create({
+    model: CHAT_MODEL,
+    config: {
+      systemInstruction: systemInstruction || "You are Aura, a premium AI assistant for a high-end digital showcase website. You are sophisticated, helpful, and concise.",
+    },
+    history: messages.slice(0, -1).map(m => ({
+      role: m.role,
+      parts: [{ text: m.text }]
+    }))
+  });
+
+  const lastMessage = messages[messages.length - 1];
+  const result = await chat.sendMessage({
+    message: lastMessage.text
+  });
+
+  return result.text;
+}
+
+export async function getGroundedInfo(query: string, type: "search" | "maps") {
+  if (!ai) throw new Error("AI not initialized");
+
+  const tools = type === "search" ? [{ googleSearch: {} }] : [{ googleMaps: {} }];
+
+  const response = await ai.models.generateContent({
+    model: GROUNDING_MODEL,
+    contents: query,
+    config: {
+      tools,
+    }
+  });
+
+  return response.text;
+}
+
+export async function researchWithGrounding(query: string) {
+  if (!ai) throw new Error("AI not initialized");
+
+  const response = await ai.models.generateContent({
+    model: CHAT_MODEL,
+    contents: `Perform a deep data science research and provide a powerful, grounded analysis on the following topic: ${query}. 
+    Focus on industry trends, brand positioning, and innovative ideas. 
+    Use Google Search grounding to ensure accuracy and provide real-world insights.`,
+    config: {
+      tools: [{ googleSearch: {} }],
+    }
+  });
+
+  return response.text;
+}

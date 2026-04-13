@@ -1,0 +1,111 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Orbitron:wght@400;500;600;700;800;900&family=Rajdhani:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@300;400;500;600;700&family=Outfit:wght@300;400;500;600;700;800;900&family=Syne:wght@400;500;600;700;800&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Syncopate:wght@400;700&family=Unbounded:wght@300;400;500;600;700;800;900&family=Bricolage+Grotesque:wght@300;400;500;600;700;800&display=swap');
+
+@theme {
+  --font-sans: var(--font-main), "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Orbitron", "Space Grotesk", sans-serif;
+  --font-accent: "Rajdhani", "Outfit", sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, monospace;
+  --font-serif: "Playfair Display", serif;
+
+  --color-background: var(--background-color);
+  --color-foreground: #ffffff;
+  
+  --color-primary: var(--primary-color, #00d4ff);
+  --color-primary-foreground: #050505;
+  
+  --color-muted: #1a1a1a;
+  --color-muted-foreground: #94a3b8;
+  
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-input: #1a1a1a;
+  --color-ring: var(--primary-color, #00d4ff);
+}
+
+:root {
+  --primary-color: #00d4ff;
+  --primary-rgb: 0, 212, 255;
+  --background-color: #010205;
+  --font-main: "Inter", sans-serif;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground font-sans antialiased selection:bg-primary selection:text-black overflow-x-hidden;
+    background-color: var(--background-color);
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-display tracking-tight uppercase;
+  }
+}
+
+.glass {
+  @apply bg-white/5 backdrop-blur-xl border border-white/10 shadow-2xl;
+}
+
+.text-gradient {
+  @apply bg-clip-text text-transparent bg-gradient-to-br from-white via-primary to-white/40;
+}
+
+@keyframes spin-slow {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+  animation: spin-slow 8s linear infinite;
+}
+
+@keyframes ticker {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-ticker {
+  animation: ticker 40s linear infinite;
+}
+
+.editable-active {
+  @apply outline-dashed outline-1 outline-primary bg-primary/10 cursor-text rounded px-1;
+}
+
+.markdown-body {
+  @apply text-foreground leading-relaxed;
+}
+
+.markdown-body h1, .markdown-body h2, .markdown-body h3 {
+  @apply text-primary mt-6 mb-4 font-display font-bold uppercase tracking-tight;
+}
+
+.markdown-body p {
+  @apply mb-4 opacity-80;
+}
+
+.markdown-body ul, .markdown-body ol {
+  @apply mb-4 ml-6 list-disc;
+}
+
+.markdown-body li {
+  @apply mb-2 opacity-80;
+}
+
+.markdown-body strong {
+  @apply text-primary font-bold;
+}
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 6px;
+}
+
+.custom-scrollbar::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  background: var(--primary-color);
+  border-radius: 10px;
+}
