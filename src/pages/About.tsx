@@ -75,7 +75,7 @@ export default function About() {
           </div>
           <div className="grid grid-cols-1 md:grid-cols-1 gap-8 max-w-2xl mx-auto">
             <motion.a
-              href="https://khalid-rind-z0ci9yc.gamma.site/"
+              href="/Khalid-Rind.pdf"
               target="_blank"
               rel="noopener noreferrer"
               initial={{ opacity: 0, y: 20 }}
@@ -91,7 +91,7 @@ export default function About() {
               <p className="text-white/40 text-sm leading-relaxed">
                 Professional digital showcase covering AI consulting, data services, and digital strategy work. Built to demonstrate capability across technology, branding, and community engagement.
               </p>
-              <p className="text-white/20 text-xs font-mono">khalid-rind-z0ci9yc.gamma.site</p>
+              <p className="text-white/20 text-xs font-mono">khalidrind.io/Khalid-Rind.pdf</p>
             </motion.a>
           </div>
         </section>
