@@ -65,6 +65,36 @@ export default function About() {
             ))}
           </div>
         </section>
+
+        <section className="py-24 border-t border-white/5">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold mb-4">PREVIOUS WORK</h2>
+            <p className="text-white/50 max-w-2xl mx-auto">
+              A selection of work delivered before NeuraNest — real projects, real results.
+            </p>
+          </div>
+          <div className="grid grid-cols-1 md:grid-cols-1 gap-8 max-w-2xl mx-auto">
+            <motion.a
+              href="https://khalid-rind-z0ci9yc.gamma.site/"
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.3 }}
+              className="glass rounded-2xl p-8 flex flex-col gap-4 hover:border-white/20 border border-white/5 transition-all duration-300 group"
+            >
+              <div className="flex items-center justify-between">
+                <Badge>Portfolio</Badge>
+                <span className="text-white/30 text-xs uppercase tracking-widest group-hover:text-white/60 transition-colors">View Live →</span>
+              </div>
+              <h3 className="text-2xl font-bold">Khalid Rind — Digital Portfolio</h3>
+              <p className="text-white/40 text-sm leading-relaxed">
+                Professional digital showcase covering AI consulting, data services, and digital strategy work. Built to demonstrate capability across technology, branding, and community engagement.
+              </p>
+              <p className="text-white/20 text-xs font-mono">khalid-rind-z0ci9yc.gamma.site</p>
+            </motion.a>
+          </div>
+        </section>
       </div>
     </div>
   );
