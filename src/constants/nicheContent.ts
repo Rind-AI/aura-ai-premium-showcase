@@ -59,7 +59,7 @@ export const nicheContent: Record<string, NicheContent> = {
     heroTitle: "ELEVATE YOUR <span class='text-gradient'>BRAND</span>",
     heroDesc: "We transform vision into cinematic reality. Our creative engine combines high-end aesthetics with strategic intelligence to position your brand at the pinnacle of your industry.",
     heroCta: "START PROJECT",
-    mediaSrc: "https://images.unsplash.com/photo-1560066984-138dadb4c035?q=80&w=1000",
+    mediaSrc: "/videos/brand-video.mp4",
     tickerItems: ["Fashion", "Luxury", "Design", "Architecture", "Cinema", "Art", "Music", "Lifestyle", "Elegance", "Innovation"],
     features: [
       {
