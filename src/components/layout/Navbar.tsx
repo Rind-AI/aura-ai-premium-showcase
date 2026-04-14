@@ -19,11 +19,12 @@ export default function Navbar() {
   }, []);
 
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "Services", path: "/services" },
-    { name: "Showcase", path: "/showcase" },
-    { name: "About", path: "/about" },
-    { name: "Contact", path: "/contact" },
+    { name: "Home", path: "/", external: false },
+    { name: "Services", path: "/services", external: false },
+    { name: "Showcase", path: "/showcase", external: false },
+    { name: "AR-VR REBIRTH", path: "https://www.neuranestai.world", external: true },
+    { name: "About", path: "/about", external: false },
+    { name: "Contact", path: "/contact", external: false },
   ];
 
   const handleTextEdit = (e: React.FormEvent<HTMLElement>) => {
@@ -74,18 +75,30 @@ export default function Navbar() {
 
         {/* Desktop Nav */}
         <div className="hidden md:flex items-center gap-8">
-          {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              className={cn(
-                "text-sm font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary",
-                location.pathname === link.path ? "text-primary" : "text-white/60"
-              )}
-            >
-              {link.name}
-            </Link>
-          ))}
+          {navLinks.map((link) =>
+            link.external ? (
+              <a
+                key={link.path}
+                href={link.path}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-sm font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary text-white/60"
+              >
+                {link.name}
+              </a>
+            ) : (
+              <Link
+                key={link.path}
+                to={link.path}
+                className={cn(
+                  "text-sm font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary",
+                  location.pathname === link.path ? "text-primary" : "text-white/60"
+                )}
+              >
+                {link.name}
+              </Link>
+            )
+          )}
           <Button className="rounded-full px-6 bg-white text-black hover:bg-white/90 font-bold font-accent tracking-widest">
             DEPLOY
             <ChevronRight className="ml-1 w-4 h-4" />
@@ -111,19 +124,32 @@ export default function Navbar() {
             className="absolute top-full left-0 right-0 bg-background border-b border-white/5 p-6 md:hidden"
           >
             <div className="flex flex-col gap-6">
-              {navLinks.map((link) => (
-                <Link
-                  key={link.path}
-                  to={link.path}
-                  onClick={() => setIsMobileMenuOpen(false)}
-                  className={cn(
-                    "text-lg font-bold uppercase tracking-widest",
-                    location.pathname === link.path ? "text-primary" : "text-white/60"
-                  )}
-                >
-                  {link.name}
-                </Link>
-              ))}
+              {navLinks.map((link) =>
+                link.external ? (
+                  <a
+                    key={link.path}
+                    href={link.path}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className="text-lg font-bold uppercase tracking-widest text-white/60"
+                  >
+                    {link.name}
+                  </a>
+                ) : (
+                  <Link
+                    key={link.path}
+                    to={link.path}
+                    onClick={() => setIsMobileMenuOpen(false)}
+                    className={cn(
+                      "text-lg font-bold uppercase tracking-widest",
+                      location.pathname === link.path ? "text-primary" : "text-white/60"
+                    )}
+                  >
+                    {link.name}
+                  </Link>
+                )
+              )}
               <Button className="w-full rounded-full bg-white text-black font-bold font-accent tracking-widest">
                 DEPLOY NOW
               </Button>
