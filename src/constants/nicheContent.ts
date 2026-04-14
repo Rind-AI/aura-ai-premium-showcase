@@ -27,7 +27,7 @@ export const nicheContent: Record<string, NicheContent> = {
     heroTitle: "I EXTRACT <span class='text-gradient'>KEY INSIGHTS</span>",
     heroDesc: "It is surprisingly easy for any brand or industry to extract powerful insights from available real data. I deploy pure, true AI to find your winning formula and bring instant optimization to your workflow.",
     heroCta: "HIRE KHALID",
-    mediaSrc: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?q=80&w=1000",
+    mediaSrc: "/videos/cli-engineer.mp4",
     tickerItems: ["Health", "Education", "Sport", "Food", "Writer", "Artist", "Teacher", "School", "Council", "Road Safety", "Outdoor Activities"],
     features: [
       {
@@ -91,7 +91,7 @@ export const nicheContent: Record<string, NicheContent> = {
     heroTitle: "CONNECT THE <span class='text-gradient'>COMMUNITY</span>",
     heroDesc: "Bringing people together through shared experiences and local initiatives. We empower small businesses and community leaders to thrive in a connected digital world.",
     heroCta: "JOIN US",
-    mediaSrc: "https://images.unsplash.com/photo-1558850114-1e0e922e967a?q=80&w=1000",
+    mediaSrc: "/videos/local-community.mp4",
     tickerItems: ["Local", "Events", "Markets", "Schools", "Charity", "Parks", "Groups", "Support", "Growth", "Unity"],
     features: [
       {
