@@ -5,6 +5,16 @@ Format: version | date | what changed
 
 ---
 
+## v1.3.1 — 2026-04-17
+
+### Fixed
+- **Contact page: corrected real contact details** (replaced placeholder dummy data)
+  - Email: `hello@aura-ai.com` → `info@khalidrind.io`
+  - Phone: `+1 (555) 000-1111` → `+61-493348617`
+  - Office: `123 Innovation Way, San Francisco, CA` → `Melbourne, Australia`
+
+---
+
 ## v1.3.0 — 2026-04-17
 
 ### Added

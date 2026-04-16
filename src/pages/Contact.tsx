@@ -27,7 +27,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-1">Email</h4>
-                <p className="text-lg">hello@aura-ai.com</p>
+                <p className="text-lg">info@khalidrind.io</p>
               </div>
             </div>
             <div className="flex items-start gap-6">
@@ -36,7 +36,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-1">Phone</h4>
-                <p className="text-lg">+1 (555) 000-1111</p>
+                <p className="text-lg">+61-493348617</p>
               </div>
             </div>
             <div className="flex items-start gap-6">
@@ -45,7 +45,7 @@ export default function Contact() {
               </div>
               <div>
                 <h4 className="text-sm font-bold uppercase tracking-widest text-white/40 mb-1">Office</h4>
-                <p className="text-lg">123 Innovation Way, <br />San Francisco, CA</p>
+                <p className="text-lg">Melbourne, Australia</p>
               </div>
             </div>
           </div>
