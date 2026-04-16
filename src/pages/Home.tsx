@@ -2,9 +2,12 @@ import Hero from "@/components/sections/Hero";
 import { motion } from "motion/react";
 import { useApp } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
+import { useRef, useState } from "react";
 
 export default function Home() {
   const { content, isAdmin, updateContent } = useApp();
+  const [isNnaiActive, setIsNnaiActive] = useState(false);
+  const nnaiTouchTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleFeatureEdit = (index: number, key: "title" | "desc") => (e: React.FormEvent<HTMLElement>) => {
     if (!isAdmin) return;
@@ -16,6 +19,59 @@ export default function Home() {
   return (
     <div className="relative">
       <Hero />
+
+      {/* NNAI Featured Video */}
+      <section className="container px-6 relative z-10 mb-12">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          className="text-center mb-6"
+        >
+          <span className="text-[10px] font-bold uppercase tracking-[0.3em] text-primary">NEURANEST AI</span>
+          <h2 className="text-3xl md:text-5xl font-display font-black tracking-tighter mt-2">
+            THE EMPIRE <span className="text-primary">IN MOTION</span>
+          </h2>
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.97 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="relative overflow-hidden rounded-3xl border border-white/5 shadow-2xl aspect-video cursor-pointer"
+          onMouseEnter={() => setIsNnaiActive(true)}
+          onMouseLeave={() => setIsNnaiActive(false)}
+          onTouchStart={() => {
+            if (nnaiTouchTimer.current) clearTimeout(nnaiTouchTimer.current);
+            setIsNnaiActive(true);
+          }}
+          onTouchEnd={() => {
+            nnaiTouchTimer.current = setTimeout(() => setIsNnaiActive(false), 2000);
+          }}
+        >
+          <video
+            src="/videos/NNAI-MAIN-VIDEO.mp4"
+            autoPlay
+            loop
+            muted
+            playsInline
+            className={cn(
+              "w-full h-full object-cover transition-all duration-700",
+              isNnaiActive ? "grayscale-0" : "grayscale"
+            )}
+          />
+          <div className={cn(
+            "absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none transition-opacity duration-700",
+            isNnaiActive ? "opacity-0" : "opacity-100"
+          )} />
+          <div className={cn(
+            "absolute bottom-6 left-6 pointer-events-none transition-opacity duration-500",
+            isNnaiActive ? "opacity-0" : "opacity-100"
+          )}>
+            <p className="text-white/40 text-xs uppercase tracking-widest font-bold">Hover or touch to reveal colors</p>
+          </div>
+        </motion.div>
+      </section>
 
       {/* Infinite Ticker */}
       <div className="relative z-10 w-full overflow-hidden bg-primary/5 border-y border-primary/20 py-6 mb-20">

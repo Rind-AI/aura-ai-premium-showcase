@@ -1,14 +1,12 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { motion, AnimatePresence } from "motion/react";
-import { Menu, X, ChevronRight } from "lucide-react";
+import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/context/AppContext";
 
 export default function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const location = useLocation();
   const { content, isAdmin, updateContent } = useApp();
 
@@ -105,58 +103,44 @@ export default function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile Toggle */}
-        <button
-          className="md:hidden text-white"
-          onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-        >
-          {isMobileMenuOpen ? <X /> : <Menu />}
-        </button>
       </div>
 
-      {/* Mobile Menu */}
-      <AnimatePresence>
-        {isMobileMenuOpen && (
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            className="absolute top-full left-0 right-0 bg-background border-b border-white/5 p-6 md:hidden"
-          >
-            <div className="flex flex-col gap-6">
-              {navLinks.map((link) =>
-                link.external ? (
-                  <a
-                    key={link.path}
-                    href={link.path}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className="text-lg font-bold uppercase tracking-widest text-white/60"
-                  >
-                    {link.name}
-                  </a>
-                ) : (
-                  <Link
-                    key={link.path}
-                    to={link.path}
-                    onClick={() => setIsMobileMenuOpen(false)}
-                    className={cn(
-                      "text-lg font-bold uppercase tracking-widest",
-                      location.pathname === link.path ? "text-primary" : "text-white/60"
-                    )}
-                  >
-                    {link.name}
-                  </Link>
-                )
-              )}
-              <Button className="w-full rounded-full bg-white text-black font-bold font-accent tracking-widest">
-                DEPLOY NOW
-              </Button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Mobile Horizontal Nav — always visible, scrollable */}
+      <div className="md:hidden border-t border-white/5 bg-background/90 backdrop-blur-xl">
+        <div className="overflow-x-auto scrollbar-none">
+          <div className="flex items-center gap-1 px-3 py-2" style={{ minWidth: "max-content" }}>
+            {navLinks.map((link) =>
+              link.external ? (
+                <a
+                  key={link.path}
+                  href={link.path}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-primary whitespace-nowrap transition-colors"
+                >
+                  {link.name}
+                </a>
+              ) : (
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  className={cn(
+                    "px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors",
+                    location.pathname === link.path
+                      ? "bg-primary/10 text-primary border border-primary/30"
+                      : "text-white/50 hover:text-primary"
+                  )}
+                >
+                  {link.name}
+                </Link>
+              )
+            )}
+            <Button className="ml-2 rounded-full px-4 h-7 text-[10px] bg-white text-black font-bold font-accent tracking-widest shrink-0">
+              DEPLOY
+            </Button>
+          </div>
+        </div>
+      </div>
     </nav>
   );
 }

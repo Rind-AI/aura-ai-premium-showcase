@@ -10,6 +10,8 @@ export default function Hero() {
   const mediaInputRef = useRef<HTMLInputElement>(null);
   const [isCustomizerMinimized, setIsCustomizerMinimized] = useState(false);
   const [showDocks, setShowDocks] = useState(true);
+  const [isMediaActive, setIsMediaActive] = useState(false);
+  const touchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   const handleMediaClick = () => {
     if (!isAdmin) return;
@@ -233,34 +235,49 @@ export default function Hero() {
             niche === "community" && "order-1"
           )}
         >
-          <div 
+          <div
             className={cn(
-              "media-container relative w-full max-w-[500px] aspect-[4/5] overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-500 group",
-              niche === "creative" ? "max-w-[1000px] aspect-[21/9] rounded-[3rem]" : 
-              niche === "community" ? "aspect-square rounded-full border-primary" : 
+              "media-container relative w-full max-w-[500px] aspect-[4/5] overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-500",
+              niche === "creative" ? "max-w-[1000px] aspect-[21/9] rounded-[3rem]" :
+              niche === "community" ? "aspect-square rounded-full border-primary" :
               "rounded-2xl"
             )}
             onClick={handleMediaClick}
+            onMouseEnter={() => setIsMediaActive(true)}
+            onMouseLeave={() => setIsMediaActive(false)}
+            onTouchStart={() => {
+              if (touchTimerRef.current) clearTimeout(touchTimerRef.current);
+              setIsMediaActive(true);
+            }}
+            onTouchEnd={() => {
+              touchTimerRef.current = setTimeout(() => setIsMediaActive(false), 2000);
+            }}
           >
             {content.mediaSrc.includes("video") || content.mediaSrc.startsWith("data:video") ? (
-              <video 
-                src={content.mediaSrc} 
-                autoPlay 
-                loop 
-                controls 
-                playsInline 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
+              <video
+                src={content.mediaSrc}
+                autoPlay
+                loop
+                controls
+                playsInline
+                className={cn(
+                  "w-full h-full object-cover transition-all duration-700",
+                  isMediaActive ? "grayscale-0" : "grayscale"
+                )}
               />
             ) : (
-              <img 
-                src={content.mediaSrc} 
-                alt="Hero" 
-                className="w-full h-full object-cover grayscale group-hover:grayscale-0 transition-all duration-700" 
-                referrerPolicy="no-referrer" 
+              <img
+                src={content.mediaSrc}
+                alt="Hero"
+                className={cn(
+                  "w-full h-full object-cover transition-all duration-700",
+                  isMediaActive ? "grayscale-0" : "grayscale"
+                )}
+                referrerPolicy="no-referrer"
               />
             )}
-            {isAdmin && (
-              <div className="absolute inset-0 bg-primary/20 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
+            {isAdmin && isMediaActive && (
+              <div className="absolute inset-0 bg-primary/20 flex items-center justify-center transition-opacity pointer-events-none">
                 <span className="bg-black/80 text-white px-4 py-2 rounded-full text-xs font-bold uppercase tracking-widest">Click to Change Media</span>
               </div>
             )}

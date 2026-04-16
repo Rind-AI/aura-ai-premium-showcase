@@ -5,6 +5,29 @@ Format: version | date | what changed
 
 ---
 
+## v1.4.0 — 2026-04-17
+
+### Added
+- **Home page: NNAI Featured Video section** — `NNAI-MAIN-VIDEO.mp4` embedded between Hero and ticker
+  - Grayscale by default → full color on hover (desktop) or touch (mobile)
+  - Section header: "THE EMPIRE IN MOTION"
+  - autoPlay, loop, muted, playsInline for silent autoplay across all devices
+
+### Fixed
+- **Hero grayscale effect on mobile** — replaced CSS `group-hover:grayscale-0` (broken on touch devices) with React state + `onMouseEnter`/`onMouseLeave` + `onTouchStart`/`onTouchEnd` events
+  - TECH profile: now lights up on mobile tap ✅
+  - BRAND profile: now lights up on mobile tap ✅
+  - Touch stays active 2 seconds after finger lifts
+- **Mobile navbar** — removed hamburger toggle, replaced dropdown with always-visible horizontal scrollable strip
+  - All nav links always displayed in one row: Home · Services · Showcase · AR-VR REBIRTH · About · Contact · DEPLOY
+  - Overflow scroll for smaller screens (swipe horizontally)
+  - Active page highlighted with primary color border
+
+### Changed
+- `package.json` version bumped from `1.3.1` → `1.4.0`
+
+---
+
 ## v1.3.1 — 2026-04-17
 
 ### Fixed
