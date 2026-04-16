@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { ExternalLink, Github, Eye, Sparkles } from "lucide-react";
+import { ExternalLink, Github, Eye, Sparkles, Play } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useApp } from "@/context/AppContext";
 
@@ -31,6 +31,51 @@ const projects = [
     image: "https://picsum.photos/seed/cyber/800/600",
     description: "Self-evolving cybersecurity mesh for decentralized networks.",
     tags: ["Rust", "Blockchain", "ML"]
+  }
+];
+
+const showcaseVideos = [
+  {
+    title: "AI APP DEMO II",
+    category: "PRODUCT DEMO",
+    src: "/videos/KR-APP-2.mp4",
+    description: "Live walkthrough of AI-powered app — interface, features, and real-world use."
+  },
+  {
+    title: "AI APP DEMO III",
+    category: "PRODUCT DEMO",
+    src: "/videos/KR-APP-3.mp4",
+    description: "Extended demo showcasing advanced AI workflows and automation pipelines."
+  },
+  {
+    title: "FAMILY PLATFORM",
+    category: "COMMUNITY TECH",
+    src: "/videos/KR-FAMILY.mp4",
+    description: "Digital platform connecting families through smart communication tools."
+  },
+  {
+    title: "PORTFOLIO SHOWCASE",
+    category: "PERSONAL BRAND",
+    src: "/videos/KR-SHOWCASE.mp4",
+    description: "Full portfolio showcase — projects, achievements, and the AI empire journey."
+  },
+  {
+    title: "MELBOURNE WATER CAMPAIGN",
+    category: "SOCIAL IMPACT",
+    src: "/videos/MelbourneWaterCampain.mp4",
+    description: "AI-assisted social campaign for Melbourne water conservation awareness."
+  },
+  {
+    title: "ROAD SAFETY CAMPAIGN",
+    category: "SOCIAL IMPACT",
+    src: "/videos/ROAD-SAFETY-CAMPAIN.mp4",
+    description: "Data-driven road safety awareness campaign built with AI tools."
+  },
+  {
+    title: "SKY FALL",
+    category: "CREATIVE PRODUCTION",
+    src: "/videos/SKY-FALL.mp4",
+    description: "Cinematic AI-generated creative production — pushing the edge of digital storytelling."
   }
 ];
 
@@ -119,6 +164,72 @@ export default function Showcase() {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* VIDEO SHOWCASE SECTION */}
+        <div className="mt-32">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 text-primary font-accent text-sm font-bold uppercase tracking-[0.3em] mb-4"
+          >
+            <Play className="w-4 h-4" />
+            VIDEO SHOWCASE
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-display font-black tracking-tighter leading-none mb-4"
+          >
+            REAL WORK. <span className="text-primary">REAL IMPACT.</span>
+          </motion.h2>
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-lg text-white/60 leading-relaxed mb-16 max-w-2xl"
+          >
+            Seven videos. Seven proof points. From AI apps to social campaigns — this is the empire in motion.
+          </motion.p>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {showcaseVideos.map((video, index) => (
+              <motion.div
+                key={video.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.08 }}
+                className="group relative"
+              >
+                <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/5 bg-white/5">
+                  <video
+                    src={video.src}
+                    controls
+                    preload="metadata"
+                    className="w-full h-full object-cover"
+                    style={{ display: "block" }}
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none opacity-60 group-hover:opacity-0 transition-opacity duration-300" />
+                </div>
+                <div className="mt-4">
+                  <span className="text-[10px] font-accent font-bold uppercase tracking-widest text-primary">
+                    {video.category}
+                  </span>
+                  <h3 className="text-xl font-display font-bold tracking-tight mt-1 mb-1 group-hover:text-primary transition-colors">
+                    {video.title}
+                  </h3>
+                  <p className="text-white/50 text-sm leading-relaxed">
+                    {video.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
         </div>
 
         <motion.div

@@ -5,6 +5,37 @@ Format: version | date | what changed
 
 ---
 
+## v1.3.0 — 2026-04-17
+
+### Added
+- **Showcase page: VIDEO SHOWCASE section** — 7 real project videos embedded below the project cards grid
+  - `KR-APP-2.mp4` — AI App Demo II (Product Demo)
+  - `KR-APP-3.mp4` — AI App Demo III (Product Demo)
+  - `KR-FAMILY.mp4` — Family Platform (Community Tech)
+  - `KR-SHOWCASE.mp4` — Portfolio Showcase (Personal Brand)
+  - `MelbourneWaterCampain.mp4` — Melbourne Water Campaign (Social Impact)
+  - `ROAD-SAFETY-CAMPAIN.mp4` — Road Safety Campaign (Social Impact)
+  - `SKY-FALL.mp4` — Sky Fall (Creative Production)
+  - Videos served from `public/videos/` — all confirmed under 90MB GitHub limit
+  - Responsive grid: 1 col mobile → 2 col tablet → 3 col desktop
+  - Each card: native HTML5 `<video controls>`, title, category badge, description
+  - Section header: "REAL WORK. REAL IMPACT." with Play icon
+
+### Changed
+- `package.json` version bumped from `1.1.0` → `1.3.0`
+
+---
+
+## v1.2.0 — 2026-04-14
+
+### Added
+- **Navbar: AR-VR REBIRTH external link** — inserted between Showcase and About
+  - Links to https://www.neuranestai.world (opens in new tab)
+  - Works on both desktop and mobile nav menus
+  - Uses `<a>` tag with `rel="noopener noreferrer"` for external links
+
+---
+
 ## v1.1.0 — 2026-04-14
 
 ### Added
