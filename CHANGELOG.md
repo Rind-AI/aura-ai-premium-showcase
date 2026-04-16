@@ -5,6 +5,13 @@ Format: version | date | what changed
 
 ---
 
+## v1.4.1 — 2026-04-17
+
+### Removed
+- **Home page: NNAI "THE EMPIRE IN MOTION" video section** — removed from all profiles per Emperor's direction
+
+---
+
 ## v1.4.0 — 2026-04-17
 
 ### Added
