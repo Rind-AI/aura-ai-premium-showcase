@@ -49,7 +49,9 @@ export default function Navbar() {
     <nav
       className={cn(
         "fixed top-0 left-0 right-0 z-[100] transition-all duration-500 py-6",
-        isScrolled ? "bg-background/80 backdrop-blur-xl border-b border-white/5 py-4" : "bg-transparent"
+        isScrolled
+          ? "bg-black/90 backdrop-blur-xl border-b border-[#00d4ff]/40 py-4 shadow-[0_2px_30px_rgba(0,212,255,0.15)]"
+          : "bg-black/60 backdrop-blur-md border-b border-[#00d4ff]/20 shadow-[0_2px_20px_rgba(0,212,255,0.08)]"
       )}
     >
       <div className="container px-6 flex items-center justify-between">
@@ -80,7 +82,7 @@ export default function Navbar() {
                 href={link.path}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary text-white/60"
+                className="text-sm font-bold uppercase tracking-[0.2em] transition-colors text-[#00d4ff]/80 hover:text-[#00d4ff] hover:drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]"
               >
                 {link.name}
               </a>
@@ -89,8 +91,10 @@ export default function Navbar() {
                 key={link.path}
                 to={link.path}
                 className={cn(
-                  "text-sm font-bold uppercase tracking-[0.2em] transition-colors hover:text-primary",
-                  location.pathname === link.path ? "text-primary" : "text-white/60"
+                  "text-sm font-bold uppercase tracking-[0.2em] transition-all",
+                  location.pathname === link.path
+                    ? "text-[#00d4ff] drop-shadow-[0_0_10px_rgba(0,212,255,1)]"
+                    : "text-[#00d4ff]/70 hover:text-[#00d4ff] hover:drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]"
                 )}
               >
                 {link.name}
@@ -106,7 +110,7 @@ export default function Navbar() {
       </div>
 
       {/* Mobile Horizontal Nav — always visible, scrollable */}
-      <div className="md:hidden border-t border-white/5 bg-background/90 backdrop-blur-xl">
+      <div className="md:hidden border-t border-[#00d4ff]/30 bg-black/95 backdrop-blur-xl shadow-[0_4px_20px_rgba(0,212,255,0.12)]">
         <div className="overflow-x-auto scrollbar-none">
           <div className="flex items-center gap-1 px-3 py-2" style={{ minWidth: "max-content" }}>
             {navLinks.map((link) =>
@@ -116,7 +120,7 @@ export default function Navbar() {
                   href={link.path}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-white/50 hover:text-primary whitespace-nowrap transition-colors"
+                  className="px-3 py-1.5 text-[10px] font-bold uppercase tracking-widest text-[#00d4ff]/70 hover:text-[#00d4ff] hover:drop-shadow-[0_0_6px_rgba(0,212,255,0.8)] whitespace-nowrap transition-all"
                 >
                   {link.name}
                 </a>
@@ -127,8 +131,8 @@ export default function Navbar() {
                   className={cn(
                     "px-3 py-1.5 rounded-lg text-[10px] font-bold uppercase tracking-widest whitespace-nowrap transition-colors",
                     location.pathname === link.path
-                      ? "bg-primary/10 text-primary border border-primary/30"
-                      : "text-white/50 hover:text-primary"
+                      ? "bg-[#00d4ff]/10 text-[#00d4ff] border border-[#00d4ff]/40 drop-shadow-[0_0_8px_rgba(0,212,255,0.8)]"
+                      : "text-[#00d4ff]/70 hover:text-[#00d4ff] hover:drop-shadow-[0_0_6px_rgba(0,212,255,0.8)]"
                   )}
                 >
                   {link.name}

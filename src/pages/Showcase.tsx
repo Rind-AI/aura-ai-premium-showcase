@@ -91,115 +91,32 @@ export default function Showcase() {
   return (
     <div className="pt-32 pb-20 px-6">
       <div className="container">
-        <div className="max-w-3xl mb-20">
+
+        {/* VIDEO SHOWCASE SECTION — FIRST */}
+        <div className="mb-32">
           <motion.div
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             className="flex items-center gap-3 text-primary font-accent text-sm font-bold uppercase tracking-[0.3em] mb-4"
           >
-            <Sparkles className="w-4 h-4" />
-            INNOVATION GALLERY
+            <Play className="w-4 h-4" />
+            VIDEO SHOWCASE
           </motion.div>
           <motion.h1
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-6xl md:text-8xl font-display font-black tracking-tighter leading-none mb-8"
+            className="text-6xl md:text-8xl font-display font-black tracking-tighter leading-none mb-4"
           >
-            DIGITAL <span className="text-primary">SHOWCASE</span>
+            REAL WORK. <span className="text-primary">REAL IMPACT.</span>
           </motion.h1>
           <motion.p
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="text-xl text-white/60 leading-relaxed"
-          >
-            Explore our portfolio of high-performance AI solutions and digital products. 
-            Each project represents a leap forward in technological capability.
-          </motion.p>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {projects.map((project, index) => (
-            <motion.div
-              key={project.title}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              className="group relative"
-            >
-              <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/5 bg-white/5">
-                <img
-                  src={project.image}
-                  alt={project.title}
-                  className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100"
-                  referrerPolicy="no-referrer"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
-                
-                <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                  <Button variant="outline" className="rounded-full bg-white/10 backdrop-blur-md border-white/20 hover:bg-white hover:text-black">
-                    <Eye className="w-4 h-4 mr-2" /> VIEW CASE
-                  </Button>
-                  <Button variant="outline" className="rounded-full bg-white/10 backdrop-blur-md border-white/20 hover:bg-white hover:text-black">
-                    <Github className="w-4 h-4 mr-2" /> SOURCE
-                  </Button>
-                </div>
-              </div>
-
-              <div className="mt-6">
-                <div className="flex items-center justify-between mb-2">
-                  <span className="text-[10px] font-accent font-bold uppercase tracking-widest text-primary">
-                    {project.category}
-                  </span>
-                  <div className="flex gap-2">
-                    {project.tags.map(tag => (
-                      <span key={tag} className="text-[9px] text-white/30 uppercase tracking-widest px-2 py-1 rounded-md border border-white/5">
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-                <h3 className="text-2xl font-display font-bold tracking-tight mb-2 group-hover:text-primary transition-colors">
-                  {project.title}
-                </h3>
-                <p className="text-white/50 text-sm leading-relaxed">
-                  {project.description}
-                </p>
-              </div>
-            </motion.div>
-          ))}
-        </div>
-
-        {/* VIDEO SHOWCASE SECTION */}
-        <div className="mt-32">
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="flex items-center gap-3 text-primary font-accent text-sm font-bold uppercase tracking-[0.3em] mb-4"
-          >
-            <Play className="w-4 h-4" />
-            VIDEO SHOWCASE
-          </motion.div>
-          <motion.h2
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-            className="text-4xl md:text-6xl font-display font-black tracking-tighter leading-none mb-4"
-          >
-            REAL WORK. <span className="text-primary">REAL IMPACT.</span>
-          </motion.h2>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
             className="text-lg text-white/60 leading-relaxed mb-16 max-w-2xl"
           >
-            Seven videos. Seven proof points. From AI apps to social campaigns — this is the empire in motion.
+            Eight videos. Eight proof points. From AI apps to social campaigns — this is the empire in motion.
           </motion.p>
 
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -231,6 +148,79 @@ export default function Showcase() {
                   </h3>
                   <p className="text-white/50 text-sm leading-relaxed">
                     {video.description}
+                  </p>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+
+        {/* INNOVATION GALLERY — BELOW VIDEOS */}
+        <div className="mb-32">
+          <motion.div
+            initial={{ opacity: 0, x: -20 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className="flex items-center gap-3 text-primary font-accent text-sm font-bold uppercase tracking-[0.3em] mb-4"
+          >
+            <Sparkles className="w-4 h-4" />
+            INNOVATION GALLERY
+          </motion.div>
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+            className="text-4xl md:text-6xl font-display font-black tracking-tighter leading-none mb-8"
+          >
+            DIGITAL <span className="text-primary">SHOWCASE</span>
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            {projects.map((project, index) => (
+              <motion.div
+                key={project.title}
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: index * 0.1 }}
+                className="group relative"
+              >
+                <div className="relative aspect-[4/3] overflow-hidden rounded-3xl border border-white/5 bg-white/5">
+                  <img
+                    src={project.image}
+                    alt={project.title}
+                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-60 group-hover:opacity-100"
+                    referrerPolicy="no-referrer"
+                  />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black via-transparent to-transparent opacity-80" />
+                  <div className="absolute inset-0 flex items-center justify-center gap-4 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                    <Button variant="outline" className="rounded-full bg-white/10 backdrop-blur-md border-white/20 hover:bg-white hover:text-black">
+                      <Eye className="w-4 h-4 mr-2" /> VIEW CASE
+                    </Button>
+                    <Button variant="outline" className="rounded-full bg-white/10 backdrop-blur-md border-white/20 hover:bg-white hover:text-black">
+                      <Github className="w-4 h-4 mr-2" /> SOURCE
+                    </Button>
+                  </div>
+                </div>
+                <div className="mt-6">
+                  <div className="flex items-center justify-between mb-2">
+                    <span className="text-[10px] font-accent font-bold uppercase tracking-widest text-primary">
+                      {project.category}
+                    </span>
+                    <div className="flex gap-2">
+                      {project.tags.map(tag => (
+                        <span key={tag} className="text-[9px] text-white/30 uppercase tracking-widest px-2 py-1 rounded-md border border-white/5">
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                  <h3 className="text-2xl font-display font-bold tracking-tight mb-2 group-hover:text-primary transition-colors">
+                    {project.title}
+                  </h3>
+                  <p className="text-white/50 text-sm leading-relaxed">
+                    {project.description}
                   </p>
                 </div>
               </motion.div>
