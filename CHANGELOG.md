@@ -5,6 +5,39 @@ Format: version | date | what changed
 
 ---
 
+## v1.4.3 — 2026-04-17
+
+### Changed
+- **Showcase page: Videos moved to TOP** — "VIDEO SHOWCASE / REAL WORK. REAL IMPACT." section now loads first when visiting /showcase
+- **Showcase page: Innovation Gallery moved BELOW videos** — project cards grid now sits underneath the full video section
+- **Navbar: Neon Blue styling** — full navbar redesigned in neon blue (#00d4ff)
+  - Bar: dark background with neon blue border + glowing shadow (`shadow-[0_2px_30px_rgba(0,212,255,0.15)]`)
+  - All desktop nav links: neon blue with hover glow (`drop-shadow`)
+  - Active page link: bright neon blue full glow
+  - Mobile nav strip: neon blue border, dark bg, all links neon blue
+  - Both scrolled and non-scrolled states updated with neon blue
+- Updated Showcase description text: "Seven" → "Eight videos. Eight proof points."
+- `package.json` version bumped from `1.4.2` → `1.4.3`
+
+---
+
+## v1.4.2 — 2026-04-17
+
+### Added
+- **BRAND profile: New hero video** — replaced old `brand-video.mp4` with `NNAI-BRAND-1.mp4`
+  - Source: `C:\Users\ksr11\Videos\khalidrind-io-showcaseVideos\NNAI-BRAND-1.mp4`
+  - Original file was 172 MB (over GitHub's 100 MB limit)
+  - Compressed using `ffmpeg -crf 28` to 17 MB before committing
+  - ffmpeg installed via `winget install Gyan.FFmpeg`
+  - Served at `/videos/NNAI-BRAND-1.mp4`
+- **Showcase page: "NEURANEST AI — EMPEROR IN MOTION" video added** — first card in the video grid
+  - Category badge: `NEURANEST AI`
+  - Description: "The NeuraNest AI empire in motion — vision, power, and the future of AI-driven digital transformation."
+  - Uses same `NNAI-BRAND-1.mp4` file
+- `package.json` version bumped from `1.4.1` → `1.4.2`
+
+---
+
 ## v1.4.1 — 2026-04-17
 
 ### Removed

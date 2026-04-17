@@ -103,8 +103,21 @@ git push origin main
 
 **Current videos:**
 - TECH profile → `/videos/cli-engineer.mp4`
-- BRAND profile (`creative`) → `/videos/brand-video.mp4`
+- BRAND profile (`creative`) → `/videos/NNAI-BRAND-1.mp4` ← updated v1.4.2 (was brand-video.mp4)
 - LOCAL profile (`community`) → `/videos/local-community.mp4`
+
+**⚠️ VIDEO SIZE RULE — CRITICAL:**
+- GitHub hard limit: 100 MB. Our rule: NEVER push video over **90 MB**.
+- If source video is too large, compress with ffmpeg before adding to `public/videos/`:
+  ```bash
+  # Install ffmpeg (one time)
+  winget install Gyan.FFmpeg
+  
+  # Compress (adjust -crf 28 higher = smaller file, lower quality)
+  "C:/Users/ksr11/AppData/Local/Microsoft/WinGet/Packages/Gyan.FFmpeg_Microsoft.Winget.Source_8wekyb3d8bbwe/ffmpeg-8.1-full_build/bin/ffmpeg.exe" \
+    -i input.mp4 -vcodec libx264 -crf 28 -preset medium -acodec aac -b:a 128k output.mp4
+  ```
+- Example: `NNAI-BRAND-1.mp4` was 172 MB → compressed to 17 MB with `crf 28`
 
 ---
 
@@ -116,8 +129,24 @@ git push origin main
 4. Run the full build → patch → deploy workflow above
 
 **Current public files:**
-- `/videos/` — three profile videos
+- `/videos/` — profile videos + 8 showcase videos (see full list below)
 - `/Khalid-Rind.pdf` — Khalid's portfolio PDF (linked from About page)
+
+**All videos in `public/videos/`:**
+| File | Used In | Size |
+|------|---------|------|
+| `NNAI-BRAND-1.mp4` | BRAND profile hero + Showcase #1 | 17 MB |
+| `cli-engineer.mp4` | TECH profile hero | ~0.6 MB |
+| `local-community.mp4` | LOCAL profile hero | ~2.3 MB |
+| `NNAI-MAIN-VIDEO.mp4` | (available) | ~0.6 MB |
+| `KR-APP-2.mp4` | Showcase video | ~6.4 MB |
+| `KR-APP-3.mp4` | Showcase video | ~11.4 MB |
+| `KR-FAMILY.mp4` | Showcase video | ~24.7 MB |
+| `KR-SHOWCASE.mp4` | Showcase video | ~14.5 MB |
+| `MelbourneWaterCampain.mp4` | Showcase video | ~49.2 MB |
+| `ROAD-SAFETY-CAMPAIN.mp4` | Showcase video | ~40.0 MB |
+| `SKY-FALL.mp4` | Showcase video | ~27.2 MB |
+| `brand-video.mp4` | (replaced — kept as backup) | ~39.9 MB |
 
 ---
 
@@ -127,16 +156,41 @@ All pages are in `src/pages/`:
 - `Home.tsx` — landing page
 - `About.tsx` — about + philosophy + previous work
 - `Services.tsx` — services offered
-- `Showcase.tsx` — portfolio showcase
+- `Showcase.tsx` — portfolio showcase (videos FIRST, then Innovation Gallery below — v1.4.3)
 - `Contact.tsx` — contact form
 
 Edit the relevant file, then run the full build → patch → deploy workflow.
 
 ---
 
+## HOW TO CHANGE NAVBAR STYLE
+
+Navbar is at `src/components/layout/Navbar.tsx`.
+
+**Current style (v1.4.3): Neon Blue**
+- Bar background: `bg-black/90` with `border-[#00d4ff]/40` and `shadow-[0_2px_30px_rgba(0,212,255,0.15)]`
+- All nav links: `text-[#00d4ff]/70` → hover: `text-[#00d4ff]` with `drop-shadow` glow
+- Active page link: `text-[#00d4ff] drop-shadow-[0_0_10px_rgba(0,212,255,1)]`
+- Mobile strip: `border-[#00d4ff]/30`, `bg-black/95`
+
+To change navbar color: update the `#00d4ff` values to any hex color.
+
+---
+
+## SHOWCASE PAGE LAYOUT (v1.4.3)
+
+The `/showcase` page renders in this order:
+1. **VIDEO SHOWCASE** — "REAL WORK. REAL IMPACT." heading + 8 videos in 3-col grid (FIRST)
+2. **INNOVATION GALLERY** — "DIGITAL SHOWCASE" heading + 4 project cards in 2-col grid (SECOND)
+3. **CTA banner** — "READY TO BUILD YOUR LEGACY?"
+
+To reorder: edit `src/pages/Showcase.tsx` — the two `<div>` sections are clearly marked with comments.
+
+---
+
 ## VERSION & CHANGELOG
 
-- Current version: **v1.1.1**
+- Current version: **v1.4.3**
 - Changelog file: `CHANGELOG.md` in project root
 - After every change: bump version in `package.json` and add an entry to `CHANGELOG.md`
 
@@ -205,4 +259,4 @@ Custom domain `khalidrind.io` is set via CNAME file — always include it in dis
 
 ---
 
-*Last updated: 2026-04-14 | v1.1.1*
+*Last updated: 2026-04-17 | v1.4.3 | Legend Claude + Emperor Khalid Rind*
