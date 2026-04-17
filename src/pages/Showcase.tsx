@@ -36,6 +36,12 @@ const projects = [
 
 const showcaseVideos = [
   {
+    title: "NEURANEST AI — EMPEROR IN MOTION",
+    category: "NEURANEST AI",
+    src: "/videos/NNAI-BRAND-1.mp4",
+    description: "The NeuraNest AI empire in motion — vision, power, and the future of AI-driven digital transformation."
+  },
+  {
     title: "AI APP DEMO II",
     category: "PRODUCT DEMO",
     src: "/videos/KR-APP-2.mp4",
