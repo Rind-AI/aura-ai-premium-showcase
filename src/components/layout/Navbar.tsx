@@ -59,11 +59,9 @@ export default function Navbar() {
         <div className="flex items-center gap-3 group cursor-pointer" onClick={handleLogoClick}>
           <input type="file" ref={logoInputRef} className="hidden" onChange={handleLogoUpload} accept="image/*" />
           {content.logoSrc ? (
-            <img src={content.logoSrc} alt="Logo" className="w-10 h-10 object-contain rounded-xl" />
+            <img src={content.logoSrc} alt="Khalid Rind" className="w-10 h-10 object-cover rounded-xl ring-2 ring-primary/40 shadow-[0_0_16px_rgba(0,212,255,0.4)]" />
           ) : (
-            <div className="w-10 h-10 rounded-xl bg-primary flex items-center justify-center shadow-[0_0_20px_rgba(var(--primary-rgb),0.5)] group-hover:scale-110 transition-transform">
-              <div className="w-4 h-4 rounded-full bg-white animate-pulse" />
-            </div>
+            <img src="/gallery/khalid-rind-profile.png" alt="Khalid Rind" className="w-10 h-10 object-cover object-top rounded-xl ring-2 ring-primary/40 shadow-[0_0_16px_rgba(0,212,255,0.4)] group-hover:ring-primary transition-all duration-300" />
           )}
           <span 
             className={cn("text-xl font-display font-black tracking-tighter", isAdmin && "editable-active")}
