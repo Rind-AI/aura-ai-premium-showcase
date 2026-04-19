@@ -10,6 +10,7 @@ import Chatbot from "@/components/chat/Chatbot";
 import Home from "@/pages/Home";
 import Services from "@/pages/Services";
 import Showcase from "@/pages/Showcase";
+import Showroom from "@/pages/Showroom";
 import About from "@/pages/About";
 import Contact from "@/pages/Contact";
 import { motion, AnimatePresence } from "motion/react";
@@ -31,6 +32,7 @@ export default function App() {
                 <Route path="/" element={<PageWrapper><Home /></PageWrapper>} />
                 <Route path="/services" element={<PageWrapper><Services /></PageWrapper>} />
                 <Route path="/showcase" element={<PageWrapper><Showcase /></PageWrapper>} />
+                <Route path="/showroom" element={<PageWrapper><Showroom /></PageWrapper>} />
                 <Route path="/about" element={<PageWrapper><About /></PageWrapper>} />
                 <Route path="/contact" element={<PageWrapper><Contact /></PageWrapper>} />
               </Routes>
