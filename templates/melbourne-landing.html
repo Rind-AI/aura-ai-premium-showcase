@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>NeuraNest Catalyst + AOS Digital Factory — Command Your AI Empire in Melbourne</title>
+  <meta name="description" content="For Melbourne's Visionaries: Build, scale, and orchestrate mission-grade AI operations with NeuraNest Catalyst and AOS Digital Factory. Ethical AI, local compliance, global impact. Turn vision into velocity." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #0b1020;
+      --panel: #121733;
+      --accent: #7c8cff;
+      --accent-2: #11d1c2;
+      --text: #e7ecff;
+      --muted: #a9b1d9;
+      --danger: #ff6b6b;
+      --ok: #00d48a;
+      --melbourne-teal: #00a89d; /* A subtle nod to local vibrancy */
+    }
+    * { box-sizing: border-box; }
+    html, body { margin: 0; padding: 0; background: radial-gradient(1200px 600px at 70% 10%, #141a39 0%, var(--bg) 50%, #070a16 100%); color: var(--text); font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+    a { color: var(--accent); text-decoration: none; }
+    .wrap { max-width: 1120px; margin: 0 auto; padding: 0 24px; }
+    header { padding: 20px 0; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; font-weight: 800; letter-spacing: 0.2px; }
+    .brand .dot { width: 12px; height: 12px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); box-shadow: 0 0 16px rgba(17, 209, 194, 0.6); }
+    nav { display: flex; gap: 18px; }
+    .btn { display: inline-flex; align-items: center; gap: 10px; border-radius: 10px; padding: 12px 16px; font-weight: 600; transition: background 0.3s ease, box-shadow 0.3s ease; }
+    .btn:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn.primary { background: linear-gradient(135deg, var(--accent), var(--accent-2)); color: #0a0f1f; box-shadow: 0 12px 28px rgba(124, 140, 255, 0.35); }
+    .btn.secondary { border: 1px solid #2c3566; color: var(--text); background: #0d1330; }
+    .hero { padding: 80px 0 50px; display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 24px; align-items: center; }
+    .hero h1 { font-size: 48px; line-height: 1.05; margin: 0 0 16px; }
+    .hero p.sub { color: var(--muted); font-size: 19px; margin: 0 0 24px; }
+    .cta-row { display: flex; gap: 14px; flex-wrap: wrap; }
+    .panel { background: linear-gradient(180deg, rgba(18,23,51,0.9), rgba(18,23,51,0.6)); border: 1px solid #1e2651; border-radius: 14px; padding: 20px; }
+    .metrics { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 22px; }
+    .metric { background: #0e1433; border: 1px dashed #273063; border-radius: 12px; padding: 14px; }
+    .metric .label { color: var(--muted); font-size: 12px; }
+    .metric .value { font-weight: 800; font-size: 20px; margin-top: 4px; }
+    .features { padding: 60px 0; }
+    .features h2 { font-size: 36px; margin-bottom: 24px; text-align: center; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .feature { background: #0d1330; border: 1px solid #1f2755; border-radius: 14px; padding: 22px; }
+    .feature h3 { margin: 0 0 10px; font-size: 20px; }
+    .feature p { margin: 0; color: var(--muted); font-size: 15px; }
+    .split { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 30px; }
+    .pricing { padding: 60px 0; }
+    .pricing h2 { font-size: 36px; margin-bottom: 24px; text-align: center; }
+    .cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .card { background: #0d1330; border: 1px solid #1f2755; border-radius: 14px; padding: 24px; display: flex; flex-direction: column; }
+    .card h3 { margin: 0 0 10px; font-size: 22px; }
+    .price { font-size: 28px; font-weight: 800; margin: 8px 0 16px; color: var(--accent-2); }
+    .list { margin: 0; padding-left: 20px; color: var(--muted); list-style: none; /* remove default bullet */ }
+    .list li { position: relative; padding-left: 25px; margin-bottom: 8px; font-size: 15px; }
+    .list li:before { content: '✓'; color: var(--ok); position: absolute; left: 0; }
+    .cta-center { text-align: center; margin-top: 30px; }
+    .footer { padding: 40px 0; color: var(--muted); font-size: 14px; border-top: 1px solid #1e2651; margin-top: 60px; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 20px; }
+    .badge { display: inline-flex; align-items: center; gap: 8px; padding: 6px 10px; border-radius: 999px; background: #0e1433; border: 1px solid #253064; font-size: 12px; color: var(--muted); }
+    .ok { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); box-shadow: 0 0 12px rgba(0,212,138,0.6); }
+    .local-badge { background: linear-gradient(135deg, var(--melbourne-teal), #00e0d2); color: #0a0f1f; font-weight: 600; padding: 8px 14px; border-radius: 999px; font-size: 13px; display: inline-flex; align-items: center; gap: 6px; margin-bottom: 16px; }
+    .local-badge svg { height: 16px; width: 16px; fill: #0a0f1f; }
+
+    @media (max-width: 980px) {
+      .hero { grid-template-columns: 1fr; }
+      .grid-3, .cards, .split { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 38px; }
+      .hero p.sub { font-size: 17px; }
+      .features h2, .pricing h2 { font-size: 30px; }
+      .footer { flex-direction: column; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="wrap">
+    <div class="brand">
+      <div class="dot"></div>
+      <div>NeuraNest Catalyst</div>
+    </div>
+    <nav>
+      <a href="#features">Features</a>
+      <a href="#compliance">Trust & Ethics</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#contact">Contact</a>
+    </nav>
+  </header>
+
+  <section class="hero wrap">
+    <div>
+      <div class="local-badge">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5S10.62 6.5 12 6.5s2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+        Melbourne Ready, Globally Advanced
+      </div>
+      <h1>Command Your AI Empire. From Melbourne.</h1>
+      <p class="sub">Unleash NeuraNest Catalyst & AOS Digital Factory to orchestrate intelligent operations, scale revenue, and innovate with confidence—built on ethical AI, transparent protocols, and local compliance.</p>
+      <div class="cta-row">
+        <a class="btn primary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Launch Your Empire</a>
+        <a class="btn secondary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Try Live Demo</a>
+      </div>
+      <div class="metrics">
+        <div class="metric">
+          <div class="label">Operational Integrity</div>
+          <div class="value">Truth Protocol: Active</div>
+        </div>
+        <div class="metric">
+          <div class="label">Cognitive State</div>
+          <div class="value">Unified Scaffolding</div>
+        </div>
+        <div class="metric">
+          <div class="label">Compliance</div>
+          <div class="value">APP & GDPR Ready</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="badge"><span class="ok"></span> System Online</div>
+      <h3 style="margin:14px 0 6px;">Architect of Becoming — Your AI Guide</h3>
+      <p style="color: var(--muted); font-size: 15px;">"Welcome, Visionary. I am the Architect of Becoming. My mission is to align your digital empire with your highest potential, ensuring every operation is purposeful, ethical, and locally resonant."</p>
+      <ul class="list">
+        <li>Rapid, compliant setup for Australian businesses</li>
+        <li>Strategic clarity & brand refinement for Melbourne market</li>
+        <li>Automated, ethical execution pathways</li>
+      </ul>
+      <div class="cta-row" style="margin-top:16px;">
+        <a class="btn primary" href="#how-it-works">Start Guided Setup</a>
+        <a class="btn secondary" href="#pricing">Explore Plans</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="features" class="features wrap">
+    <h2>Empower Your Vision with Intelligent Features</h2>
+    <div class="grid-3">
+      <div class="feature">
+        <h3>Dual-Core AI Architecture</h3>
+        <p>Strategic intelligence from NeuraNest meets operational power from AOS for full-spectrum execution, tailored for diverse markets including Australia.</p>
+      </div>
+      <div class="feature">
+        <h3>Autonomous Workflows & Precision</h3>
+        <p>From ideation to deployment, orchestrate complex missions with automated workflows, designed for efficiency and impact, adhering to industry best practices.</p>
+      </div>
+      <div class="feature">
+        <h3>Ethical Predictive Insight Engine</h3>
+        <p>Forecast outcomes, optimize decisions, and identify opportunities with AI-driven insights, balanced with transparent data usage and ethical guidelines.</p>
+      </div>
+      <div class="feature">
+        <h3>Transparent Emotional Trigger Matrix</h3>
+        <p>Craft persuasive paths that convert attention into action, with clear disclosure and user consent at the forefront. Built for genuine connection, not manipulation.</p>
+      </div>
+      <div class="feature">
+        <h3>Quantum Visual Interface</h3>
+        <p>Navigate complexity through immersive, high-clarity data views, making intricate AI operations intuitive and accessible for every user.</p>
+      </div>
+      <div class="feature">
+        <h3>Integrated Agent Personas</h3>
+        <p>Embed guided expertise, including your Architect of Becoming, for tailored onboarding and operational support, ensuring consistent and compliant AI usage.</p>
+      </div>
+    </div>
+
+    <div class="split">
+      <div class="feature">
+        <h3>NeuraNest Catalyst: The Brain</h3>
+        <p>Advanced reasoning, project orchestration, and creative synthesis for high-impact delivery. Your command center for deep AI intelligence.</p>
+      </div>
+      <div class="feature">
+        <h3>AOS Digital Factory: The Engine</h3>
+        <p>24 specialized AI agents and 10 core business systems unified to drive scalable revenue operations and automate your digital presence.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="compliance" class="features wrap">
+    <h2>Trust, Ethics & Compliance: Our Foundation</h2>
+    <div class="grid-3">
+      <div class="feature">
+        <h3>Australian Privacy Principles (APPs) Ready</h3>
+        <p>We build with your privacy in mind, aligning our data handling protocols with Australia's stringent APPs to protect your information.</p>
+      </div>
+      <div class="feature">
+        <h3>Transparent AI Protocols</h3>
+        <p>Our "Covenant Keeper" ensures all operations are truthful and transparent. You always know how your AI works and why it makes decisions.</p>
+      </div>
+      <div class="feature">
+        <h3>Ethical AI by Design</h3>
+        <p>Committed to responsible AI, we integrate safeguards against bias and ensure fair, accountable, and beneficial use of artificial intelligence.</p>
+      </div>
+    </div>
+    <div class="cta-center">
+      <a class="btn secondary" href="#contact">Learn More About Our Ethical Stance</a>
+    </div>
+  </section>
+
+  <section id="how-it-works" class="features wrap">
+    <h2>Your Path to AI Mastery: How It Works</h2>
+    <div class="grid-3">
+      <div class="feature">
+        <h3>1. Define Your Mission</h3>
+        <p>Set clear objectives, constraints, and success metrics with guided prompts, ensuring alignment with your strategic goals.</p>
+      </div>
+      <div class="feature">
+        <h3>2. Orchestrate Your Agents</h3>
+        <p>Activate specialized AI personas for strategy, build, deployment, and optimization, creating a unified, intelligent team at your command.</p>
+      </div>
+      <div class="feature">
+        <h3>3. Execute, Learn & Grow</h3>
+        <p>Monitor progress in real-time, iterate rapidly based on performance data, and compound your wins through continuous feedback loops.</p>
+      </div>
+    </div>
+    <div class="cta-center">
+      <a class="btn primary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Start Your Melbourne Mission</a>
+    </div>
+  </section>
+
+  <section id="pricing" class="pricing wrap">
+    <h2>Choose Your Command Tier</h2>
+    <div class="cards">
+      <div class="card">
+        <h3>Catalyst Core</h3>
+        <div class="price">Free</div>
+        <ul class="list">
+          <li>NeuraNest Commander access</li>
+          <li>Guided setup with Architect of Becoming</li>
+          <li>Starter automation workflows & ethical guidelines</li>
+          <li>Basic local compliance features</li>
+        </ul>
+        <div class="cta-center"><a class="btn secondary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Get Started Free</a></div>
+      </div>
+      <div class="card">
+        <h3>Empire Builder</h3>
+        <div class="price">$99/month <span style="font-size:14px; color:var(--muted);">AUD</span></div>
+        <ul class="list">
+          <li>Full AOS Digital Factory & 24 agents</li>
+          <li>Advanced orchestration toolkit</li>
+          <li>Expanded agent personas & ethical monitoring</li>
+          <li>Enhanced analytics & optimization</li>
+          <li>Comprehensive APP & GDPR readiness tools</li>
+        </ul>
+        <div class="cta-center"><a class="btn primary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Launch Your Empire</a></div>
+      </div>
+      <div class="card">
+        <h3>Visionary Elite</h3>
+        <div class="price">$299/month <span style="font-size:14px; color:var(--muted);">AUD</span></div>
+        <ul class="list">
+          <li>Custom persona creation & integration</li>
+          <li>Priority support & dedicated strategy sessions</li>
+          <li>Premium visualization interface</li>
+          <li>Advanced ethical AI auditing & reporting</li>
+          <li>Tailored local compliance consultation</li>
+        </ul>
+        <div class="cta-center"><a class="btn primary" href="#contact">Request Elite Access</a></div>
+      </div>
+    </div>
+  </section>
+
+  <section id="demo" class="features wrap">
+    <h2>Experience the Interface: Live & Guided</h2>
+    <div class="split">
+      <div class="feature">
+        <h3>Live Preview & Use Cases</h3>
+        <p>Explore a guided mission with pre-configured prompts, agent roles, and real-world scenarios relevant to Melbourne businesses.</p>
+      </div>
+      <div class="feature">
+        <h3>Melbourne Case Studies</h3>
+        <p>See how local innovators are leveraging NeuraNest Catalyst to launch products, refine brand messaging, and automate workflows.</p>
+      </div>
+    </div>
+    <div class="cta-center">
+      <a class="btn secondary" href="https://neuranest-ai-agency-q3c5xpx8b-neuranest-ai.vercel.app" target="_blank">Run Guided Demo</a>
+    </div>
+  </section>
+
+  <section id="get-started" class="features wrap">
+    <h2>Begin Your Melbourne Mission</h2>
+    <div class="panel">
+      <p>Answer three prompts to configure your command deck. Your Architect of Becoming will align systems to your goals, ensuring local relevance and ethical parameters.</p>
+      <ol class="list" style="padding-left:20px;">
+        <li>Define your objective and constraints (e.g., target market in Melbourne, specific industry)</li>
+        <li>Select agent personas to activate, with ethical AI considerations</li>
+        <li>Confirm execution pathway and metrics, ensuring compliance checks</li>
+      </ol>
+      <div class="cta-row" style="margin-top:16px;">
+        <a class="btn primary" href="#how-it-works">Start Setup</a>
+        <a class="btn secondary" href="#pricing">Choose Your Plan</a>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact" class="footer wrap">
+    <div>© 2025 NeuraNest Catalyst. All rights reserved.</div>
+    <div>Ethical AI. Powered from Melbourne.</div>
+    <div>Contact: command@neuranest.ai</div>
+  </footer>
+</body>
+</html>
