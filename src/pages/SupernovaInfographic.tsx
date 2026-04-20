@@ -67,6 +67,20 @@ const stats = [
   { value: "6+", label: "Live platforms shipped", icon: Zap, color: "#f59e0b" },
 ];
 
+// ─── PROJECTS ─────────────────────────────────────────────────────────────────
+const liveProjects = [
+  { name: "NeuraNest AI World", desc: "Main AI platform & flagship hub", url: "https://www.neuranestai.world/", accent: "#00d4ff", tag: "FLAGSHIP" },
+  { name: "Cosmos Learning Universe", desc: "AI-powered education cosmos", url: "https://neuranest-cosmos-learning-universe.vercel.app/", accent: "#a855f7", tag: "EDUCATION" },
+  { name: "Education Rebirth", desc: "Next-gen learning platform v197", url: "https://neuranest-education-rebirth-v197.vercel.app/", accent: "#22c55e", tag: "EDUCATION" },
+  { name: "Digital Campus", desc: "Virtual campus experience v31", url: "https://neuranest-digital-campus-v31.vercel.app/", accent: "#f59e0b", tag: "CAMPUS" },
+  { name: "Launch Kit Generator", desc: "AI launch kit builder v157", url: "https://neuranest-launch-kit-generator-v157.vercel.app/", accent: "#ef4444", tag: "TOOLS" },
+  { name: "Cognitas Mind Forge", desc: "Intelligence forging platform", url: "https://cognitas-the-mind-forge.vercel.app/", accent: "#00d4ff", tag: "AI PLATFORM" },
+  { name: "NeuraNest Agency", desc: "AI agency & consulting services", url: "https://www.neuranestai.agency/", accent: "#a855f7", tag: "AGENCY" },
+  { name: "PainTrack App", desc: "Health data tracking solution", url: "https://paintrack-app-91780598-a966a.web.app/", accent: "#22c55e", tag: "HEALTH TECH" },
+  { name: "AI Studio", desc: "Creative AI production studio", url: "https://studio-2817764142-bd3c3.web.app/", accent: "#f59e0b", tag: "STUDIO" },
+  { name: "MiniMax Space", desc: "Interactive AI space experience", url: "https://3m2folmk7vgb.space.minimax.io/", accent: "#ef4444", tag: "INTERACTIVE" },
+];
+
 // ─── SLIDE DECK COMPONENT ─────────────────────────────────────────────────────
 function SlideDeck() {
   const [current, setCurrent] = useState(0);
@@ -237,6 +251,44 @@ function KhalidProfile({ onClose }: { onClose: () => void }) {
         </div>
       </motion.div>
 
+      {/* ── LIVE PROJECTS ── */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.5 }} className="mb-4 mt-10">
+        <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-6 flex items-center gap-2">
+          <Zap className="w-3 h-3" /> LIVE PROJECTS — CLICK TO VISIT
+        </p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {liveProjects.map((project, i) => (
+            <motion.a
+              key={i}
+              href={project.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 + i * 0.05 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-2xl border overflow-hidden p-5 flex flex-col justify-between bg-black cursor-pointer group"
+              style={{ borderColor: `${project.accent}25` }}
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: `linear-gradient(90deg,transparent,${project.accent},transparent)` }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at top left,${project.accent}10 0%,transparent 60%)` }} />
+              <div className="relative z-10">
+                <span className="text-[8px] font-accent font-black uppercase tracking-[0.3em] mb-3 block" style={{ color: project.accent }}>{project.tag}</span>
+                <h4 className="text-base font-display font-black tracking-tight mb-1 leading-tight">{project.name}</h4>
+                <p className="text-white/40 text-xs leading-relaxed">{project.desc}</p>
+              </div>
+              <div className="relative z-10 flex items-center justify-between mt-4">
+                <span className="text-[8px] text-white/20 font-accent uppercase tracking-widest truncate mr-2">{project.url.replace(/https?:\/\/(www\.)?/, '').replace(/\/$/, '')}</span>
+                <svg className="w-3.5 h-3.5 shrink-0 opacity-40 group-hover:opacity-100 transition-opacity" style={{ color: project.accent }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                </svg>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+
       {/* Collapse button bottom */}
       <div className="flex justify-center mt-10">
         <button onClick={onClose}
@@ -331,7 +383,7 @@ export default function SupernovaInfographic() {
 
                     {/* What's inside */}
                     <div className="grid grid-cols-2 gap-2 mb-8">
-                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC"].map((item) => (
+                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC", "10 LIVE PROJECTS"].map((item) => (
                         <div key={item} className="text-[9px] font-accent font-bold uppercase tracking-widest text-white/30 border border-white/5 rounded-xl px-3 py-2 text-center">
                           {item}
                         </div>
