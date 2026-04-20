@@ -190,7 +190,7 @@ To reorder: edit `src/pages/Showcase.tsx` — the two `<div>` sections are clear
 
 ## VERSION & CHANGELOG
 
-- Current version: **v1.4.3**
+- Current version: **v1.7.5**
 - Changelog file: `CHANGELOG.md` in project root
 - After every change: bump version in `package.json` and add an entry to `CHANGELOG.md`
 
@@ -201,30 +201,70 @@ To reorder: edit `src/pages/Showcase.tsx` — the two `<div>` sections are clear
 
 ---
 
+## SUPERNOVA PAGE — /supernova
+
+The `/supernova` page is `src/pages/SupernovaInfographic.tsx`. It contains:
+- A profile card that **expands on click** to reveal the full Khalid Rind profile
+- Inside the expanded profile (in order):
+  1. Hero photo + identity + stats grid
+  2. Commander Profile Video (3 min)
+  3. Audio overview
+  4. Slide deck (6 animated cards)
+  5. **PDF Slide Decks** — 6 PDF cards (hosted at `/pdfs/`)
+  6. Infographic
+  7. **Previous Projects** — 9 client audit dashboards (hosted at `/previous-projects/`)
+  8. **Template Gallery** — 10 website/dashboard templates (hosted at `/templates/`)
+  9. **Live Projects** — 14 live site cards (external URLs)
+
+**To add a new live project:** Edit `liveProjects` array in `SupernovaInfographic.tsx`
+**To add a new template:** Copy HTML to `public/templates/`, add to `templates` array
+**To add a new client audit:** Copy HTML to `public/previous-projects/`, add to `previousProjects` array
+**To add a new PDF:** Copy PDF to `public/pdfs/`, add to `slideDecks` array
+
+---
+
+## HOME PAGE — 2ND HERO VIDEO
+
+Located between the Features Grid and Contact section in `src/pages/Home.tsx`.
+- Custom play/pause button (no native browser controls)
+- Sound enabled — click to play with audio
+- Video file: `/videos/2ND-HERO-VIDEO.mp4`
+- Uses `useRef` + `useState` — toggle logic in `togglePlay` function
+
+---
+
 ## KEY FILES MAP
 
 ```
 aura-ai---premium-digital-showcase (8)/
 ├── src/
 │   ├── pages/
-│   │   ├── About.tsx          ← Previous Work section lives here
-│   │   ├── Home.tsx
+│   │   ├── About.tsx                  ← Previous Work section
+│   │   ├── Home.tsx                   ← 2nd Hero Video section (custom player)
 │   │   ├── Services.tsx
 │   │   ├── Showcase.tsx
-│   │   └── Contact.tsx
+│   │   ├── Contact.tsx
+│   │   └── SupernovaInfographic.tsx   ← SUPERNOVA — full profile + all galleries
 │   ├── components/
-│   │   └── sections/Hero.tsx  ← Video rendering logic lives here
+│   │   └── sections/Hero.tsx          ← Video rendering logic
 │   └── constants/
-│       └── nicheContent.ts    ← THREE PROFILES: tech, creative, community
+│       └── nicheContent.ts            ← THREE PROFILES: tech, creative, community
 ├── public/
-│   ├── videos/                ← All video files live here
-│   └── Khalid-Rind.pdf        ← Portfolio PDF
-├── dist/                      ← Built output (patched before every deploy)
-├── index.html                 ← Root template (Vite reads this for title)
-├── vite.config.ts             ← base: './' — DO NOT CHANGE
-├── package.json               ← version tracking
-├── CHANGELOG.md               ← version history
-└── WORKFLOW.md                ← THIS FILE
+│   ├── videos/                        ← All video files
+│   ├── pdfs/                          ← 6 PDF slide decks (NEW — v1.7.5)
+│   ├── templates/                     ← 10 HTML templates (NEW — v1.7.3)
+│   ├── previous-projects/             ← 9 client audit dashboards (NEW — v1.7.4)
+│   │   └── apm/                       ← APM built React app (index.html + assets/)
+│   ├── gallery/
+│   │   ├── templates/                 ← 3 template screenshots
+│   │   └── projects/                  ← 7 client preview images
+│   └── Khalid-Rind.pdf               ← Portfolio PDF
+├── dist/                              ← Built output (patched before every deploy)
+├── index.html                         ← Root template
+├── vite.config.ts                     ← base: './' — DO NOT CHANGE
+├── package.json                       ← version tracking
+├── CHANGELOG.md                       ← version history
+└── WORKFLOW.md                        ← THIS FILE
 ```
 
 ---
@@ -259,4 +299,4 @@ Custom domain `khalidrind.io` is set via CNAME file — always include it in dis
 
 ---
 
-*Last updated: 2026-04-17 | v1.4.3 | Legend Claude + Emperor Khalid Rind*
+*Last updated: 2026-04-20 | v1.7.5 | Legend Claude + Emperor Khalid Rind*

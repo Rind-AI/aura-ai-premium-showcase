@@ -5,6 +5,129 @@ Format: version | date | what changed
 
 ---
 
+## v1.7.5 — 2026-04-20
+
+### Added
+- **4 new Live Projects** in Supernova profile — now 14 total:
+  - NeuraNest AI Catalyst, ProjectFlow Hybrid, MiniMax Space 2, ViralVault
+- **PDF Slide Decks section** — 6 clickable PDF cards inside expanded Khalid Rind profile:
+  - Khalid Rind Profile Slides, The AI Operator Revolution, Industrial Intelligence
+  - Khalid Rind Overview, NeuraNest Empire Activation, The Gift of Knowledge
+  - PDFs hosted at `/pdfs/` (~69MB total), open in new tab
+- Preview card badges updated: 14 Live Projects · 10 Templates · 9 Client Audits · 6 PDF Decks
+
+---
+
+## v1.7.4 — 2026-04-20
+
+### Added
+- **Previous Projects section** — 9 client audit dashboards inside Khalid Rind expanded profile
+  - 7 cards with real screenshot previews (APM, OZ Cheap Deal, VOCUS, The Agent, EDventure, Towelling Stories, Haliya)
+  - 2 compact cards (Cleaning Rebranding, Piza Restaurant)
+  - Layout: top 3 featured large → 4 horizontal thumbnail → 2 compact list
+  - All HTML files hosted at `/previous-projects/` — click opens full dashboard in new tab
+  - APM Branding: full React/Vite built app (dist folder, path fixed to relative)
+  - Preview images hosted at `/gallery/projects/`
+
+---
+
+## v1.7.3 — 2026-04-20
+
+### Added
+- **Template Gallery section** — 10 templates inside Khalid Rind expanded profile
+  - 3 featured cards with screenshot previews (NeuraNest Catalyst, Emperor Dashboard, World's Best AI Dashboard)
+  - 7 compact list cards (AI Agency, Empire Dashboard, Melbourne Landing, Great Single Page, Ultimate Empire, OneDrive, AI Consultant)
+  - All HTML templates hosted at `/templates/` — click opens live template in new tab
+  - Screenshots hosted at `/gallery/templates/`
+- Preview card badges updated: 10 Templates added
+
+---
+
+## v1.7.2 — 2026-04-20
+
+### Added
+- **Live Projects section** — 10 clickable project cards inside Khalid Rind expanded profile
+  - NeuraNest AI World, Cosmos Learning Universe, Education Rebirth, Digital Campus, Launch Kit Generator
+  - Cognitas Mind Forge, NeuraNest Agency, PainTrack App, AI Studio, MiniMax Space
+  - Each card: accent color, tag badge, URL shown, opens in new tab on click
+- Preview card badges updated: 10 Live Projects added
+
+---
+
+## v1.7.1 — 2026-04-20
+
+### Added
+- **2nd Hero Video section** on Home page — between Features Grid and Contact section
+  - Video: `/videos/2ND-HERO-VIDEO.mp4` (43MB)
+  - Custom click-to-play/pause button overlay (no native browser controls bar)
+  - Sound enabled (removed `muted`) — plays with full audio on click
+  - Rounded corners with primary glow border, loop enabled
+  - `useRef` + `useState` for play/pause toggle logic
+
+### Processed (local video, not on website)
+- `The_AI_Truth_Warrior.mp4` → `The_AI_Truth_Warrior_v2.mp4`
+  - Profile pic (KHALID-RIND-MAIN-PROFILE-PIC..png) overlaid top-left, 160×160px
+  - NotebookLM watermark removed from bottom-right corner using FFmpeg `delogo` filter
+  - Output: `C:\AI-AIR-TEAM-HQ\NOTEBOOKLM-DIVISION\KHALID-RIND-PROFILE\The_AI_Truth_Warrior_v2.mp4`
+
+---
+
+## v1.7.0 — 2026-04-19
+
+### Added
+- **Supernova Infographic page `/supernova`** — single profile card, click expands full layout in place
+- **KHALID RIND COMMANDER PROFILE** — expand-on-click card with photo, video, audio, slides, infographic
+  - Profile photo: `khalid-rind-profile.png` — full professional photo, hero layout
+  - Video: `KHALID-RIND-PROFILE-VIDEO-3MIN.mp4` — exactly 3:00, trimmed with FFmpeg from 6.4 min NotebookLM video
+  - Audio: `KHALID-RIND-PROFILE-AUDIO.m4a` — deep dive narration from 229-source notebook
+  - Slide deck: 6 slides — Commander Profile story (NSW Gov → Melbourne → AI → data insights)
+  - Infographic: `KHALID-RIND-INFOGRAPHIC.png` — "The Architect of the AI Empire" (NotebookLM generated)
+- **Navbar logo** — Khalid's profile photo as logo with cyan glow ring (`ring-2 ring-primary/40`)
+- **Address bar glow** — `<meta name="theme-color" content="#00d4ff">` — cyan glow on all browsers
+- **"More profiles coming — added one by one"** placeholder card below Commander Profile
+- **Browser title** updated: "Khalid Rind | AI & Data Intelligence"
+
+### Changed
+- Navbar: "Showroom" → "Supernova" linking to `/supernova`
+- Removed all $1.5M valuation mentions from entire site
+
+### Removed
+- All 98 notebooks listing — replaced with one-by-one profile reveal system
+
+---
+
+## v1.6.0 — 2026-04-19
+
+### Added
+- **KHALID RIND COMMANDER PROFILE** first version on Showroom page
+  - NotebookLM video (6.4 min) + audio overview generated from 229-source notebook
+  - Slide deck component + Supernova stats infographic section
+  - NotebookLM Knowledge Vault: all 98 notebooks listed with click-to-open links
+- **Supernova Infographic section** — 6 stat cards + mission timeline
+- **Navbar**: "Showroom" → "Supernova" (first rename, later confirmed in v1.7.0)
+
+### Integrated
+- **NotebookLM MCP** — `notebooklm-mcp-cli v0.5.26` installed and connected
+  - `nlm setup add claude-code` — Claude Code now controls NotebookLM directly
+  - 98 notebooks accessible, 35 MCP tools available
+  - Account: neuranest.artificial@gmail.com
+  - Auth: Google OAuth via `nlm login`
+- **NOTEBOOKLM-DIVISION/KHALID-RIND-PROFILE/** — all generated assets saved locally
+
+---
+
+## v1.5.0 — 2026-04-19
+
+### Added
+- **Showroom page `/showroom`** — NotebookLM Division showcase
+  - The Gift of Knowledge video + Your AI Learning Assistant video (both from NOTEBOOKLM-GIFT)
+  - SlideDeck component (6 slides) alongside each video
+  - Supernova Infographic section with stats + timeline
+- **Navbar**: "Showroom" link added between Showcase and AR-VR REBIRTH
+- **Videos copied to public**: `The_Gift_of_Knowledge.mp4`, `Your_AI_Learning_Assistant.mp4`
+
+---
+
 ## v1.4.3 — 2026-04-17
 
 ### Changed
