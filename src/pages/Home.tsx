@@ -66,6 +66,25 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 2nd Hero Video Section */}
+      <section className="container px-6 py-20 relative z-10">
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_0_60px_rgba(var(--primary-rgb),0.15)]"
+        >
+          <video
+            src="/videos/2ND-HERO-VIDEO.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-auto"
+          />
+        </motion.div>
+      </section>
+
       {/* Contact Section */}
       <section id="contact" className="container px-6 py-40 relative z-10">
         <div className="glass p-12 md:p-24 rounded-[3rem] border-primary/30 relative overflow-hidden">
