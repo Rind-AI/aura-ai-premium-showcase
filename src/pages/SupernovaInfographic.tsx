@@ -67,6 +67,58 @@ const stats = [
   { value: "6+", label: "Live platforms shipped", icon: Zap, color: "#f59e0b" },
 ];
 
+// ─── PDF SLIDE DECKS ──────────────────────────────────────────────────────────
+const slideDecks = [
+  {
+    title: "Khalid Rind — Commander Profile",
+    desc: "The complete profile slide deck — journey, achievements, AI empire and the Rind Standard.",
+    url: "/pdfs/khalid-rind-profile-slides.pdf",
+    pages: "Full Deck",
+    accent: "#00d4ff",
+    icon: "👑",
+  },
+  {
+    title: "The AI Operator Revolution",
+    desc: "How AI operators are replacing traditional roles — a deep dive into the shift redefining industries.",
+    url: "/pdfs/the-ai-operator-revolution.pdf",
+    pages: "Deep Dive",
+    accent: "#a855f7",
+    icon: "⚡",
+  },
+  {
+    title: "Industrial Intelligence",
+    desc: "From raw data to industrial-grade intelligence — transforming business operations with AI.",
+    url: "/pdfs/industrial-intelligence.pdf",
+    pages: "Strategy Doc",
+    accent: "#22c55e",
+    icon: "🏭",
+  },
+  {
+    title: "Khalid Rind — Overview",
+    desc: "Concise overview deck covering AI expertise, data intelligence work and the Melbourne empire.",
+    url: "/pdfs/khalid-rind-overview.pdf",
+    pages: "Overview",
+    accent: "#f59e0b",
+    icon: "🎯",
+  },
+  {
+    title: "NeuraNest Empire Activation",
+    desc: "The full empire activation plan — platforms, agents, revenue systems and global deployment.",
+    url: "/pdfs/neuranest-empire-activation.pdf",
+    pages: "Master Plan",
+    accent: "#ef4444",
+    icon: "🚀",
+  },
+  {
+    title: "The Gift of Knowledge",
+    desc: "Knowledge gifted to the next generation — NotebookLM, AI learning systems and the education mission.",
+    url: "/pdfs/the-gift-of-knowledge.pdf",
+    pages: "Mission Doc",
+    accent: "#00d4ff",
+    icon: "🎁",
+  },
+];
+
 // ─── PREVIOUS PROJECTS ────────────────────────────────────────────────────────
 const previousProjects = [
   {
@@ -257,6 +309,10 @@ const liveProjects = [
   { name: "PainTrack App", desc: "Health data tracking solution", url: "https://paintrack-app-91780598-a966a.web.app/", accent: "#22c55e", tag: "HEALTH TECH" },
   { name: "AI Studio", desc: "Creative AI production studio", url: "https://studio-2817764142-bd3c3.web.app/", accent: "#f59e0b", tag: "STUDIO" },
   { name: "MiniMax Space", desc: "Interactive AI space experience", url: "https://3m2folmk7vgb.space.minimax.io/", accent: "#ef4444", tag: "INTERACTIVE" },
+  { name: "NeuraNest AI Catalyst", desc: "AI catalyst platform for business growth", url: "https://neuranest-ai-catalyst.vercel.app/", accent: "#00d4ff", tag: "AI PLATFORM" },
+  { name: "ProjectFlow Hybrid", desc: "Hybrid project management powered by AI", url: "https://projectflowhybrid.vercel.app/", accent: "#a855f7", tag: "PRODUCTIVITY" },
+  { name: "MiniMax Space 2", desc: "Next-gen AI interactive experience", url: "https://oihf0qthqhfe.space.minimax.io/", accent: "#22c55e", tag: "INTERACTIVE" },
+  { name: "ViralVault", desc: "Viral content strategy & vault system", url: "https://neuranest-enterprise.github.io/ViralVault/", accent: "#f59e0b", tag: "CONTENT" },
 ];
 
 // ─── SLIDE DECK COMPONENT ─────────────────────────────────────────────────────
@@ -415,6 +471,48 @@ function KhalidProfile({ onClose }: { onClose: () => void }) {
           <BookOpen className="w-3 h-3" /> COMMANDER PROFILE — SLIDE DECK
         </p>
         <SlideDeck />
+      </motion.div>
+
+      {/* ── PDF SLIDE DECKS ── */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.42 }} className="mb-10">
+        <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-2 flex items-center gap-2">
+          <BookOpen className="w-3 h-3" /> PDF SLIDE DECKS — CLICK TO OPEN
+        </p>
+        <p className="text-white/30 text-xs mb-5">Strategy documents, deep dives and mission decks. Opens full PDF in new tab.</p>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
+          {slideDecks.map((deck, i) => (
+            <motion.a
+              key={i}
+              href={deck.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.44 + i * 0.05 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-2xl border overflow-hidden p-5 bg-black cursor-pointer group"
+              style={{ borderColor: `${deck.accent}25` }}
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: `linear-gradient(90deg,transparent,${deck.accent},transparent)` }} />
+              <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ background: `radial-gradient(circle at top left,${deck.accent}08 0%,transparent 60%)` }} />
+              <div className="relative z-10">
+                <div className="flex items-start justify-between mb-3">
+                  <span className="text-2xl">{deck.icon}</span>
+                  <span className="text-[7px] font-accent font-black uppercase tracking-widest px-2 py-1 rounded-full" style={{ background: `${deck.accent}15`, color: deck.accent }}>{deck.pages}</span>
+                </div>
+                <h4 className="text-sm font-display font-black tracking-tight mb-2 leading-tight">{deck.title}</h4>
+                <p className="text-white/40 text-[10px] leading-relaxed mb-3">{deck.desc}</p>
+                <div className="flex items-center gap-1.5 opacity-40 group-hover:opacity-90 transition-opacity" style={{ color: deck.accent }}>
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  <span className="text-[8px] font-accent font-bold uppercase tracking-widest">Open PDF</span>
+                </div>
+              </div>
+            </motion.a>
+          ))}
+        </div>
       </motion.div>
 
       {/* ── INFOGRAPHIC ── */}
@@ -760,7 +858,7 @@ export default function SupernovaInfographic() {
 
                     {/* What's inside */}
                     <div className="grid grid-cols-2 gap-2 mb-8">
-                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC", "10 LIVE PROJECTS", "10 TEMPLATES", "9 CLIENT AUDITS"].map((item) => (
+                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC", "14 LIVE PROJECTS", "10 TEMPLATES", "9 CLIENT AUDITS", "6 PDF DECKS"].map((item) => (
                         <div key={item} className="text-[9px] font-accent font-bold uppercase tracking-widest text-white/30 border border-white/5 rounded-xl px-3 py-2 text-center">
                           {item}
                         </div>
