@@ -372,6 +372,88 @@ function SlideDeck() {
   );
 }
 
+// ─── INFOGRAPHIC GALLERY ──────────────────────────────────────────────────────
+const infographics = [
+  { src: "/gallery/KHALID-RIND-INFOGRAPHIC.png", alt: "The Architect of the AI Empire" },
+  { src: "/gallery/infographics/unnamed (14).png", alt: "Infographic 14" },
+  { src: "/gallery/infographics/unnamed (15).png", alt: "Infographic 15" },
+  { src: "/gallery/infographics/unnamed (16).png", alt: "Infographic 16" },
+  { src: "/gallery/infographics/unnamed (17).png", alt: "Infographic 17" },
+  { src: "/gallery/infographics/unnamed (18).png", alt: "Infographic 18" },
+  { src: "/gallery/infographics/unnamed (19).png", alt: "Infographic 19" },
+  { src: "/gallery/infographics/unnamed (20).png", alt: "Infographic 20" },
+  { src: "/gallery/infographics/unnamed (21).png", alt: "Infographic 21" },
+  { src: "/gallery/infographics/unnamed (22).png", alt: "Infographic 22" },
+  { src: "/gallery/infographics/unnamed (23).png", alt: "Infographic 23" },
+  { src: "/gallery/infographics/unnamed (24).png", alt: "Infographic 24" },
+  { src: "/gallery/infographics/unnamed (25).png", alt: "Infographic 25" },
+  { src: "/gallery/infographics/unnamed (26).png", alt: "Infographic 26" },
+  { src: "/gallery/infographics/unnamed (27).png", alt: "Infographic 27" },
+  { src: "/gallery/infographics/unnamed (28).png", alt: "Infographic 28" },
+  { src: "/gallery/infographics/unnamed (29).png", alt: "Infographic 29" },
+  { src: "/gallery/infographics/unnamed (30).png", alt: "Infographic 30" },
+  { src: "/gallery/infographics/unnamed (31).png", alt: "Infographic 31" },
+  { src: "/gallery/infographics/unnamed (32).png", alt: "Infographic 32" },
+];
+
+function InfographicGallery() {
+  const [current, setCurrent] = useState(0);
+  const prev = () => setCurrent(p => (p - 1 + infographics.length) % infographics.length);
+  const next = () => setCurrent(p => (p + 1) % infographics.length);
+  const img = infographics[current];
+  return (
+    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mb-4">
+      <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-4 flex items-center gap-2">
+        <Star className="w-3 h-3" /> INFOGRAPHIC GALLERY — {current + 1} / {infographics.length}
+      </p>
+      <div className="relative rounded-2xl overflow-hidden border border-primary/20 group">
+        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent z-10" />
+        <AnimatePresence mode="wait">
+          <motion.img
+            key={current}
+            src={img.src}
+            alt={img.alt}
+            initial={{ opacity: 0, x: 30 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -30 }}
+            transition={{ duration: 0.25 }}
+            className="w-full block"
+          />
+        </AnimatePresence>
+        {/* Left arrow */}
+        <button
+          onClick={prev}
+          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:border-primary/50 z-20"
+        >
+          <ChevronLeft className="w-5 h-5 text-white" />
+        </button>
+        {/* Right arrow */}
+        <button
+          onClick={next}
+          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
+          style={{ background: "#00d4ff" }}
+        >
+          <ChevronRight className="w-5 h-5 text-black" />
+        </button>
+      </div>
+      {/* Dot navigation */}
+      <div className="flex justify-center gap-1.5 mt-3 flex-wrap">
+        {infographics.map((_, i) => (
+          <button
+            key={i}
+            onClick={() => setCurrent(i)}
+            className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+            style={{
+              background: i === current ? "#00d4ff" : "rgba(255,255,255,0.15)",
+              transform: i === current ? "scale(1.6)" : "scale(1)",
+            }}
+          />
+        ))}
+      </div>
+    </motion.div>
+  );
+}
+
 // ─── EXPANDED PROFILE LAYOUT ──────────────────────────────────────────────────
 function KhalidProfile({ onClose }: { onClose: () => void }) {
   return (
@@ -515,17 +597,8 @@ function KhalidProfile({ onClose }: { onClose: () => void }) {
         </div>
       </motion.div>
 
-      {/* ── INFOGRAPHIC ── */}
-      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mb-4">
-        <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-4 flex items-center gap-2">
-          <Star className="w-3 h-3" /> INFOGRAPHIC — THE ARCHITECT OF THE AI EMPIRE
-        </p>
-        <div className="relative rounded-2xl overflow-hidden border border-primary/20">
-          <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent z-10" />
-          <img src="/gallery/KHALID-RIND-INFOGRAPHIC.png" alt="Khalid Rind Infographic"
-            className="w-full rounded-2xl" />
-        </div>
-      </motion.div>
+      {/* ── INFOGRAPHIC GALLERY ── */}
+      <InfographicGallery />
 
       {/* ── PREVIOUS PROJECTS ── */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.46 }} className="mb-4 mt-10">
