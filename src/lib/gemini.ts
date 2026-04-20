@@ -1,16 +1,16 @@
 import { GoogleGenAI } from "@google/genai";
 
-const apiKey = process.env.GEMINI_API_KEY;
+const apiKey = import.meta.env.VITE_GEMINI_API_KEY as string | undefined;
 
 if (!apiKey) {
-  console.warn("GEMINI_API_KEY is not set. AI features will be disabled.");
+  console.warn("VITE_GEMINI_API_KEY is not set. AI features will be disabled.");
 }
 
 export const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
-export const CHAT_MODEL = "gemini-3.1-pro-preview";
-export const FAST_MODEL = "gemini-3.1-flash-lite-preview";
-export const GROUNDING_MODEL = "gemini-3-flash-preview";
+export const CHAT_MODEL = "gemini-2.0-flash";
+export const FAST_MODEL = "gemini-2.0-flash-lite";
+export const GROUNDING_MODEL = "gemini-2.0-flash";
 
 export interface Message {
   role: "user" | "model";
@@ -42,13 +42,15 @@ export async function chatWithGemini(messages: Message[], systemInstruction?: st
 export async function getGroundedInfo(query: string, type: "search" | "maps") {
   if (!ai) throw new Error("AI not initialized");
 
-  const tools = type === "search" ? [{ googleSearch: {} }] : [{ googleMaps: {} }];
+  const prompt = type === "maps"
+    ? `Find location-based information, businesses, or geographical insights for: ${query}. Provide specific details including addresses, ratings, and practical information where available.`
+    : query;
 
   const response = await ai.models.generateContent({
     model: GROUNDING_MODEL,
-    contents: query,
+    contents: prompt,
     config: {
-      tools,
+      tools: [{ googleSearch: {} }],
     }
   });
 
@@ -60,8 +62,8 @@ export async function researchWithGrounding(query: string) {
 
   const response = await ai.models.generateContent({
     model: CHAT_MODEL,
-    contents: `Perform a deep data science research and provide a powerful, grounded analysis on the following topic: ${query}. 
-    Focus on industry trends, brand positioning, and innovative ideas. 
+    contents: `Perform a deep data science research and provide a powerful, grounded analysis on the following topic: ${query}.
+    Focus on industry trends, brand positioning, and innovative ideas.
     Use Google Search grounding to ensure accuracy and provide real-world insights.`,
     config: {
       tools: [{ googleSearch: {} }],
