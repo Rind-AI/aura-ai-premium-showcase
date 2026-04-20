@@ -67,6 +67,100 @@ const stats = [
   { value: "6+", label: "Live platforms shipped", icon: Zap, color: "#f59e0b" },
 ];
 
+// ─── PREVIOUS PROJECTS ────────────────────────────────────────────────────────
+const previousProjects = [
+  {
+    client: "APM Branding",
+    tagline: "11 Countries, One Purpose",
+    industry: "Human Services · Global",
+    desc: "Full brand strategy & enterprise dashboard for the world's leading purpose-driven human services provider across 11 countries.",
+    preview: "/gallery/projects/apm.png",
+    url: "/previous-projects/apm/index.html",
+    accent: "#00d4ff",
+    tag: "ENTERPRISE DASHBOARD",
+  },
+  {
+    client: "OZ Cheap Deal",
+    tagline: "From Generic to Six-Figure Authority",
+    industry: "E-Commerce · Australia",
+    desc: "90-day brand metamorphosis — digital audit, rebranding strategy and trust-building roadmap to transform a budget e-commerce brand.",
+    preview: "/gallery/projects/oz-cheap-deal.png",
+    url: "/previous-projects/oz-cheap-deal.html",
+    accent: "#f59e0b",
+    tag: "DIGITAL AUDIT",
+  },
+  {
+    client: "VOCUS",
+    tagline: "Rise of an Infrastructure Giant",
+    industry: "Telecommunications · ASX",
+    desc: "Strategic rebranding audit for a $3.5B ASX-listed telco — 50,000km+ fibre network, positioning and brand transformation.",
+    preview: "/gallery/projects/vocus.png",
+    url: "/previous-projects/vocus.html",
+    accent: "#22c55e",
+    tag: "BRAND AUDIT",
+  },
+  {
+    client: "The Agent",
+    tagline: "Achieve Your Property Goals",
+    industry: "Real Estate · Melbourne West",
+    desc: "Complete AI brand OS for real estate — digital audit, SEO strategy, rebranding and campaign assets for the Tarneit market.",
+    preview: "/gallery/projects/the-agent.png",
+    url: "/previous-projects/the-agent.html",
+    accent: "#a855f7",
+    tag: "BRAND AUDIT",
+  },
+  {
+    client: "EDventure",
+    tagline: "Homeschooling, Reimagined",
+    industry: "Education · Australia",
+    desc: "Digital audit and initial strategy report for a homeschooling platform — 3-pillar framework for flexible, high-quality education.",
+    preview: "/gallery/projects/edventure.png",
+    url: "/previous-projects/edventure.html",
+    accent: "#ef4444",
+    tag: "DIGITAL AUDIT",
+  },
+  {
+    client: "Towelling Stories",
+    tagline: "From Cute to Essential",
+    industry: "Baby Products · E-Commerce",
+    desc: "Full rebranding blueprint — repositioning a hand-stitched baby towel as premium safety gear with 12-month marketing roadmap.",
+    preview: "/gallery/projects/towelling.png",
+    url: "/previous-projects/towelling-stories.html",
+    accent: "#00d4ff",
+    tag: "REBRAND REPORT",
+  },
+  {
+    client: "Copy with Haliya",
+    tagline: "2026: Time to Connect",
+    industry: "Food & Hospitality · Sydney",
+    desc: "Brand strategy, copywriting and social media full report — shifting from transactional to authentic customer connection.",
+    preview: "/gallery/projects/haliya.png",
+    url: "/previous-projects/haliya.html",
+    accent: "#f59e0b",
+    tag: "BRAND REPORT",
+  },
+  {
+    client: "Cleaning Rebranding",
+    tagline: "Full Optimisation Report",
+    industry: "Home Services · Australia",
+    desc: "AI-powered digital audit and complete brand optimisation report — Google Business Profile, growth engine and 30-day ecosystem.",
+    preview: null,
+    url: "/previous-projects/cleaning.html",
+    accent: "#22c55e",
+    tag: "DIGITAL AUDIT",
+  },
+  {
+    client: "Piza Restaurant",
+    tagline: "Fusion Flavour, Digital Future",
+    industry: "Food & Beverage · Melbourne",
+    desc: "Digital presence audit and brand strategy dashboard for a fusion restaurant entering the online ordering market.",
+    preview: null,
+    url: "/previous-projects/piza.html",
+    accent: "#a855f7",
+    tag: "BRAND AUDIT",
+  },
+];
+
 // ─── TEMPLATES ────────────────────────────────────────────────────────────────
 const templates = [
   {
@@ -335,6 +429,122 @@ function KhalidProfile({ onClose }: { onClose: () => void }) {
         </div>
       </motion.div>
 
+      {/* ── PREVIOUS PROJECTS ── */}
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.46 }} className="mb-4 mt-10">
+        <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-2 flex items-center gap-2">
+          <Star className="w-3 h-3" /> PREVIOUS PROJECTS — CLIENT AUDIT DASHBOARDS
+        </p>
+        <p className="text-white/30 text-xs mb-6">Real client work by NeuraNest AI. Click any card to open the full audit dashboard.</p>
+
+        {/* Featured 3 with screenshot previews */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+          {previousProjects.filter(p => p.preview).slice(0, 3).map((p, i) => (
+            <motion.a
+              key={i}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.48 + i * 0.06 }}
+              whileHover={{ scale: 1.02, y: -3 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-2xl border overflow-hidden cursor-pointer group"
+              style={{ borderColor: `${p.accent}30` }}
+            >
+              <div className="relative overflow-hidden h-52">
+                <img src={p.preview!} alt={p.client}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-105" />
+                <div className="absolute inset-0 bg-gradient-to-t from-black via-black/30 to-transparent" />
+                <div className="absolute top-3 right-3 w-8 h-8 rounded-full bg-black/60 backdrop-blur-sm border flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300" style={{ borderColor: `${p.accent}50` }}>
+                  <svg className="w-3.5 h-3.5" style={{ color: p.accent }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </div>
+                <div className="absolute bottom-0 left-0 p-4 z-10">
+                  <span className="text-[8px] font-accent font-black uppercase tracking-[0.3em] block mb-1" style={{ color: p.accent }}>{p.tag}</span>
+                  <h4 className="text-sm font-display font-black tracking-tight leading-tight">{p.client}</h4>
+                  <p className="text-white/50 text-[9px] mt-0.5">{p.industry}</p>
+                </div>
+              </div>
+              <div className="p-3 bg-black border-t" style={{ borderColor: `${p.accent}20` }}>
+                <p className="text-white/40 text-[10px] leading-relaxed line-clamp-2">{p.desc}</p>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+
+        {/* Remaining 4 with previews — 2 col */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          {previousProjects.filter(p => p.preview).slice(3).map((p, i) => (
+            <motion.a
+              key={i}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 15 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.6 + i * 0.05 }}
+              whileHover={{ scale: 1.01, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-2xl border overflow-hidden cursor-pointer group flex"
+              style={{ borderColor: `${p.accent}25` }}
+            >
+              <div className="relative w-28 shrink-0 overflow-hidden">
+                <img src={p.preview!} alt={p.client}
+                  className="w-full h-full object-cover object-top transition-transform duration-700 group-hover:scale-110" />
+                <div className="absolute inset-0 bg-gradient-to-r from-transparent to-black/60" />
+              </div>
+              <div className="p-4 bg-black flex flex-col justify-between flex-1">
+                <div>
+                  <span className="text-[7px] font-accent font-black uppercase tracking-[0.3em] block mb-1" style={{ color: p.accent }}>{p.tag} · {p.industry}</span>
+                  <h4 className="text-sm font-display font-bold tracking-tight mb-1">{p.client}</h4>
+                  <p className="text-white/35 text-[9px] leading-relaxed line-clamp-2">{p.desc}</p>
+                </div>
+                <div className="flex items-center gap-1 mt-2 opacity-40 group-hover:opacity-80 transition-opacity" style={{ color: p.accent }}>
+                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                  <span className="text-[8px] font-accent font-bold uppercase tracking-widest">Open Dashboard</span>
+                </div>
+              </div>
+            </motion.a>
+          ))}
+        </div>
+
+        {/* No-preview cards — compact */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          {previousProjects.filter(p => !p.preview).map((p, i) => (
+            <motion.a
+              key={i}
+              href={p.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.72 + i * 0.04 }}
+              whileHover={{ scale: 1.02, y: -2 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-xl border overflow-hidden p-4 bg-black cursor-pointer group flex items-start gap-3"
+              style={{ borderColor: `${p.accent}20` }}
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px]" style={{ background: `linear-gradient(90deg,transparent,${p.accent}50,transparent)` }} />
+              <div className="w-9 h-9 rounded-xl shrink-0 flex items-center justify-center" style={{ background: `${p.accent}15`, border: `1px solid ${p.accent}30` }}>
+                <BookOpen className="w-4 h-4" style={{ color: p.accent }} />
+              </div>
+              <div className="flex-1 min-w-0">
+                <span className="text-[7px] font-accent font-black uppercase tracking-[0.3em] block mb-0.5" style={{ color: p.accent }}>{p.tag}</span>
+                <h4 className="text-xs font-display font-bold tracking-tight mb-1">{p.client} <span className="text-white/30 font-normal">· {p.industry}</span></h4>
+                <p className="text-white/35 text-[9px] leading-relaxed line-clamp-2">{p.desc}</p>
+              </div>
+              <svg className="w-3 h-3 shrink-0 mt-1 opacity-30 group-hover:opacity-80 transition-opacity" style={{ color: p.accent }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </motion.a>
+          ))}
+        </div>
+      </motion.div>
+
       {/* ── TEMPLATE GALLERY ── */}
       <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.48 }} className="mb-4 mt-10">
         <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-2 flex items-center gap-2">
@@ -550,7 +760,7 @@ export default function SupernovaInfographic() {
 
                     {/* What's inside */}
                     <div className="grid grid-cols-2 gap-2 mb-8">
-                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC", "10 LIVE PROJECTS", "10 TEMPLATES"].map((item) => (
+                      {["VIDEO · 3 MIN", "AUDIO OVERVIEW", "SLIDE DECK · 6", "INFOGRAPHIC", "10 LIVE PROJECTS", "10 TEMPLATES", "9 CLIENT AUDITS"].map((item) => (
                         <div key={item} className="text-[9px] font-accent font-bold uppercase tracking-widest text-white/30 border border-white/5 rounded-xl px-3 py-2 text-center">
                           {item}
                         </div>

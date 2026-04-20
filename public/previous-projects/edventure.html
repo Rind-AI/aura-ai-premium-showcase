@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Audit: Home Edventure Masterplan</title>
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=Merriweather:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: "Gemini x Google Core" -->
+    <!-- Base: Warm Neutrals for Home Edventure Brand DNA -->
+    <!-- Highlights: Google Blue (#4285F4), Red (#DB4437), Yellow (#F4B400), Green (#0F9D58) -->
+    <!-- Tech: Gemini Indigo (#4F46E5) -->
+
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #FAF9F6; color: #1F2937; }
+        h1, h2, h3, h4, .serif { font-family: 'Merriweather', serif; }
+        
+        /* Gemini Gradient Text */
+        .gemini-gradient {
+            background: linear-gradient(135deg, #4F46E5 0%, #9333EA 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Google Brand Gradients for Masterclass Section */
+        .google-blue-bg { background: linear-gradient(135deg, #e8f0fe 0%, #d2e3fc 100%); border-left: 4px solid #4285F4; }
+        .google-red-bg { background: linear-gradient(135deg, #fce8e6 0%, #fad2cf 100%); border-left: 4px solid #DB4437; }
+        .google-yellow-bg { background: linear-gradient(135deg, #fef7e0 0%, #feefc3 100%); border-left: 4px solid #F4B400; }
+        .google-green-bg { background: linear-gradient(135deg, #e6f4ea 0%, #ceead6 100%); border-left: 4px solid #0F9D58; }
+        
+        .card-hover { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .card-hover:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        
+        /* Chart Container Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            height: 350px;
+            max-height: 400px;
+            margin: 0 auto;
+        }
+
+        /* Tab Animations */
+        .tab-content { display: none; animation: fadeIn 0.5s ease-out; }
+        .tab-content.active { display: block; }
+        .tab-btn.active { background-color: #4F46E5; color: white; border-color: #4F46E5; }
+        
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Social Media Platform Colors */
+        .brand-fb { color: #1877F2; }
+        .brand-ig { color: #E4405F; }
+        .brand-tk { color: #000000; }
+        .brand-pin { color: #BD081C; }
+    </style>
+
+    <!-- Application Structure Plan:
+         1. Hero: Brand DNA & Mission.
+         2. Pulse Check: Data Audit (Radar).
+         3. Google Business Masterclass: Visual, multi-layout section focusing on local dominance (Tarneit/Vic).
+         4. 90-Day Social Content Engine: Interactive tabs for Month 1, 2, 3 with copy-paste captions.
+         5. AI Tool: The Lesson Plan Generator (The "Wow" Asset).
+    -->
+    
+    <!-- Visualization & Content Choices:
+         - Google Masterclass: Uses 4-quadrant layout with Google colors to separate strategies (Reviews, Photos, Q&A, Updates).
+         - 90-Day Plan: Tabbed interface to prevent information overload. Uses "Cards" for weekly themes.
+         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS.
+    -->
+</head>
+<body class="antialiased">
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-gray-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center gap-3">
+                    <i class="fa-solid fa-gem text-indigo-600 text-2xl"></i>
+                    <span class="font-bold text-xl tracking-tight text-gray-900">Gemini<span class="font-light">Masterplan</span></span>
+                </div>
+                <div class="hidden lg:flex space-x-6 items-center">
+                    <button onclick="scrollToSection('dashboard')" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">Audit Data</button>
+                    <button onclick="scrollToSection('google-masterclass')" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition"><i class="fa-brands fa-google mr-1"></i>Google Masterclass</button>
+                    <button onclick="scrollToSection('social-engine')" class="text-gray-600 hover:text-indigo-600 font-medium text-sm transition">90-Day Social</button>
+                    <button onclick="scrollToSection('transformation')" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 py-2 rounded-full text-sm font-bold shadow-md transition transform hover:scale-105">AI Tool Demo</button>
+                </div>
+                <!-- Mobile Menu Button -->
+                <div class="lg:hidden flex items-center">
+                    <button id="mobile-menu-btn" class="text-gray-600 hover:text-indigo-600 p-2">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-t border-gray-100 p-4 shadow-lg">
+             <button onclick="scrollToSection('dashboard')" class="block w-full text-left py-3 text-gray-700 font-medium border-b border-gray-50">Audit Data</button>
+             <button onclick="scrollToSection('google-masterclass')" class="block w-full text-left py-3 text-gray-700 font-medium border-b border-gray-50">Google Masterclass</button>
+             <button onclick="scrollToSection('social-engine')" class="block w-full text-left py-3 text-gray-700 font-medium border-b border-gray-50">90-Day Social Plan</button>
+             <button onclick="scrollToSection('transformation')" class="block w-full text-left py-3 text-indigo-600 font-bold">AI Tool Demo</button>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-white overflow-hidden">
+        <div class="absolute inset-0 z-0 opacity-40">
+            <!-- Dynamic blobs representing creativity -->
+            <div class="absolute top-[-10%] left-[-10%] w-[500px] h-[500px] bg-indigo-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse"></div>
+            <div class="absolute bottom-[-10%] right-[-10%] w-[500px] h-[500px] bg-amber-100 rounded-full mix-blend-multiply filter blur-3xl opacity-70 animate-pulse" style="animation-delay: 2s;"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10 text-center">
+            <div class="inline-flex items-center px-4 py-2 rounded-full border border-indigo-100 bg-white/80 backdrop-blur text-indigo-700 mb-8 shadow-sm">
+                <i class="fa-solid fa-bolt mr-2 text-yellow-500"></i> Pure. Real. True. Digital Optimization.
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 mb-6 tracking-tight">
+                Home Edventure: <span class="gemini-gradient">The AI Era</span>
+            </h1>
+            <p class="mt-4 max-w-2xl mx-auto text-xl text-gray-600 serif italic">
+                "Transforming from a quiet blog to the 'Google of Homeschooling' for Victoria."
+            </p>
+            <div class="mt-10 flex flex-col sm:flex-row justify-center gap-4">
+                <button onclick="scrollToSection('google-masterclass')" class="px-8 py-4 bg-gray-900 text-white font-bold rounded-xl shadow-lg hover:shadow-xl hover:bg-gray-800 transition flex items-center justify-center gap-2">
+                    <i class="fa-brands fa-google"></i> The Google Strategy
+                </button>
+                <button onclick="scrollToSection('social-engine')" class="px-8 py-4 bg-white text-indigo-700 font-bold border border-gray-200 rounded-xl shadow hover:shadow-md transition flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-calendar-days"></i> 90-Day Plan
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Section 1: Quick Audit (Pulse) -->
+    <section id="dashboard" class="py-12 bg-gray-50 border-y border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex flex-col md:flex-row items-center justify-between mb-8">
+                <div>
+                    <h2 class="text-2xl font-bold text-gray-900">Digital Pulse Check</h2>
+                    <p class="text-sm text-gray-500">Current Reality vs. Gemini Optimization</p>
+                </div>
+                <div class="mt-4 md:mt-0 flex gap-4 text-sm">
+                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-gray-400 mr-2"></span>Before</div>
+                    <div class="flex items-center"><span class="w-3 h-3 rounded-full bg-indigo-600 mr-2"></span>After</div>
+                </div>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                    <div class="chart-container">
+                        <canvas id="pulseRadarChart"></canvas>
+                    </div>
+                </div>
+                <div class="space-y-4">
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-amber-500 shadow-sm">
+                        <h4 class="font-bold text-gray-900">SEO Reality</h4>
+                        <p class="text-sm text-gray-600">Great generic content, but missing "Local Intent" (e.g., "Tarneit Homeschool Group").</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl border-l-4 border-indigo-600 shadow-sm">
+                        <h4 class="font-bold text-gray-900">The Opportunity</h4>
+                        <p class="text-sm text-gray-600">Shift from "Reading" to "Doing" using AI tools creates a 10x value increase.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 2: GOOGLE MASTERCLASS (The Masterpiece) -->
+    <section id="google-masterclass" class="py-20 bg-white relative overflow-hidden">
+        <!-- Background Elements -->
+        <div class="absolute top-0 right-0 w-64 h-64 bg-blue-50 rounded-bl-full opacity-50"></div>
+        <div class="absolute bottom-0 left-0 w-64 h-64 bg-yellow-50 rounded-tr-full opacity-50"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="text-blue-600 font-bold tracking-wider uppercase text-xs bg-blue-50 px-3 py-1 rounded-full">Gemini Exclusive</span>
+                <h2 class="text-4xl font-extrabold text-gray-900 mt-2">Google Business Masterclass</h2>
+                <p class="mt-4 text-lg text-gray-600 max-w-3xl mx-auto">
+                    We don't just "list" Home Edventure. We treat your Google Profile as a <strong>Dynamic Microsite</strong>. This is the exact layout to dominate local search in Victoria.
+                </p>
+            </div>
+
+            <!-- The Google Grid Layout -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                
+                <!-- Col 1: The Visual Identity (Blue) -->
+                <div class="lg:col-span-1 space-y-6">
+                    <div class="google-blue-bg p-6 rounded-2xl shadow-sm h-full relative overflow-hidden group">
+                        <div class="absolute top-2 right-2 text-blue-200 text-6xl opacity-20 group-hover:scale-110 transition"><i class="fa-brands fa-google"></i></div>
+                        <h3 class="text-xl font-bold text-blue-800 mb-2">1. Identity & Trust</h3>
+                        <p class="text-sm text-blue-900/80 mb-4">The "NAP" (Name, Address, Phone) must be ironclad.</p>
+                        
+                        <ul class="space-y-3 text-sm text-blue-900">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> <strong>Name:</strong> Home Edventure - Vic Homeschool Resources</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> <strong>Category:</strong> Educational Consultant (Primary)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check-circle"></i> <strong>Area:</strong> Tarneit, Melbourne, Victoria Wide</li>
+                        </ul>
+                        <div class="mt-6 bg-white/60 p-3 rounded-lg text-xs italic text-blue-800 border border-blue-100">
+                            "Google prioritizes businesses that explicitly state *where* they serve."
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Col 2: The Engagement Engine (Red & Yellow) -->
+                <div class="lg:col-span-1 space-y-6">
+                    <!-- Top Half: Updates (Yellow) -->
+                    <div class="google-yellow-bg p-6 rounded-2xl shadow-sm relative overflow-hidden card-hover">
+                        <h3 class="text-xl font-bold text-yellow-800 mb-2">2. The "Update" Strategy</h3>
+                        <p class="text-sm text-yellow-900/80 mb-3">Treat "Google Updates" like Instagram posts. Post weekly.</p>
+                        <div class="flex items-center gap-3 mt-4">
+                            <div class="w-12 h-12 bg-white rounded-lg shadow-sm flex items-center justify-center text-yellow-500"><i class="fa-solid fa-calendar-check"></i></div>
+                            <div>
+                                <p class="text-xs font-bold text-yellow-900 uppercase">This Week's Post:</p>
+                                <p class="text-xs text-yellow-800">"Confused by VRQA? Download our free checklist!" + [Link to Tool]</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Bottom Half: Q&A (Red) -->
+                    <div class="google-red-bg p-6 rounded-2xl shadow-sm relative overflow-hidden card-hover">
+                        <h3 class="text-xl font-bold text-red-800 mb-2">3. Seeded Q&A</h3>
+                        <p class="text-sm text-red-900/80 mb-3">Don't wait. Ask & answer your own questions.</p>
+                        <div class="space-y-2">
+                            <div class="bg-white/60 p-2 rounded text-xs text-red-900"><strong>Q:</strong> Is this curriculum legal in Victoria?</div>
+                            <div class="bg-white/60 p-2 rounded text-xs text-red-900"><strong>A:</strong> Yes! We are 100% aligned with Vic standards.</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Col 3: Social Proof (Green) -->
+                <div class="lg:col-span-1">
+                    <div class="google-green-bg p-6 rounded-2xl shadow-sm h-full relative overflow-hidden">
+                        <h3 class="text-xl font-bold text-green-800 mb-2">4. Review Engineering</h3>
+                        <p class="text-sm text-green-900/80 mb-4">Automate the "Ask". Focus on keywords in reviews.</p>
+                        
+                        <div class="bg-white p-4 rounded-xl shadow-sm border border-green-100 mb-4">
+                            <div class="flex text-yellow-400 text-xs mb-1">
+                                <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
+                            </div>
+                            <p class="text-xs text-gray-600 italic">"Home Edventure helped me navigate the <strong class="bg-green-100 px-1 text-green-800 rounded">VRQA audit</strong> without stress!"</p>
+                            <p class="text-xs text-gray-400 mt-2 text-right">- Sarah, Tarneit</p>
+                        </div>
+                        
+                        <button class="w-full py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg text-sm font-bold shadow transition">
+                            Generate Review Link <i class="fa-solid fa-link ml-1"></i>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Section 3: 90-DAY SOCIAL CONTENT ENGINE -->
+    <section id="social-engine" class="py-16 bg-gray-50 border-t border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl font-bold text-gray-900">90-Day Social Content Engine</h2>
+                <p class="mt-2 text-gray-600">A phased approach to building authority across Instagram, TikTok, and Facebook.</p>
+            </div>
+
+            <!-- Tabs Navigation -->
+            <div class="flex justify-center mb-8">
+                <div class="bg-white p-1 rounded-full shadow-sm border border-gray-200 inline-flex">
+                    <button onclick="switchTab('month1')" id="btn-month1" class="tab-btn active px-6 py-2 rounded-full text-sm font-bold text-gray-600 hover:text-indigo-600 transition">Month 1: Trust</button>
+                    <button onclick="switchTab('month2')" id="btn-month2" class="tab-btn px-6 py-2 rounded-full text-sm font-bold text-gray-600 hover:text-indigo-600 transition">Month 2: Growth</button>
+                    <button onclick="switchTab('month3')" id="btn-month3" class="tab-btn px-6 py-2 rounded-full text-sm font-bold text-gray-600 hover:text-indigo-600 transition">Month 3: Authority</button>
+                </div>
+            </div>
+
+            <!-- Content Area: Month 1 -->
+            <div id="month1" class="tab-content active">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Week 1 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-indigo-500">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-xs font-bold text-indigo-500 uppercase tracking-wide">Week 1-2 • The Foundation</span>
+                            <div class="flex gap-2">
+                                <i class="fa-brands fa-instagram brand-ig"></i>
+                                <i class="fa-brands fa-facebook brand-fb"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Theme: "The Myth Buster"</h3>
+                        <p class="text-sm text-gray-600 mb-4">Address the #1 fear: "Am I qualified to teach?"</p>
+                        
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                            <p class="text-xs text-gray-500 font-bold mb-1">Caption Template:</p>
+                            <p class="text-xs text-gray-700 italic" id="cap1">"Think you need a degree to homeschool? 🎓 Think again. In Victoria, you just need a plan and passion. Here are the 3 real requirements... #HomeEdventure #VicHomeschool"</p>
+                        </div>
+                        <button onclick="copyToClipboard('cap1')" class="text-xs text-indigo-600 font-bold hover:underline"><i class="fa-regular fa-copy"></i> Copy Caption</button>
+                    </div>
+
+                    <!-- Week 3 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-amber-500">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-xs font-bold text-amber-500 uppercase tracking-wide">Week 3-4 • The Toolkit</span>
+                            <div class="flex gap-2">
+                                <i class="fa-brands fa-tiktok brand-tk"></i>
+                                <i class="fa-brands fa-pinterest brand-pin"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Theme: "Show Your Space"</h3>
+                        <p class="text-sm text-gray-600 mb-4">Visual inspiration. Messy desks vs. Tidy desks.</p>
+                        
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                            <p class="text-xs text-gray-500 font-bold mb-1">Video Idea:</p>
+                            <p class="text-xs text-gray-700 italic">"15-second montage of 'Instagram vs Reality' homeschooling setups. Music: Upbeat acoustic."</p>
+                        </div>
+                    </div>
+
+                    <!-- Engagement Strategy -->
+                    <div class="bg-indigo-50 p-6 rounded-xl shadow-inner border border-indigo-100 flex flex-col justify-center text-center">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-indigo-600">
+                            <i class="fa-solid fa-bullhorn"></i>
+                        </div>
+                        <h3 class="font-bold text-indigo-900 mb-2">Month 1 Goal</h3>
+                        <p class="text-sm text-indigo-800">Establish safety. Prove that Home Edventure is a safe harbor for stressed parents.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area: Month 2 -->
+            <div id="month2" class="tab-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Week 5 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-green-500">
+                         <div class="flex justify-between mb-4">
+                            <span class="text-xs font-bold text-green-500 uppercase tracking-wide">Week 5-6 • User Generated</span>
+                            <div class="flex gap-2">
+                                <i class="fa-brands fa-instagram brand-ig"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Theme: "Member Spotlight"</h3>
+                        <p class="text-sm text-gray-600 mb-4">Share stories from Tarneit locals.</p>
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                            <p class="text-xs text-gray-500 font-bold mb-1">Caption Template:</p>
+                            <p class="text-xs text-gray-700 italic" id="cap2">"Meet Sarah from Tarneit. She was terrified of the VRQA audit. 2 weeks later? She passed with flying colors using our template. Here's how... 👇 #HomeEdSuccess"</p>
+                        </div>
+                        <button onclick="copyToClipboard('cap2')" class="text-xs text-indigo-600 font-bold hover:underline"><i class="fa-regular fa-copy"></i> Copy Caption</button>
+                    </div>
+
+                    <!-- Week 7 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-blue-500">
+                        <div class="flex justify-between mb-4">
+                           <span class="text-xs font-bold text-blue-500 uppercase tracking-wide">Week 7-8 • Deep Dive</span>
+                           <div class="flex gap-2">
+                               <i class="fa-brands fa-facebook brand-fb"></i>
+                           </div>
+                       </div>
+                       <h3 class="font-bold text-gray-900 mb-2">Theme: "The Q&A Lives"</h3>
+                       <p class="text-sm text-gray-600 mb-4">Go Live on FB/IG. Answer registration questions.</p>
+                       <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                           <p class="text-xs text-gray-500 font-bold mb-1">Live Topic:</p>
+                           <p class="text-xs text-gray-700 italic">"3 Things the Victorian Registration Board Looks For (and what they ignore)."</p>
+                       </div>
+                   </div>
+
+                    <!-- Engagement Strategy -->
+                    <div class="bg-green-50 p-6 rounded-xl shadow-inner border border-green-100 flex flex-col justify-center text-center">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-green-600">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <h3 class="font-bold text-green-900 mb-2">Month 2 Goal</h3>
+                        <p class="text-sm text-green-800">Community Proof. Show that "Real people just like you are winning here."</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Content Area: Month 3 -->
+            <div id="month3" class="tab-content">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Week 9 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-purple-500">
+                        <div class="flex justify-between mb-4">
+                            <span class="text-xs font-bold text-purple-500 uppercase tracking-wide">Week 9-10 • The AI Pivot</span>
+                            <div class="flex gap-2">
+                                <i class="fa-brands fa-tiktok brand-tk"></i>
+                                <i class="fa-brands fa-instagram brand-ig"></i>
+                            </div>
+                        </div>
+                        <h3 class="font-bold text-gray-900 mb-2">Theme: "Magic Tools"</h3>
+                        <p class="text-sm text-gray-600 mb-4">Launch the AI Lesson Generator.</p>
+                        <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                            <p class="text-xs text-gray-500 font-bold mb-1">Caption Template:</p>
+                            <p class="text-xs text-gray-700 italic" id="cap3">"Stop spending Sunday night planning. 🛑 I just generated a full Dinosaur Math unit in 3 seconds. Try the new AI tool on Home Edventure! 🦕✨ #AIHomeschool"</p>
+                        </div>
+                        <button onclick="copyToClipboard('cap3')" class="text-xs text-indigo-600 font-bold hover:underline"><i class="fa-regular fa-copy"></i> Copy Caption</button>
+                    </div>
+
+                    <!-- Week 11 Card -->
+                    <div class="bg-white p-6 rounded-xl shadow-sm border-t-4 border-gray-800">
+                        <div class="flex justify-between mb-4">
+                           <span class="text-xs font-bold text-gray-800 uppercase tracking-wide">Week 11-12 • Authority</span>
+                           <div class="flex gap-2">
+                               <i class="fa-brands fa-linkedin"></i>
+                           </div>
+                       </div>
+                       <h3 class="font-bold text-gray-900 mb-2">Theme: "Thought Leadership"</h3>
+                       <p class="text-sm text-gray-600 mb-4">Publish the "State of Homeschooling 2026" report.</p>
+                       <div class="bg-gray-50 p-3 rounded border border-gray-200 mb-3">
+                           <p class="text-xs text-gray-500 font-bold mb-1">Asset:</p>
+                           <p class="text-xs text-gray-700 italic">Infographic showing the growth of homeschooling in Victoria vs. Traditional Schooling.</p>
+                       </div>
+                   </div>
+
+                    <!-- Engagement Strategy -->
+                    <div class="bg-purple-50 p-6 rounded-xl shadow-inner border border-purple-100 flex flex-col justify-center text-center">
+                        <div class="w-12 h-12 bg-white rounded-full flex items-center justify-center mx-auto mb-3 shadow-sm text-purple-600">
+                            <i class="fa-solid fa-crown"></i>
+                        </div>
+                        <h3 class="font-bold text-purple-900 mb-2">Month 3 Goal</h3>
+                        <p class="text-sm text-purple-800">Market Dominance. Position Home Edventure as the *only* modern choice.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Section 4: AI Transformation (The WOW Factor) -->
+    <section id="transformation" class="py-20 bg-gray-900 text-white overflow-hidden relative">
+        <div class="absolute inset-0 opacity-20">
+             <div class="absolute -top-24 -right-24 w-96 h-96 bg-indigo-600 rounded-full filter blur-3xl"></div>
+             <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-purple-600 rounded-full filter blur-3xl"></div>
+        </div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="text-center mb-16">
+                <span class="bg-indigo-500/30 text-indigo-200 border border-indigo-500/50 px-3 py-1 rounded-full text-xs font-bold uppercase tracking-wide">Reusable Digital Asset</span>
+                <h2 class="text-3xl md:text-5xl font-bold mt-4 mb-4">The Engine: AI Lesson Planner</h2>
+                <p class="text-indigo-200 max-w-2xl mx-auto text-lg">This is the tool that will drive your Month 3 Social Strategy. Try it now.</p>
+            </div>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                
+                <!-- The "Tool" (Input Side) -->
+                <div class="bg-white/10 backdrop-blur-md border border-white/20 p-8 rounded-2xl shadow-2xl">
+                    <h3 class="text-xl font-bold text-white mb-2"><i class="fa-solid fa-wand-magic-sparkles text-yellow-400 mr-2"></i>Unit Study Generator</h3>
+                    <p class="text-sm text-gray-300 mb-6">Enter a topic to generate a full lesson plan instantly.</p>
+                    
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Child's Interest</label>
+                            <input type="text" id="aiInputInterest" placeholder="e.g. Volcanoes, Ballet, Trains" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-semibold text-gray-300 uppercase mb-1">Subject Focus</label>
+                            <select id="aiInputSubject" class="w-full bg-gray-800 border border-gray-600 rounded-lg px-4 py-3 text-white focus:outline-none focus:border-indigo-500 transition">
+                                <option value="Math">Math & Logic</option>
+                                <option value="Literacy">Literacy & Writing</option>
+                                <option value="Science">Science & Nature</option>
+                            </select>
+                        </div>
+                        <button onclick="generateLesson()" class="w-full bg-indigo-600 hover:bg-indigo-500 text-white font-bold py-3 rounded-lg shadow-lg transition transform hover:scale-[1.02] flex justify-center items-center gap-2">
+                            <span>Generate Magic Lesson</span>
+                            <i class="fa-solid fa-arrow-right"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- The "Result" (Output Side) -->
+                <div id="aiOutputContainer" class="bg-white text-gray-800 p-8 rounded-2xl shadow-2xl border-l-8 border-indigo-500 min-h-[400px] flex flex-col justify-center items-center relative transition-all duration-500">
+                    <!-- Placeholder State -->
+                    <div id="aiPlaceholder" class="text-center opacity-50">
+                        <i class="fa-solid fa-robot text-6xl mb-4 text-gray-300"></i>
+                        <p class="text-lg">Your custom lesson plan will appear here.</p>
+                    </div>
+
+                    <!-- Loader (Hidden) -->
+                    <div id="aiLoader" class="hidden flex-col items-center">
+                        <i class="fa-solid fa-circle-notch fa-spin text-4xl text-indigo-600 mb-3"></i>
+                        <p class="text-sm font-semibold text-indigo-600 animate-pulse">Gemini AI is crafting the curriculum...</p>
+                    </div>
+
+                    <!-- Result Content (Hidden) -->
+                    <div id="aiResult" class="hidden w-full text-left animate-fade-in">
+                        <div class="flex justify-between items-start border-b border-gray-200 pb-4 mb-4">
+                            <div>
+                                <h4 class="text-2xl font-bold text-indigo-900 serif" id="resTitle">Result Title</h4>
+                                <p class="text-sm text-gray-500">Focus: <span id="resFocus">Subject</span></p>
+                            </div>
+                            <i class="fa-solid fa-share-nodes text-indigo-600 cursor-pointer hover:scale-110 transition" title="Share"></i>
+                        </div>
+                        
+                        <div class="space-y-4">
+                            <div class="bg-indigo-50 p-3 rounded-lg border border-indigo-100">
+                                <h5 class="font-bold text-indigo-800 text-sm mb-1"><i class="fa-solid fa-bullseye mr-1"></i> Core Goal</h5>
+                                <p class="text-sm text-gray-700" id="resGoal">Goal description.</p>
+                            </div>
+
+                            <ul class="space-y-3 text-sm">
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-white p-2 rounded shadow-sm border border-gray-100 min-w-[30px] text-center font-bold text-indigo-600">1</div>
+                                    <span class="text-gray-600" id="resAct1">Activity 1...</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-white p-2 rounded shadow-sm border border-gray-100 min-w-[30px] text-center font-bold text-indigo-600">2</div>
+                                    <span class="text-gray-600" id="resAct2">Activity 2...</span>
+                                </li>
+                                <li class="flex items-start gap-3">
+                                    <div class="bg-white p-2 rounded shadow-sm border border-gray-100 min-w-[30px] text-center font-bold text-indigo-600">3</div>
+                                    <span class="text-gray-600" id="resAct3">Activity 3...</span>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-gray-300 py-12 border-t border-gray-700">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <h3 class="text-white text-lg font-bold mb-4">Gemini Digital Intelligence</h3>
+            <p class="mb-6 max-w-xl mx-auto text-sm">Empowering Home Edventure. Pure. Real. True.</p>
+            <p class="text-xs text-gray-500">&copy; 2026 Home Edventure Masterplan.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript Logic -->
+    <script>
+        // --- Navigation ---
+        function scrollToSection(id) {
+            const el = document.getElementById(id);
+            if (el) el.scrollIntoView({ behavior: 'smooth' });
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        document.getElementById('mobile-menu-btn').addEventListener('click', () => {
+            document.getElementById('mobile-menu').classList.toggle('hidden');
+        });
+
+        // --- Social Media Tabs ---
+        function switchTab(tabId) {
+            // Hide all content
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+            // Deactivate all buttons
+            document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
+            
+            // Show selected
+            document.getElementById(tabId).classList.add('active');
+            document.getElementById('btn-' + tabId).classList.add('active');
+        }
+
+        // --- Copy to Clipboard ---
+        function copyToClipboard(elementId) {
+            const text = document.getElementById(elementId).innerText;
+            navigator.clipboard.writeText(text).then(() => {
+                alert("Caption copied to clipboard! Ready to post.");
+            }).catch(err => {
+                console.error('Failed to copy: ', err);
+            });
+        }
+
+        // --- Chart.js ---
+        window.addEventListener('load', () => {
+            const ctxRadar = document.getElementById('pulseRadarChart').getContext('2d');
+            new Chart(ctxRadar, {
+                type: 'radar',
+                data: {
+                    labels: ['Google Visibility', 'User Trust', 'Content Depth', 'Social Reach', 'AI Utility'],
+                    datasets: [{
+                        label: 'Current',
+                        data: [40, 70, 80, 30, 10],
+                        backgroundColor: 'rgba(156, 163, 175, 0.2)',
+                        borderColor: 'rgb(156, 163, 175)',
+                    }, {
+                        label: 'Gemini Plan',
+                        data: [95, 95, 90, 85, 95],
+                        backgroundColor: 'rgba(79, 70, 229, 0.2)',
+                        borderColor: 'rgb(79, 70, 229)',
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: { r: { suggestedMin: 0, suggestedMax: 100, ticks: { display: false } } },
+                    plugins: { legend: { position: 'top' } }
+                }
+            });
+        });
+
+        // --- AI Generator Logic ---
+        function generateLesson() {
+            const interest = document.getElementById('aiInputInterest').value.trim();
+            const subject = document.getElementById('aiInputSubject').value;
+            
+            if (!interest) { alert("Please enter an interest!"); return; }
+
+            document.getElementById('aiPlaceholder').classList.add('hidden');
+            document.getElementById('aiResult').classList.add('hidden');
+            document.getElementById('aiLoader').classList.remove('hidden');
+            document.getElementById('aiLoader').classList.add('flex');
+
+            setTimeout(() => {
+                let title, goal, acts;
+                if (subject === "Math") {
+                    title = `${interest} Math`;
+                    goal = `Use ${interest} to learn counting and sorting.`;
+                    acts = [`Count the ${interest} legs/wheels.`, `Sort ${interest} by size.`, `Graph your favorites.`];
+                } else if (subject === "Literacy") {
+                    title = `${interest} Stories`;
+                    goal = `Expand vocabulary using ${interest}.`;
+                    acts = [`Write a poem about a ${interest}.`, `List 5 adjectives.`, `Read a book about ${interest}.`];
+                } else {
+                    title = `${interest} Science`;
+                    goal = `Biology/Physics of ${interest}.`;
+                    acts = [`What fuels/feeds a ${interest}?`, `Draw the anatomy.`, `Build a model.`];
+                }
+
+                document.getElementById('resTitle').innerText = title;
+                document.getElementById('resFocus').innerText = subject;
+                document.getElementById('resGoal').innerText = goal;
+                document.getElementById('resAct1').innerText = acts[0];
+                document.getElementById('resAct2').innerText = acts[1];
+                document.getElementById('resAct3').innerText = acts[2];
+
+                document.getElementById('aiLoader').classList.add('hidden');
+                document.getElementById('aiLoader').classList.remove('flex');
+                document.getElementById('aiResult').classList.remove('hidden');
+            }, 1500);
+        }
+    </script>
+</body>
+</html>

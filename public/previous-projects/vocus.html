@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vocus: Deep Dive Brand Analysis</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC; /* Slate 50 - Warm/Cool Neutral */
+            color: #334155; /* Slate 700 */
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #94a3b8;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #64748b;
+        }
+
+        /* Chart Container Rules - MANDATORY */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Custom Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .animate-fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        /* Interactive Card Hover */
+        .interactive-card {
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+        }
+        .interactive-card:hover {
+            transform: translateX(5px);
+            border-left: 4px solid #E11D48; /* Vocus-like Red Accent */
+            background-color: #ffffff;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Tab Active State */
+        .tab-active {
+            border-bottom: 2px solid #E11D48;
+            color: #E11D48;
+            font-weight: 600;
+        }
+
+        /* Particle Canvas for Satellite section */
+        #satelliteCanvas {
+            background: radial-gradient(circle, #1e293b 0%, #0f172a 100%);
+            border-radius: 0.75rem;
+        }
+    </style>
+</head>
+<body class="antialiased">
+
+    <!-- 
+        Chosen Palette: "Slate & Crimson Enterprise". 
+        Background: #F8FAFC (Slate 50). 
+        Text: #334155 (Slate 700). 
+        Primary Accent: #E11D48 (Rose 600 - reminiscent of Vocus branding but softened).
+        Secondary Accent: #475569 (Slate 600).
+    -->
+
+    <!-- 
+        Application Structure Plan:
+        The app is structured as a vertical scrolling narrative with interactive "stops".
+        1. **Hero/Overview**: Immediate impact stats to frame Vocus as a major infrastructure player.
+        2. **Network Strategy Dashboard**: Interactive charts comparing Vocus to legacy incumbents (The "Challenger" narrative).
+        3. **Infrastructure Map (Abstract)**: A conceptual visualization of the "Fibre + Satellite" hybrid network using a particle simulation.
+        4. **Solutions Ecosystem**: A filterable grid allowing users to explore products (Enterprise, Wholesale, Govt) without page reloads.
+        5. **Financial & Growth Trajectory**: Data visualization of capacity growth and market share.
+        6. **Sustainability**: Text/Icon based section on ESG.
+        
+        This structure moves from "Who they are" -> "What they have" -> "What they sell" -> "How they perform", a logical flow for an analyst or potential enterprise client.
+    -->
+
+    <!-- 
+        Visualization & Content Choices:
+        1. **Hero Stats**: Big Numbers. Goal: Inform. Immediate authority.
+        2. **Market Share Radar Chart**: Goal: Compare. Shows Vocus's agility vs Incumbent's size. Library: Chart.js.
+        3. **Satellite Orbit Simulation**: Goal: Change/Wow. Uses HTML5 Canvas to simulate LEO satellites, illustrating the Starlink partnership. Justification: Static text can't convey the dynamic nature of LEO connectivity.
+        4. **Capacity Growth Line Chart**: Goal: Trend. Shows the massive bandwidth explosion. Library: Chart.js.
+        5. **Solutions Filter**: Goal: Organize. JS-based filtering to declutter the product portfolio.
+        
+        CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center">
+                    <span class="text-2xl font-bold tracking-tighter text-slate-900">VOCUS<span class="text-rose-600">.</span></span>
+                    <span class="ml-4 px-2 py-1 bg-slate-100 text-xs font-semibold text-slate-500 rounded uppercase tracking-wide hidden sm:block">Deep Dive Research</span>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <button onclick="scrollToSection('overview')" class="text-slate-600 hover:text-rose-600 transition-colors text-sm font-medium">Overview</button>
+                    <button onclick="scrollToSection('infrastructure')" class="text-slate-600 hover:text-rose-600 transition-colors text-sm font-medium">Infrastructure</button>
+                    <button onclick="scrollToSection('solutions')" class="text-slate-600 hover:text-rose-600 transition-colors text-sm font-medium">Solutions</button>
+                    <button onclick="scrollToSection('growth')" class="text-slate-600 hover:text-rose-600 transition-colors text-sm font-medium">Growth</button>
+                </div>
+                <!-- Mobile Menu Button (Functional placeholder) -->
+                <button onclick="toggleMobileMenu()" class="md:hidden text-slate-600 focus:outline-none">
+                    <span class="text-xl">☰</span>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200">
+            <div class="px-2 pt-2 pb-3 space-y-1">
+                <button onclick="scrollToSection('overview')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50 w-full text-left">Overview</button>
+                <button onclick="scrollToSection('infrastructure')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50 w-full text-left">Infrastructure</button>
+                <button onclick="scrollToSection('solutions')" class="block px-3 py-2 rounded-md text-base font-medium text-slate-700 hover:bg-slate-50 w-full text-left">Solutions</button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content Container -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-20">
+
+        <!-- SECTION 1: EXECUTIVE SUMMARY -->
+        <section id="overview" class="animate-fade-in">
+            <div class="text-center max-w-3xl mx-auto mb-12">
+                <h1 class="text-4xl md:text-5xl font-bold text-slate-900 mb-4">The Challenger Network</h1>
+                <p class="text-lg text-slate-600 leading-relaxed">
+                    Vocus is a specialist fibre and network solutions provider connecting Australia, New Zealand, and the world. 
+                    Positioned as the agile alternative to incumbent telcos, Vocus leverages a massive infrastructure footprint and strategic LEO satellite partnerships.
+                </p>
+            </div>
+
+            <!-- Key Metrics Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-bold text-rose-600 mb-2">25k+ km</div>
+                    <div class="text-sm text-slate-500 font-semibold uppercase tracking-wide">Fibre Network</div>
+                    <p class="text-xs text-slate-400 mt-2">Spanning Australia & NZ</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-bold text-rose-600 mb-2">LEO</div>
+                    <div class="text-sm text-slate-500 font-semibold uppercase tracking-wide">Satellite Leader</div>
+                    <p class="text-xs text-slate-400 mt-2">Starlink Strategic Partner</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-bold text-rose-600 mb-2">4Tbps+</div>
+                    <div class="text-sm text-slate-500 font-semibold uppercase tracking-wide">Intl. Capacity</div>
+                    <p class="text-xs text-slate-400 mt-2">Connecting Asia & USA</p>
+                </div>
+                <div class="bg-white p-6 rounded-xl shadow-sm border border-slate-100 text-center hover:shadow-md transition-shadow">
+                    <div class="text-4xl font-bold text-rose-600 mb-2">5,000+</div>
+                    <div class="text-sm text-slate-500 font-semibold uppercase tracking-wide">On-Net Buildings</div>
+                    <p class="text-xs text-slate-400 mt-2">Enterprise & Govt Focus</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 2: STRATEGIC POSITIONING (RADAR CHART) -->
+        <section class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+            <div>
+                <h2 class="text-2xl font-bold text-slate-900 mb-4">Market Positioning</h2>
+                <p class="text-slate-600 mb-6">
+                    This section analyzes how Vocus competes against traditional Tier-1 incumbents. While competitors rely on mass-market volume, Vocus focuses on high-capacity, low-latency engineered solutions for Enterprise and Government.
+                </p>
+                <div class="space-y-4">
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">1</div>
+                        <div class="ml-4">
+                            <h3 class="text-sm font-bold text-slate-900">Agility vs. Scale</h3>
+                            <p class="text-sm text-slate-500">Faster deployment times and bespoke network engineering compared to rigid incumbent processes.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">2</div>
+                        <div class="ml-4">
+                            <h3 class="text-sm font-bold text-slate-900">The "Geo-Diverse" Edge</h3>
+                            <p class="text-sm text-slate-500">Ownership of unique subsea routes (e.g., Darwin-Jakarta-Singapore) provides redundancy that competitors lease.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start">
+                        <div class="flex-shrink-0 h-6 w-6 flex items-center justify-center rounded-full bg-rose-100 text-rose-600 font-bold text-xs mt-0.5">3</div>
+                        <div class="ml-4">
+                            <h3 class="text-sm font-bold text-slate-900">LEO Integration</h3>
+                            <p class="text-sm text-slate-500">First-mover advantage in integrating Starlink for 100% remote coverage alongside fibre.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
+                <h3 class="text-sm font-semibold text-slate-500 mb-4 text-center">Competitive Strength Analysis</h3>
+                <div class="chart-container">
+                    <canvas id="radarChart"></canvas>
+                </div>
+                <div class="mt-4 flex justify-center space-x-6 text-xs text-slate-500">
+                    <div class="flex items-center"><span class="w-3 h-3 bg-rose-500 rounded-full mr-2"></span>Vocus</div>
+                    <div class="flex items-center"><span class="w-3 h-3 bg-slate-300 rounded-full mr-2"></span>Typical Incumbent</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 3: INFRASTRUCTURE (Interactive Map Simulation) -->
+        <section id="infrastructure" class="bg-slate-900 text-white rounded-3xl p-8 md:p-12 overflow-hidden relative">
+            <div class="relative z-10 grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div class="lg:col-span-1 space-y-6">
+                    <h2 class="text-3xl font-bold text-white">Hybrid Infrastructure</h2>
+                    <p class="text-slate-300">
+                        The future of connectivity is not just fibre—it's the seamless integration of terrestrial fibre, subsea cables, and Low Earth Orbit (LEO) satellites.
+                    </p>
+                    <div class="p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <h4 class="text-rose-400 font-bold mb-2">Project Horizon</h4>
+                        <p class="text-sm text-slate-400">
+                            A major fibre expansion from Perth to Port Hedland to Darwin, completing the terrestrial loop and connecting to the DJSC subsea cable system.
+                        </p>
+                    </div>
+                    <div class="p-4 bg-slate-800 rounded-lg border border-slate-700">
+                        <h4 class="text-rose-400 font-bold mb-2">Starlink Partnership</h4>
+                        <p class="text-sm text-slate-400">
+                            Vocus provides enterprise-grade Starlink services, offering low-latency satellite connectivity to remote mines, emergency services, and regional hubs.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-2 flex flex-col items-center justify-center">
+                    <div class="w-full flex justify-between items-center mb-2 px-2">
+                        <span class="text-xs font-mono text-rose-400 animate-pulse">LIVE SATELLITE SIMULATION</span>
+                        <div class="text-xs text-slate-500">100% Coverage Simulation</div>
+                    </div>
+                    <!-- Canvas for Satellite Animation -->
+                    <canvas id="satelliteCanvas" class="w-full h-64 md:h-96 shadow-2xl border border-slate-700"></canvas>
+                    <div class="mt-4 flex space-x-4 text-xs text-slate-400">
+                        <div class="flex items-center"><span class="w-2 h-2 bg-blue-400 rounded-full mr-2"></span>Ground Station</div>
+                        <div class="flex items-center"><span class="w-2 h-2 bg-white rounded-full mr-2"></span>LEO Satellite</div>
+                        <div class="flex items-center"><span class="w-2 h-2 bg-rose-500 rounded-full mr-2"></span>Fibre Path</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION 4: PRODUCT SOLUTIONS (Filterable Grid) -->
+        <section id="solutions">
+            <div class="mb-8 flex flex-col md:flex-row justify-between items-end">
+                <div class="mb-4 md:mb-0">
+                    <h2 class="text-3xl font-bold text-slate-900">Solutions Ecosystem</h2>
+                    <p class="text-slate-600 mt-2 max-w-xl">
+                        Explore Vocus's core product pillars. Select a category to filter the capabilities.
+                    </p>
+                </div>
+                <!-- Filter Tabs -->
+                <div class="flex space-x-2 bg-slate-100 p-1 rounded-lg">
+                    <button onclick="filterSolutions('all')" id="btn-all" class="px-4 py-2 text-sm font-medium rounded-md bg-white text-rose-600 shadow-sm transition-all">All</button>
+                    <button onclick="filterSolutions('network')" id="btn-network" class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 transition-all">Network</button>
+                    <button onclick="filterSolutions('cloud')" id="btn-cloud" class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 transition-all">Cloud & Security</button>
+                    <button onclick="filterSolutions('wholesale')" id="btn-wholesale" class="px-4 py-2 text-sm font-medium rounded-md text-slate-600 hover:text-slate-900 transition-all">Wholesale</button>
+                </div>
+            </div>
+
+            <!-- Dynamic Grid -->
+            <div id="solutions-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <!-- Javascript will populate this -->
+            </div>
+        </section>
+
+        <!-- SECTION 5: GROWTH DATA -->
+        <section id="growth" class="bg-white rounded-2xl shadow-sm border border-slate-100 p-8">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <h2 class="text-2xl font-bold text-slate-900 mb-4">Bandwidth Explosion</h2>
+                    <p class="text-slate-600 mb-6">
+                        As enterprises move to the cloud and AI adoption accelerates, the demand for high-capacity bandwidth (10Gbps+) is skyrocketing. Vocus's network is engineered to absorb this surge, showing a consistent upward trend in total provisioned capacity.
+                    </p>
+                    <div class="space-y-6">
+                        <div class="border-l-4 border-slate-200 pl-4">
+                            <h4 class="text-lg font-bold text-slate-900">The AI Factor</h4>
+                            <p class="text-sm text-slate-500">Data center interconnects are the fastest-growing segment, driven by AI model training requirements.</p>
+                        </div>
+                        <div class="border-l-4 border-slate-200 pl-4">
+                            <h4 class="text-lg font-bold text-slate-900">Subsea Resurgence</h4>
+                            <p class="text-sm text-slate-500">New cable systems (ASC, DJSC) are critical for reducing latency to Asian hyperscale hubs.</p>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                     <h3 class="text-sm font-semibold text-slate-500 mb-4">Total Network Capacity Growth (Tbps)</h3>
+                     <div class="chart-container">
+                        <canvas id="growthChart"></canvas>
+                     </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="border-t border-slate-200 pt-10 pb-6 text-center">
+            <p class="text-slate-400 text-sm">
+                Generated Interactive Research Report • Vocus Deep Dive • February 2026
+            </p>
+            <p class="text-slate-300 text-xs mt-2">
+                Data sources: Public disclosures, annual reports, and press releases.
+            </p>
+        </footer>
+
+    </main>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // --- DATA STORE ---
+        const solutionsData = [
+            { id: 1, category: 'network', title: 'Dark Fibre', desc: 'Unlit optical fibre providing unlimited bandwidth potential for total network control and security.', icon: '⚫' },
+            { id: 2, category: 'network', title: 'IP Transit', desc: 'Tier 1 global internet access with direct peering to major content providers and cloud exchanges.', icon: '🌐' },
+            { id: 3, category: 'network', title: 'Satellite (LEO)', desc: 'Low-latency Starlink enterprise services for remote sites, mining camps, and emergency backup.', icon: '🛰️' },
+            { id: 4, category: 'cloud', title: 'Cloud Connect', desc: 'Direct, private connections to AWS, Azure, and Google Cloud, bypassing the public internet.', icon: '☁️' },
+            { id: 5, category: 'cloud', title: 'DDoS Protection', desc: 'Network-layer mitigation scrubbing traffic before it hits your infrastructure.', icon: '🛡️' },
+            { id: 6, category: 'cloud', title: 'SD-WAN', desc: 'Software-defined networking to optimize traffic flow across hybrid networks.', icon: '🔀' },
+            { id: 7, category: 'wholesale', title: 'NBN Wholesale', desc: 'Aggregated NBN access for RSPs, simplifying connectivity across the national footprint.', icon: '🏢' },
+            { id: 8, category: 'wholesale', title: 'International Capacity', desc: 'Indefeasible Rights of Use (IRU) on major subsea cable systems.', icon: '🌊' },
+            { id: 9, category: 'wholesale', title: 'Data Centre Connect', desc: 'High-speed inter-capital connectivity linking major DC facilities.', icon: '🔋' }
+        ];
+
+        // --- CHART INITIALIZATION ---
+        document.addEventListener('DOMContentLoaded', function() {
+            initRadarChart();
+            initGrowthChart();
+            renderSolutions('all');
+            initSatelliteAnimation();
+        });
+
+        // --- NAVIGATION ---
+        function scrollToSection(id) {
+            const element = document.getElementById(id);
+            const offset = 80; // height of sticky header
+            const bodyRect = document.body.getBoundingClientRect().top;
+            const elementRect = element.getBoundingClientRect().top;
+            const elementPosition = elementRect - bodyRect;
+            const offsetPosition = elementPosition - offset;
+
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: "smooth"
+            });
+            // Close mobile menu if open
+            document.getElementById('mobile-menu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // --- SOLUTIONS GRID LOGIC ---
+        function filterSolutions(category) {
+            // Update buttons styling
+            const buttons = ['all', 'network', 'cloud', 'wholesale'];
+            buttons.forEach(btn => {
+                const el = document.getElementById(`btn-${btn}`);
+                if (btn === category) {
+                    el.classList.remove('text-slate-600', 'bg-transparent');
+                    el.classList.add('bg-white', 'text-rose-600', 'shadow-sm');
+                } else {
+                    el.classList.add('text-slate-600', 'bg-transparent');
+                    el.classList.remove('bg-white', 'text-rose-600', 'shadow-sm');
+                }
+            });
+
+            renderSolutions(category);
+        }
+
+        function renderSolutions(filter) {
+            const grid = document.getElementById('solutions-grid');
+            grid.innerHTML = '';
+            
+            const filteredData = filter === 'all' 
+                ? solutionsData 
+                : solutionsData.filter(item => item.category === filter);
+
+            filteredData.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'interactive-card bg-white p-6 rounded-xl shadow-sm border border-slate-100 flex flex-col h-full';
+                card.innerHTML = `
+                    <div class="text-3xl mb-4">${item.icon}</div>
+                    <h3 class="text-lg font-bold text-slate-900 mb-2">${item.title}</h3>
+                    <p class="text-sm text-slate-500 flex-grow">${item.desc}</p>
+                    <div class="mt-4 pt-4 border-t border-slate-50">
+                        <span class="text-xs font-semibold text-rose-600 uppercase tracking-wider">${item.category}</span>
+                    </div>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        // --- CHARTS ---
+        
+        // 1. Radar Chart: Positioning
+        function initRadarChart() {
+            const ctx = document.getElementById('radarChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['Agility', 'Fibre Reach', 'Satellite Integration', 'Legacy Burden', 'Bespoek Engineering', 'Price Competitiveness'],
+                    datasets: [{
+                        label: 'Vocus',
+                        data: [90, 85, 95, 20, 90, 85],
+                        fill: true,
+                        backgroundColor: 'rgba(225, 29, 72, 0.2)', // Rose-600 low opacity
+                        borderColor: 'rgb(225, 29, 72)',
+                        pointBackgroundColor: 'rgb(225, 29, 72)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(225, 29, 72)'
+                    }, {
+                        label: 'Incumbent',
+                        data: [40, 95, 60, 90, 50, 60],
+                        fill: true,
+                        backgroundColor: 'rgba(148, 163, 184, 0.2)', // Slate-400
+                        borderColor: 'rgb(148, 163, 184)',
+                        pointBackgroundColor: 'rgb(148, 163, 184)',
+                        pointBorderColor: '#fff',
+                        pointHoverBackgroundColor: '#fff',
+                        pointHoverBorderColor: 'rgb(148, 163, 184)'
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    elements: {
+                        line: { borderWidth: 3 }
+                    },
+                    scales: {
+                        r: {
+                            angleLines: { color: '#e2e8f0' },
+                            grid: { color: '#e2e8f0' },
+                            pointLabels: {
+                                font: { size: 10, family: 'Inter' },
+                                color: '#64748b'
+                            },
+                            ticks: { display: false, maxTicksLimit: 5 }
+                        }
+                    },
+                    plugins: {
+                        legend: { display: false }
+                    }
+                }
+            });
+        }
+
+        // 2. Line Chart: Growth
+        function initGrowthChart() {
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: ['2021', '2022', '2023', '2024', '2025 (Est)'],
+                    datasets: [{
+                        label: 'Network Capacity (Tbps)',
+                        data: [22, 35, 52, 78, 110],
+                        borderColor: '#0f172a', // Slate 900
+                        backgroundColor: 'rgba(225, 29, 72, 0.1)',
+                        borderWidth: 3,
+                        tension: 0.4,
+                        fill: true,
+                        pointBackgroundColor: '#e11d48',
+                        pointRadius: 4,
+                        pointHoverRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: '#1e293b',
+                            titleColor: '#fff',
+                            bodyColor: '#cbd5e1',
+                            padding: 10,
+                            displayColors: false
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#64748b' }
+                        },
+                        y: {
+                            border: { display: false },
+                            grid: { color: '#f1f5f9' },
+                            ticks: { color: '#64748b' }
+                        }
+                    }
+                }
+            });
+        }
+
+        // --- SATELLITE CANVAS ANIMATION ---
+        function initSatelliteAnimation() {
+            const canvas = document.getElementById('satelliteCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            // Set canvas size based on container
+            const setCanvasSize = () => {
+                const parent = canvas.parentElement;
+                canvas.width = parent.clientWidth;
+                canvas.height = parent.clientHeight; // Managed by CSS height classes
+            };
+            setCanvasSize();
+            window.addEventListener('resize', setCanvasSize);
+
+            // Simulation Objects
+            const satellites = [];
+            const fibres = [];
+            const groundStations = [];
+
+            // Initialize Ground Stations (Fixed points)
+            // Simulating Perth, Darwin, Sydney, Melbourne roughly on canvas
+            const stations = [
+                {x: 0.2, y: 0.6}, {x: 0.45, y: 0.2}, {x: 0.85, y: 0.65}, {x: 0.75, y: 0.75}
+            ];
+
+            // Initialize Satellites
+            for(let i=0; i<15; i++) {
+                satellites.push({
+                    x: Math.random() * canvas.width,
+                    y: Math.random() * canvas.height,
+                    speed: 0.5 + Math.random() * 0.5,
+                    angle: Math.random() * Math.PI * 2
+                });
+            }
+
+            function animate() {
+                // Clear
+                ctx.fillStyle = '#0f172a'; // Match background
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Draw Fibre Lines (Connecting ground stations)
+                ctx.beginPath();
+                ctx.strokeStyle = 'rgba(225, 29, 72, 0.3)';
+                ctx.lineWidth = 2;
+                stations.forEach((s, index) => {
+                    const sx = s.x * canvas.width;
+                    const sy = s.y * canvas.height;
+                    if(index === 0) ctx.moveTo(sx, sy);
+                    else ctx.lineTo(sx, sy);
+                });
+                ctx.closePath(); // Close the loop
+                ctx.stroke();
+
+                // Draw Ground Stations
+                stations.forEach(s => {
+                    const sx = s.x * canvas.width;
+                    const sy = s.y * canvas.height;
+                    ctx.beginPath();
+                    ctx.fillStyle = '#60a5fa'; // Blue
+                    ctx.arc(sx, sy, 4, 0, Math.PI * 2);
+                    ctx.fill();
+                    // Pulse effect
+                    ctx.beginPath();
+                    ctx.strokeStyle = 'rgba(96, 165, 250, 0.3)';
+                    ctx.arc(sx, sy, 8 + Math.sin(Date.now() / 300) * 2, 0, Math.PI * 2);
+                    ctx.stroke();
+                });
+
+                // Update & Draw Satellites
+                ctx.fillStyle = '#ffffff';
+                satellites.forEach(sat => {
+                    // Move
+                    sat.x += Math.cos(sat.angle) * sat.speed;
+                    sat.y += Math.sin(sat.angle) * sat.speed;
+
+                    // Wrap around screen
+                    if(sat.x < 0) sat.x = canvas.width;
+                    if(sat.x > canvas.width) sat.x = 0;
+                    if(sat.y < 0) sat.y = canvas.height;
+                    if(sat.y > canvas.height) sat.y = 0;
+
+                    // Draw Sat
+                    ctx.beginPath();
+                    ctx.arc(sat.x, sat.y, 2, 0, Math.PI*2);
+                    ctx.fill();
+
+                    // Connect to nearest ground station if close
+                    stations.forEach(s => {
+                        const sx = s.x * canvas.width;
+                        const sy = s.y * canvas.height;
+                        const dist = Math.hypot(sat.x - sx, sat.y - sy);
+                        if(dist < 100) {
+                            ctx.beginPath();
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${1 - dist/100})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.moveTo(sat.x, sat.y);
+                            ctx.lineTo(sx, sy);
+                            ctx.stroke();
+                        }
+                    });
+                });
+
+                requestAnimationFrame(animate);
+            }
+            animate();
+        }
+
+    </script>
+</body>
+</html>
