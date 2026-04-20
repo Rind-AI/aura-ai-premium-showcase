@@ -1,0 +1,673 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Towelling Stories | Empire Edition Strategy</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Cormorant+Garamond:wght@600;700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+    <!-- 
+        TWIN-ENGINE THEME SYSTEM:
+        1. "Scientific Sanctuary" (Default): Clinical, Teal, White, High-Tech. Focus on Engineering & Safety.
+        2. "Midnight Bond" (Toggle): Deep Navy, Gold, Cinematic. Focus on Intimacy & Emotion.
+    -->
+    <style>
+        :root {
+            /* Default: Scientific Sanctuary */
+            --bg-main: #F0FDFA; /* Light Teal Tint */
+            --bg-panel: #FFFFFF;
+            --text-main: #0F172A;
+            --text-muted: #64748B;
+            --col-primary: #0D9488; /* Clinical Teal */
+            --col-secondary: #0F766E; /* Deep Teal */
+            --col-accent: #14B8A6; /* Bright Teal */
+            --border-col: #CCFBF1;
+            --font-head: 'Space Grotesk', sans-serif;
+            --font-body: 'Inter', sans-serif;
+            --btn-text: #FFFFFF;
+        }
+
+        .theme-midnight {
+            /* Midnight Bond */
+            --bg-main: #020617; /* Deepest Navy */
+            --bg-panel: #0F172A; /* Slate 900 */
+            --text-main: #F8FAFC;
+            --text-muted: #94A3B8;
+            --col-primary: #F59E0B; /* Gold */
+            --col-secondary: #D97706; /* Deep Amber */
+            --col-accent: #38BDF8; /* Moon Blue */
+            --border-col: #1E293B;
+            --font-head: 'Cormorant Garamond', serif; /* Cinematic Serif */
+            --btn-text: #0F172A;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-main);
+            color: var(--text-main);
+            transition: all 0.5s ease;
+        }
+
+        h1, h2, h3, h4 { font-family: var(--font-head); }
+
+        /* UI Components */
+        .glass-panel {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-col);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-radius: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .nav-tab {
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            transition: all 0.3s;
+            border: 1px solid transparent;
+        }
+        .nav-tab:hover { color: var(--col-primary); background: rgba(0,0,0,0.03); }
+        .nav-tab.active {
+            background: var(--bg-panel);
+            color: var(--col-primary);
+            border-color: var(--border-col);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+        }
+
+        .chart-container { position: relative; width: 100%; height: 250px; }
+
+        /* Calendar Grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 1rem;
+        }
+        .day-card {
+            background: var(--bg-panel);
+            border: 1px solid var(--border-col);
+            padding: 1.25rem;
+            border-radius: 0.75rem;
+            transition: transform 0.2s, border-color 0.2s;
+        }
+        .day-card:hover { transform: translateY(-3px); border-color: var(--col-primary); }
+
+        /* Animations */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Toggle Switch */
+        .theme-toggle {
+            position: relative;
+            width: 48px;
+            height: 24px;
+            background: #CBD5E1;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .theme-midnight .theme-toggle { background: #F59E0B; }
+        .toggle-knob {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 20px;
+            height: 20px;
+            background: white;
+            border-radius: 50%;
+            transition: transform 0.3s;
+        }
+        .theme-midnight .toggle-knob { transform: translateX(24px); }
+
+    </style>
+</head>
+<body class="overflow-x-hidden pb-24">
+
+    <!-- NAVIGATION -->
+    <nav class="fixed top-0 w-full z-50 glass-panel border-x-0 border-t-0 rounded-none bg-opacity-90 backdrop-blur-md">
+        <div class="max-w-7xl mx-auto px-4 h-20 flex justify-between items-center">
+            <!-- Brand -->
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-700 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-teal-500/20" id="brand-icon">
+                    <i class="fas fa-microscope"></i>
+                </div>
+                <div>
+                    <span class="font-bold text-xl tracking-tight block leading-none">Towelling<span style="color: var(--col-primary)">Stories</span></span>
+                    <span class="text-[10px] uppercase tracking-widest text-muted opacity-80">Empire Edition // Strategy</span>
+                </div>
+            </div>
+
+            <!-- Tabs -->
+            <div class="hidden md:flex bg-gray-100/50 p-1.5 rounded-lg border border-gray-200 dark:bg-slate-800 dark:border-slate-700">
+                <button onclick="switchModule('audit')" id="nav-audit" class="nav-tab active">1. Forensic Audit</button>
+                <button onclick="switchModule('engine')" id="nav-engine" class="nav-tab">2. Empire Engine</button>
+                <button onclick="switchModule('gbp')" id="nav-gbp" class="nav-tab">3. Trust Vault</button>
+            </div>
+
+            <!-- Twin-Engine Toggle -->
+            <div class="flex items-center gap-3">
+                <span class="text-xs font-bold text-muted uppercase hidden sm:block" id="theme-label">Scientific Mode</span>
+                <div class="theme-toggle" onclick="toggleTheme()">
+                    <div class="toggle-knob"></div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MAIN CONTENT -->
+    <main class="max-w-7xl mx-auto px-4 mt-28 space-y-12">
+
+        <!-- =====================================================================================
+             MODULE 1: FORENSIC AUDIT (Hidden Gem -> Category Monarch)
+             ===================================================================================== -->
+        <section id="module-audit" class="fade-in">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-10">
+                <div>
+                    <h1 class="text-4xl md:text-5xl font-bold mb-3">Brand Health Assessment</h1>
+                    <p class="text-lg text-muted max-w-2xl">
+                        Current Status: <span class="font-bold" style="color: var(--col-primary)">Hidden Gem</span>. 
+                        Target: <span class="font-bold">Category Monarch</span>.
+                    </p>
+                </div>
+                <div class="text-right mt-4 md:mt-0">
+                    <span class="bg-red-100 text-red-600 px-3 py-1 rounded text-xs font-bold uppercase tracking-wide">Gap Analysis</span>
+                </div>
+            </div>
+
+            <!-- Scorecards -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-12">
+                <div class="glass-panel p-6 text-center border-t-4 border-gray-300">
+                    <h3 class="text-xs font-bold text-muted uppercase tracking-wider mb-4">Visual Identity</h3>
+                    <div class="chart-container" style="height: 160px;">
+                        <canvas id="score-visual"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-muted">From "Generic" (4/10) <br>to <strong>"Premium" (9/10)</strong></div>
+                </div>
+                <div class="glass-panel p-6 text-center border-t-4 border-gray-300">
+                    <h3 class="text-xs font-bold text-muted uppercase tracking-wider mb-4">Messaging Protocol</h3>
+                    <div class="chart-container" style="height: 160px;">
+                        <canvas id="score-message"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-muted">From "Functional" (6/10) <br>to <strong>"Visceral" (10/10)</strong></div>
+                </div>
+                <div class="glass-panel p-6 text-center border-t-4 border-gray-300">
+                    <h3 class="text-xs font-bold text-muted uppercase tracking-wider mb-4">Trust Signals</h3>
+                    <div class="chart-container" style="height: 160px;">
+                        <canvas id="score-trust"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-muted">From "Badge-Only" (5/10) <br>to <strong>"Scientific" (9/10)</strong></div>
+                </div>
+            </div>
+
+            <!-- Competitive Landscape -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                <div class="glass-panel p-8">
+                    <h3 class="font-bold text-xl mb-6">The Competitive Battlefield</h3>
+                    <div class="chart-container">
+                        <canvas id="chart-landscape"></canvas>
+                    </div>
+                    <div class="mt-6 flex justify-between text-xs text-muted">
+                        <span><i class="fas fa-arrow-left"></i> Commodity (KeaBabies)</span>
+                        <span>Scientific/Emotional Polar (You) <i class="fas fa-arrow-right"></i></span>
+                    </div>
+                </div>
+
+                <div class="glass-panel p-8 space-y-6">
+                    <h3 class="font-bold text-xl">The "Twin-Engine" Solution</h3>
+                    
+                    <div class="p-4 rounded-lg bg-teal-50 border border-teal-100 dark:bg-slate-800 dark:border-slate-700">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-flask text-teal-600"></i>
+                            <h4 class="font-bold text-teal-900 dark:text-teal-400">Engine 1: Scientific Sanctuary</h4>
+                        </div>
+                        <p class="text-sm text-muted">For the Analytical Parent. Focus on 500gsm physics, bamboo engineering, and "Safety Device" messaging. Defeats KeaBabies on quality.</p>
+                    </div>
+
+                    <div class="p-4 rounded-lg bg-indigo-50 border border-indigo-100 dark:bg-slate-800 dark:border-slate-700">
+                        <div class="flex items-center gap-3 mb-2">
+                            <i class="fas fa-moon text-indigo-600 dark:text-amber-500"></i>
+                            <h4 class="font-bold text-indigo-900 dark:text-amber-400">Engine 2: Midnight Bond</h4>
+                        </div>
+                        <p class="text-sm text-muted">For the Emotional Parent. Focus on silence, intimacy, and "The Third Hand". Defeats Cuddledry on connection.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =====================================================================================
+             MODULE 2: EMPIRE ENGINE (30-Day Twin-Engine Content)
+             ===================================================================================== -->
+        <section id="module-engine" class="fade-in hidden">
+            <div class="text-center mb-10">
+                <h1 class="text-4xl md:text-5xl font-bold mb-4">The Empire Engine</h1>
+                <p class="text-lg text-muted max-w-2xl mx-auto">
+                    30 Days of polarized content. Toggle between <span style="color: var(--col-primary)">Science</span> and <span style="color: var(--col-secondary)">Emotion</span>.
+                </p>
+            </div>
+
+            <!-- Controller -->
+            <div class="flex justify-center gap-4 mb-10">
+                <button onclick="renderCalendar('science')" class="px-6 py-3 rounded-xl bg-teal-100 text-teal-800 font-bold hover:bg-teal-200 transition-all flex items-center gap-2">
+                    <i class="fas fa-flask"></i> Engine 1: Science
+                </button>
+                <button onclick="renderCalendar('emotion')" class="px-6 py-3 rounded-xl bg-indigo-100 text-indigo-800 font-bold hover:bg-indigo-200 transition-all flex items-center gap-2">
+                    <i class="fas fa-heart"></i> Engine 2: Emotion
+                </button>
+                <button onclick="renderCalendar('viral')" class="px-6 py-3 rounded-xl bg-rose-100 text-rose-800 font-bold hover:bg-rose-200 transition-all flex items-center gap-2">
+                    <i class="fas fa-users"></i> Engine 3: Tribe
+                </button>
+            </div>
+
+            <!-- Calendar Grid -->
+            <div class="glass-panel p-8">
+                <div class="flex justify-between items-center mb-8 pb-4 border-b border-gray-100 dark:border-slate-700">
+                    <div>
+                        <h2 class="text-2xl font-bold" id="cal-title">Select an Engine</h2>
+                        <p class="text-sm text-muted" id="cal-subtitle">Generating strategic content blocks...</p>
+                    </div>
+                    <div class="text-xs font-mono text-muted">EMPIRE_PROTOCOL_V1</div>
+                </div>
+                
+                <div id="calendar-grid" class="calendar-grid">
+                    <div class="col-span-full text-center py-24 opacity-50">
+                        <i class="fas fa-rocket text-4xl mb-4 text-muted"></i>
+                        <p>Initiate a Content Engine to view the 30-Day Plan.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+
+        <!-- =====================================================================================
+             MODULE 3: TRUST VAULT (GBP & Local Strategy)
+             ===================================================================================== -->
+        <section id="module-gbp" class="fade-in hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                
+                <!-- GBP Dashboard -->
+                <div class="glass-panel p-8 bg-gradient-to-br from-slate-900 to-slate-800 text-white col-span-1">
+                    <div class="flex items-center gap-3 mb-6">
+                        <i class="fas fa-shield-alt text-2xl text-teal-400"></i>
+                        <h2 class="text-2xl font-bold">The Trust Vault</h2>
+                    </div>
+                    
+                    <div class="space-y-6">
+                        <div>
+                            <div class="flex justify-between text-sm mb-1 opacity-80">
+                                <span>Trust Velocity</span>
+                                <span class="font-bold text-teal-400">Building...</span>
+                            </div>
+                            <div class="w-full bg-white/10 h-2 rounded-full overflow-hidden">
+                                <div class="bg-teal-400 h-full w-[45%]"></div>
+                            </div>
+                        </div>
+                        
+                        <div class="p-4 bg-white/5 rounded-lg border border-white/10">
+                            <div class="text-3xl font-bold text-yellow-400 mb-1">4.9</div>
+                            <div class="text-xs uppercase tracking-widest opacity-60">Target Rating</div>
+                        </div>
+
+                        <p class="text-sm opacity-70 italic">
+                            "In the baby category, trust is binary. You are either safe, or you are a risk. Your reviews are your safety certificate."
+                        </p>
+                    </div>
+                </div>
+
+                <!-- Strategy Modules -->
+                <div class="glass-panel p-8 col-span-2">
+                    <h2 class="text-2xl font-bold mb-6">Reputation as SEO Strategy</h2>
+                    
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="p-4 border border-gray-100 rounded-xl hover:border-teal-200 transition-colors dark:border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-map-marker-alt text-teal-500"></i>
+                                <h3 class="font-bold">Category Architecture</h3>
+                            </div>
+                            <p class="text-sm text-muted">Primary: <strong>Baby Store</strong>.<br>Secondary: <strong>Gift Shop</strong>.<br>Don't just be "Home Goods". You are a destination for "Baby Shower Gifts".</p>
+                        </div>
+
+                        <div class="p-4 border border-gray-100 rounded-xl hover:border-teal-200 transition-colors dark:border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-search text-teal-500"></i>
+                                <h3 class="font-bold">Visual Proof of Life</h3>
+                            </div>
+                            <p class="text-sm text-muted">Upload 3 photos/week. NOT product renders. Real packaging, real unboxing, real gift wrapping. Prove you exist physically.</p>
+                        </div>
+
+                        <div class="p-4 border border-gray-100 rounded-xl hover:border-teal-200 transition-colors dark:border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-comment-medical text-teal-500"></i>
+                                <h3 class="font-bold">Keyword Reviews</h3>
+                            </div>
+                            <p class="text-sm text-muted">Guide users to write: "Safe", "Soft", "Newborn". These are ranking signals.</p>
+                        </div>
+
+                        <div class="p-4 border border-gray-100 rounded-xl hover:border-teal-200 transition-colors dark:border-slate-700">
+                            <div class="flex items-center gap-2 mb-2">
+                                <i class="fas fa-question-circle text-teal-500"></i>
+                                <h3 class="font-bold">Pre-emptive Q&A</h3>
+                            </div>
+                            <p class="text-sm text-muted">Seed your own Q&A. "Is the bamboo organic?" "Yes, Oeko-Tex certified."</p>
+                        </div>
+                    </div>
+
+                    <button onclick="renderCalendar('gbp')" class="mt-8 w-full py-3 bg-teal-600 text-white font-bold rounded-lg hover:bg-teal-700 transition-all shadow-lg shadow-teal-500/30">
+                        Launch 30-Day Trust Sprint
+                    </button>
+                </div>
+            </div>
+
+            <!-- GBP Calendar Output -->
+            <div id="gbp-calendar-wrapper" class="hidden glass-panel p-8 mt-8 animate-fade-in">
+                <h3 class="text-2xl font-bold mb-6">30-Day Trust Sprint</h3>
+                <div id="gbp-grid" class="calendar-grid"></div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="text-center py-12 mt-20 border-t border-gray-200 dark:border-slate-800 text-sm text-muted">
+        <p class="font-bold mb-2">Towelling Stories // Empire Edition</p>
+        <p class="opacity-60">Strategy by Gemini Ultra AI Air Team</p>
+    </footer>
+
+    <!-- LOGIC -->
+    <script>
+        // --- THEME ENGINE ---
+        function toggleTheme() {
+            document.body.classList.toggle('theme-midnight');
+            const isMidnight = document.body.classList.contains('theme-midnight');
+            
+            // Update UI Labels
+            document.getElementById('theme-label').innerText = isMidnight ? "Midnight Bond Mode" : "Scientific Sanctuary Mode";
+            
+            // Update Brand Icon
+            const icon = document.getElementById('brand-icon');
+            if(isMidnight) {
+                icon.innerHTML = '<i class="fas fa-moon"></i>';
+                icon.className = "w-10 h-10 rounded-xl bg-gradient-to-br from-amber-500 to-orange-700 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-amber-500/20";
+            } else {
+                icon.innerHTML = '<i class="fas fa-microscope"></i>';
+                icon.className = "w-10 h-10 rounded-xl bg-gradient-to-br from-teal-500 to-emerald-700 flex items-center justify-center text-white text-xl font-bold shadow-lg shadow-teal-500/20";
+            }
+
+            updateCharts();
+        }
+
+        // --- NAVIGATION ---
+        function switchModule(id) {
+            ['audit', 'engine', 'gbp'].forEach(m => {
+                document.getElementById('module-' + m).classList.add('hidden');
+                document.getElementById('nav-' + m).classList.remove('active');
+            });
+            document.getElementById('module-' + id).classList.remove('hidden');
+            document.getElementById('nav-' + id).classList.add('active');
+
+            if(id === 'audit') setTimeout(updateCharts, 50);
+        }
+
+        // --- CONTENT DATA (EMPIRE EDITION) ---
+        const contentData = {
+            science: {
+                title: "Engine 1: Scientific Sanctuary",
+                desc: "Focus: Physics, Engineering, Safety. Target: Analytical Parents.",
+                color: "border-teal-500",
+                days: [
+                    "Macro Shot: 500gsm Bamboo Fiber. Caption: 'Physics of absorption.'",
+                    "Info: 'Why newborns are slippery.' The friction problem solved.",
+                    "Visual: Oeko-Tex Certification Badge. 'Certified Safe.'",
+                    "Video: Water absorption test vs Cotton. Side-by-side.",
+                    "Fact: 'Thermo-regulation explained.' Bamboo breathes.",
+                    "Photo: The Apron Fastener. 'Engineering, not just sewing.'",
+                    "Visual: Hypoallergenic breakdown. 'Why bamboo hates dust mites.'",
+                    "Quote: Midwife endorsement on safety.",
+                    "Photo: Double-stitching close up. 'Built to last 1000 baths.'",
+                    "Video: The 'One-Handed' Hood flip technique.",
+                    "Fact: 'Antibacterial properties of bamboo.'",
+                    "Visual: Size comparison vs Standard Towel. 'Max coverage.'",
+                    "Photo: Packaging seal. 'Tamper-proof hygiene.'",
+                    "Video: Neck-strap safety stress test.",
+                    "Info: 'The PH balance of bamboo fabric.'",
+                    "Visual: Sustainable sourcing map.",
+                    "Photo: Unboxing the 'Safety Kit'.",
+                    "Fact: 'Drying speed test.' No more damp smells.",
+                    "Video: Putting it on in 3 seconds (Timer).",
+                    "Photo: Texture zoom. 'Softness as a metric.'",
+                    "Info: 'Why hoods matter for heat loss.'",
+                    "Visual: Washing instructions for longevity.",
+                    "Photo: Gift box engineering.",
+                    "Video: The 'Splash Guard' effect.",
+                    "Fact: 'UV resistance of bamboo.'",
+                    "Photo: The perfect swaddle technique.",
+                    "Visual: 300 washes later. Durability test.",
+                    "Info: 'Chemical-free processing.'",
+                    "Photo: Baby safe sleep association.",
+                    "Video: The full 'Hands-Free' workflow."
+                ]
+            },
+            emotion: {
+                title: "Engine 2: Midnight Bond",
+                desc: "Focus: Intimacy, Silence, Connection. Target: Emotional Parents.",
+                color: "border-amber-500",
+                days: [
+                    "Visual: Low light bath time. Caption: 'The quietest hour.'",
+                    "Photo: Skin-to-skin contact. 'The Third Hand allowing connection.'",
+                    "Video: Baby sleeping after bath. 'The calm after.'",
+                    "Quote: 'You are their safe place. We just help.'",
+                    "Visual: Mother's smile looking down. POV.",
+                    "Photo: Tiny hand gripping the bamboo.",
+                    "Video: Slow motion water pour. Sensory calm.",
+                    "Visual: The 'After-Bath' cuddle. The main event.",
+                    "Quote: 'Hold them close. They grow fast.'",
+                    "Photo: Silhouette of parent and child.",
+                    "Visual: Warm lighting, steam. Atmosphere.",
+                    "Video: The sound of silence (ASMR).",
+                    "Photo: Wrapping them up like a burrito.",
+                    "Quote: 'Safety allows you to relax.'",
+                    "Visual: Newborn eyes making contact.",
+                    "Photo: Father and baby bond.",
+                    "Video: Gentle towel dry. Soft touches.",
+                    "Visual: The smell of a clean baby.",
+                    "Photo: Peaceful face in the hood.",
+                    "Quote: 'More than a towel. A memory.'",
+                    "Visual: Preparing the bath. The ritual.",
+                    "Photo: Kissing the forehead. Safety.",
+                    "Video: Heartbeat sound audio.",
+                    "Visual: Sleepy eyes. The goal.",
+                    "Photo: Holding hands through the fabric.",
+                    "Quote: 'Trust your instincts.'",
+                    "Visual: Morning bath sunlight.",
+                    "Photo: The towel hanging, waiting.",
+                    "Video: 'You've got this' whisper.",
+                    "Visual: End card. 'Towelling Stories.'"
+                ]
+            },
+            viral: {
+                title: "Engine 3: The Tribe",
+                desc: "Focus: Community, Hacks, Real Life. Target: Growth.",
+                color: "border-rose-500",
+                days: [
+                    "Hack: 'Stop getting soaked.' The Apron solution.",
+                    "Funny: 'The Wet Parent Look' vs 'The Towelling Stories Look'.",
+                    "Contest: Show us your #HandsFreeHug.",
+                    "Real Life: Bath time chaos vs Calm.",
+                    "Trend: 'I was today years old when I learned...'",
+                    "UGC: Reposting a mom's unboxing reaction.",
+                    "Question: 'Bath in morning or night?' Debate.",
+                    "Hack: Using the towel for tummy time.",
+                    "Funny: Baby slippery like a fish meme.",
+                    "Real Life: The mountain of laundry (ours helps).",
+                    "Trend: ASMR Unboxing.",
+                    "UGC: Dad trying the towel. 'It fits!'",
+                    "Question: 'Favorite bath toy?'",
+                    "Hack: Warming the towel before use.",
+                    "Funny: 'Expectation vs Reality' of bath time.",
+                    "Real Life: The 'Poop in the tub' panic.",
+                    "Trend: Transition video (Dirty -> Clean).",
+                    "UGC: Baby looking like a bear in the hood.",
+                    "Question: 'Best baby shower gift you got?'",
+                    "Hack: Drying hair with the hood.",
+                    "Funny: Siblings helping (or not).",
+                    "Real Life: Water everywhere.",
+                    "Trend: 'Must Haves' checklist.",
+                    "UGC: Grandparents using the towel.",
+                    "Question: 'Advice for new moms?'",
+                    "Hack: Roll method for storage.",
+                    "Funny: Baby trying to eat the towel.",
+                    "Real Life: Post-bath zoomies.",
+                    "Trend: 'POV: You bought the safe towel'.",
+                    "UGC: Compilation of happy babies."
+                ]
+            },
+            gbp: {
+                title: "Trust Vault Sprint",
+                desc: "Local SEO for 'Baby Gift' dominance.",
+                color: "border-blue-600",
+                days: [
+                    "Audit: Update Category to 'Baby Store'.",
+                    "Upload: Photo of Gift Packaging (Gift intent).",
+                    "Seed Q&A: 'Is it Oeko-Tex certified?' (Yes).",
+                    "Reply: Respond to old reviews with 'Safety' keyword.",
+                    "Update: Post 'Baby Shower Bundle' offer.",
+                    "Upload: Close up of fabric texture.",
+                    "Request: Email past buyers for 'Gift' reviews.",
+                    "Add Product: 'Newborn Essential Kit'.",
+                    "Upload: Team packing an order.",
+                    "Seed Q&A: 'Do you ship express?'",
+                    "Update: 'Why Bamboo?' educational post.",
+                    "Reply: Check for new reviews.",
+                    "Upload: Warehouse/Stock photo (Proof of life).",
+                    "Insight: Check 'Gift' keyword volume.",
+                    "Update: 'Safety First' guarantee.",
+                    "Upload: Unboxing sequence photos.",
+                    "Seed Q&A: 'Return policy for gifts?'",
+                    "Audit: Check service area settings.",
+                    "Upload: Award badge/Certificate.",
+                    "Request: SMS blast for reviews.",
+                    "Update: 'Back in Stock' alert.",
+                    "Upload: Front of HQ/Office (if applicable).",
+                    "Reply: React fast to questions.",
+                    "Add Product: 'Toddler Towel'.",
+                    "Upload: Happy baby UGC (with permission).",
+                    "Seed Q&A: 'Care instructions?'",
+                    "Update: End of month shipping deadlines.",
+                    "Upload: 5-Star Review graphic.",
+                    "Insight: Compare Month-over-Month.",
+                    "Plan: Next month's offer."
+                ]
+            }
+        };
+
+        function renderCalendar(type) {
+            const isGBP = type === 'gbp';
+            const grid = document.getElementById(isGBP ? 'gbp-grid' : 'calendar-grid');
+            const wrapper = document.getElementById('gbp-calendar-wrapper');
+            const titleEl = document.getElementById('cal-title');
+            const subEl = document.getElementById('cal-subtitle');
+            const data = contentData[type];
+
+            if(isGBP) wrapper.classList.remove('hidden');
+            if(!isGBP && titleEl) {
+                titleEl.innerText = data.title;
+                subEl.innerText = data.desc;
+            }
+
+            grid.innerHTML = data.days.map((item, index) => `
+                <div class="day-card border-l-4 ${data.color}">
+                    <div class="flex justify-between mb-2">
+                        <span class="text-xs font-bold opacity-50 uppercase tracking-wider">Day ${index + 1}</span>
+                        ${isGBP ? '<i class="fas fa-check-circle text-teal-500"></i>' : ''}
+                    </div>
+                    <div class="text-sm font-medium leading-relaxed">${item}</div>
+                </div>
+            `).join('');
+            
+            if(isGBP) wrapper.scrollIntoView({behavior: 'smooth'});
+        }
+
+        // --- CHART ENGINE ---
+        function initCharts() {
+            const isMidnight = document.body.classList.contains('theme-midnight');
+            const colors = {
+                text: getComputedStyle(document.body).getPropertyValue('--text-main').trim(),
+                primary: getComputedStyle(document.body).getPropertyValue('--col-primary').trim(),
+                muted: getComputedStyle(document.body).getPropertyValue('--text-muted').trim()
+            };
+
+            // 1. Audit Doughnuts (Re-usable function)
+            createDoughnut('score-visual', 40, colors.primary, colors.text);
+            createDoughnut('score-message', 60, colors.primary, colors.text);
+            createDoughnut('score-trust', 50, colors.primary, colors.text);
+
+            // 2. Landscape Chart (Scatter)
+            const ctxL = document.getElementById('chart-landscape').getContext('2d');
+            new Chart(ctxL, {
+                type: 'bubble',
+                data: {
+                    datasets: [
+                        { label: 'You (Target)', data: [{x: 90, y: 90, r: 20}], backgroundColor: colors.primary },
+                        { label: 'Cuddledry (Giant)', data: [{x: 80, y: 40, r: 15}], backgroundColor: isMidnight ? '#FBBF24' : '#9CA3AF' },
+                        { label: 'KeaBabies (Cheap)', data: [{x: 20, y: 30, r: 10}], backgroundColor: '#F87171' }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        x: { title: {display:true, text: 'Price / Premium', color: colors.muted}, min: 0, max: 100, grid: {color: 'rgba(0,0,0,0.05)'}, ticks: {color: colors.muted} },
+                        y: { title: {display:true, text: 'Trust / Polarity', color: colors.muted}, min: 0, max: 100, grid: {color: 'rgba(0,0,0,0.05)'}, ticks: {color: colors.muted} }
+                    },
+                    plugins: { legend: {labels:{color: colors.text}} }
+                }
+            });
+        }
+
+        function createDoughnut(id, val, col, textCol) {
+            // Check if chart exists and destroy
+            const canvas = document.getElementById(id);
+            // Simple way to reset canvas for clean re-render
+            const parent = canvas.parentNode;
+            parent.innerHTML = '';
+            const newCanvas = document.createElement('canvas');
+            newCanvas.id = id;
+            parent.appendChild(newCanvas);
+
+            const ctx = newCanvas.getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    datasets: [{ data: [val, 100-val], backgroundColor: [col, 'rgba(0,0,0,0.1)'], borderWidth: 0 }]
+                },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '75%', plugins: { tooltip: { enabled: false } } },
+                plugins: [{
+                    beforeDraw: (chart) => {
+                        const width = chart.width, height = chart.height, ctx = chart.ctx;
+                        ctx.restore();
+                        ctx.font = "bold 1.5em sans-serif";
+                        ctx.textBaseline = "middle";
+                        ctx.fillStyle = textCol;
+                        const text = val/10 + "/10", textX = Math.round((width - ctx.measureText(text).width)/2), textY = height/2;
+                        ctx.fillText(text, textX, textY);
+                        ctx.save();
+                    }
+                }]
+            });
+        }
+
+        // Init
+        document.addEventListener('DOMContentLoaded', initCharts);
+
+        // Update charts on theme toggle
+        function updateCharts() {
+            setTimeout(initCharts, 100);
+        }
+
+    </script>
+</body>
+</html>

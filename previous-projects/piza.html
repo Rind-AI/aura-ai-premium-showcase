@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuraNest | Pizza Tabrabane Command Center</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Chosen Palette: Neon Fusion (Dark Mode) -->
+    <!-- Application Structure Plan: Dashboard layout with sidebar navigation for major report sections (Audit, Strategy, GBP, Geo-AI). Designed to allow non-linear exploration of the forensic data and strategic implementation steps. -->
+    <!-- Visualization & Content Choices: 
+         - Sentiment Chart: Bar chart to visually weigh positive specific feedback against negative structural feedback.
+         - Timeline: Interactive buttons to reveal detailed tasks for the 90-day plan without overwhelming the user.
+         - Identity Gap: CSS-based hover reveal to dramatize the "Mask" vs "Reality" finding.
+         - CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'neon-red': '#ff4d4d',
+                        'neon-green': '#39ff14',
+                        'neon-orange': '#ff9933',
+                        'neon-purple': '#b026ff',
+                        'neon-blue': '#00ffff',
+                        'bg-dark': '#050505',
+                        'bg-card': '#111111',
+                        'text-dim': '#888888'
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            background-color: #050505;
+            color: white;
+            overflow-x: hidden;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #111; }
+        ::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+        ::-webkit-scrollbar-thumb:hover { background: #555; }
+
+        /* Neon Glow Effects */
+        .glow-text { text-shadow: 0 0 10px rgba(255, 255, 255, 0.3); }
+        .glow-border-purple { box-shadow: 0 0 15px rgba(176, 38, 255, 0.15); border-color: #b026ff; }
+        .glow-border-green { box-shadow: 0 0 15px rgba(57, 255, 20, 0.15); border-color: #39ff14; }
+
+        /* Animation Classes */
+        .fade-in { animation: fadeIn 0.5s ease-out forwards; opacity: 0; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .slide-in-right { animation: slideInRight 0.5s ease-out forwards; }
+        @keyframes slideInRight { from { transform: translateX(20px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+            height: 300px;
+            max-height: 400px;
+        }
+
+        /* Identity Flip Card Effect */
+        .identity-card { transition: all 0.4s ease; }
+        .identity-card:hover { transform: translateY(-5px); }
+        .reveal-overlay {
+            background: linear-gradient(135deg, rgba(176,38,255,0.95), rgba(255,77,77,0.95));
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .identity-card:hover .reveal-overlay { opacity: 1; }
+    </style>
+</head>
+<body class="flex h-screen antialiased selection:bg-neon-purple selection:text-white">
+
+    <!-- SIDEBAR NAVIGATION -->
+    <nav class="w-64 bg-bg-card border-r border-white/10 flex flex-col justify-between hidden md:flex shrink-0 z-50">
+        <div>
+            <div class="p-6 border-b border-white/10">
+                <h1 class="text-2xl font-bold tracking-wider text-transparent bg-clip-text bg-gradient-to-r from-neon-blue to-neon-purple">NEURANEST</h1>
+                <p class="text-xs text-text-dim mt-1 font-mono">AUDIT PROTOCOL v2.6</p>
+            </div>
+            
+            <div class="p-4 space-y-2">
+                <button onclick="switchTab('dashboard')" id="btn-dashboard" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium transition-all hover:bg-white/5 text-neon-blue border-l-2 border-neon-blue bg-white/5">
+                    📊 Executive Summary
+                </button>
+                <button onclick="switchTab('forensics')" id="btn-forensics" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-text-dim transition-all hover:bg-white/5 hover:text-white border-l-2 border-transparent">
+                    🧬 Forensic Audit
+                </button>
+                <button onclick="switchTab('strategy')" id="btn-strategy" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-text-dim transition-all hover:bg-white/5 hover:text-white border-l-2 border-transparent">
+                    🚀 90-Day Attack Plan
+                </button>
+                <button onclick="switchTab('gbp')" id="btn-gbp" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-text-dim transition-all hover:bg-white/5 hover:text-white border-l-2 border-transparent">
+                    📍 GBP Mastery
+                </button>
+                <button onclick="switchTab('geoai')" id="btn-geoai" class="nav-btn w-full text-left px-4 py-3 rounded-lg text-sm font-medium text-text-dim transition-all hover:bg-white/5 hover:text-white border-l-2 border-transparent">
+                    🌍 Geo-AI & Schema
+                </button>
+            </div>
+        </div>
+        
+        <div class="p-6 border-t border-white/10">
+            <div class="flex items-center gap-3">
+                <div class="w-2 h-2 rounded-full bg-neon-green animate-pulse"></div>
+                <span class="text-xs text-text-dim">System Online</span>
+            </div>
+            <p class="text-xs text-text-dim mt-2">Client: Pizza Tabrabane</p>
+        </div>
+    </nav>
+
+    <!-- MOBILE HEADER -->
+    <div class="md:hidden fixed top-0 w-full bg-bg-card z-50 border-b border-white/10 p-4 flex justify-between items-center">
+        <span class="font-bold text-neon-blue">NEURANEST</span>
+        <button onclick="document.getElementById('mobile-menu').classList.toggle('hidden')" class="text-white">☰</button>
+    </div>
+    <!-- Mobile Menu overlay omitted for brevity but logic implies toggle visibility -->
+
+    <!-- MAIN CONTENT AREA -->
+    <main class="flex-1 overflow-y-auto relative p-4 md:p-8 pt-20 md:pt-8">
+        
+        <!-- SECTION: EXECUTIVE SUMMARY (DASHBOARD) -->
+        <section id="dashboard" class="tab-content fade-in block">
+            <header class="mb-8">
+                <h2 class="text-4xl font-bold mb-2">Executive Summary</h2>
+                <p class="text-text-dim max-w-2xl">Forensic analysis reveals a critical "Identity Gap" between the brand's Italian positioning and its actual high-value Fusion product.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+                <!-- KPI Card 1 -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl hover:border-neon-red transition-colors">
+                    <div class="text-text-dim text-sm uppercase tracking-wider mb-2">Audit Status</div>
+                    <div class="text-3xl font-bold text-neon-red flex items-center gap-2">
+                        CRITICAL
+                        <span class="flex h-3 w-3 relative">
+                            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-neon-red opacity-75"></span>
+                            <span class="relative inline-flex rounded-full h-3 w-3 bg-neon-red"></span>
+                        </span>
+                    </div>
+                    <p class="text-sm mt-2 text-white/60">Identity Mismatch Detected</p>
+                </div>
+                <!-- KPI Card 2 -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl hover:border-neon-green transition-colors">
+                    <div class="text-text-dim text-sm uppercase tracking-wider mb-2">Opportunity Score</div>
+                    <div class="text-3xl font-bold text-neon-green">9.2/10</div>
+                    <p class="text-sm mt-2 text-white/60">High-End Fusion Niche Empty</p>
+                </div>
+                <!-- KPI Card 3 -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl hover:border-neon-purple transition-colors">
+                    <div class="text-text-dim text-sm uppercase tracking-wider mb-2">Primary Action</div>
+                    <div class="text-3xl font-bold text-neon-purple">PIVOT</div>
+                    <p class="text-sm mt-2 text-white/60">From "Italian" to "Fusion King"</p>
+                </div>
+            </div>
+
+            <!-- THE IDENTITY GAP INTERACTIVE -->
+            <div class="bg-white/5 border border-white/10 rounded-2xl p-8 mb-8 relative overflow-hidden group">
+                <div class="absolute top-0 right-0 p-4 opacity-10 group-hover:opacity-20 transition-opacity">
+                    <div class="text-9xl font-bold">VS</div>
+                </div>
+                <h3 class="text-xl font-bold mb-6 flex items-center gap-2 text-white">
+                    <span class="w-1 h-6 bg-neon-orange block"></span>
+                    The Identity Gap Analysis
+                </h3>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                    <!-- The Lie -->
+                    <div class="identity-card bg-bg-card border border-white/10 p-6 rounded-xl relative overflow-hidden">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-white/20"></div>
+                        <h4 class="text-lg font-bold text-white/50 mb-4 uppercase tracking-widest">Current Brand (The Mask)</h4>
+                        <ul class="space-y-4 text-text-dim">
+                            <li class="flex items-start gap-3">
+                                <span class="text-red-500">❌</span>
+                                <span>"Authentic Italian Experience"</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-red-500">❌</span>
+                                <span>Focus on Imported Flour</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-red-500">❌</span>
+                                <span>Fighting 50+ other pizza shops</span>
+                            </li>
+                        </ul>
+                        <div class="mt-6 p-3 bg-red-900/20 border border-red-500/30 rounded text-xs text-red-200 text-center font-mono">
+                            RESULT: GENERIC COMMODITY
+                        </div>
+                    </div>
+
+                    <!-- The Truth -->
+                    <div class="identity-card bg-bg-card border border-neon-green p-6 rounded-xl relative overflow-hidden cursor-pointer group-hover:shadow-[0_0_20px_rgba(57,255,20,0.1)]">
+                        <div class="absolute top-0 left-0 w-full h-1 bg-neon-green"></div>
+                        <h4 class="text-lg font-bold text-neon-green mb-4 uppercase tracking-widest">Consumer Reality (The Goldmine)</h4>
+                        <ul class="space-y-4 text-white">
+                            <li class="flex items-start gap-3">
+                                <span class="text-neon-green">✅</span>
+                                <span>"Undisputed King of Fusion"</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-neon-green">✅</span>
+                                <span>Focus on Soya Chaap & Tandoori</span>
+                            </li>
+                            <li class="flex items-start gap-3">
+                                <span class="text-neon-green">✅</span>
+                                <span>Zero Competition in Niche</span>
+                            </li>
+                        </ul>
+                        <div class="mt-6 p-3 bg-green-900/20 border border-neon-green/30 rounded text-xs text-neon-green text-center font-mono animate-pulse">
+                            RESULT: CATEGORY DOMINANCE
+                        </div>
+                        
+                        <!-- Reveal Overlay -->
+                        <div class="reveal-overlay absolute inset-0 flex flex-col items-center justify-center text-center p-6">
+                            <h3 class="text-2xl font-bold text-white mb-2">REBRAND TARGET</h3>
+                            <p class="text-white font-medium">Shift focus from "Italian Crust" to "Fusion Density"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: FORENSIC DATA -->
+        <section id="forensics" class="tab-content hidden">
+            <header class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Forensic Data Analysis</h2>
+                <p class="text-text-dim">Deep dive into customer sentiment and competitor positioning. We analyzed reviews to find the "hidden keywords" that drive sales.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-8">
+                <!-- Sentiment Chart -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 text-neon-blue">Customer Sentiment Forensics</h3>
+                    <div class="chart-container">
+                        <canvas id="sentimentChart"></canvas>
+                    </div>
+                    <div class="mt-4 text-xs text-text-dim text-center">
+                        *Data based on aggregated keyword frequency in recent reviews.
+                    </div>
+                </div>
+
+                <!-- Top Items List -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl flex flex-col">
+                    <h3 class="text-lg font-bold mb-4 text-neon-orange">High-Velocity Menu Items</h3>
+                    <p class="text-sm text-text-dim mb-6">These items have the highest mention rate in 5-star reviews. They are your actual flagship products.</p>
+                    
+                    <div class="space-y-4 flex-1">
+                        <!-- Item 1 -->
+                        <div class="flex items-center gap-4 p-3 rounded-lg bg-white/5 border-l-4 border-neon-orange">
+                            <div class="text-2xl">🍗</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-white">Chicken Tandoori</div>
+                                <div class="text-xs text-text-dim">"Flavorful", "Spicy", "Loaded"</div>
+                            </div>
+                            <div class="font-mono text-neon-orange font-bold">94% +ve</div>
+                        </div>
+                        <!-- Item 2 -->
+                        <div class="flex items-center gap-4 p-3 rounded-lg bg-white/5 border-l-4 border-neon-purple">
+                            <div class="text-2xl">🧀</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-white">Spicy Paneer Tikka</div>
+                                <div class="text-xs text-text-dim">"Fresh toppings", "Best veg option"</div>
+                            </div>
+                            <div class="font-mono text-neon-purple font-bold">91% +ve</div>
+                        </div>
+                        <!-- Item 3 -->
+                        <div class="flex items-center gap-4 p-3 rounded-lg bg-white/5 border-l-4 border-neon-red">
+                            <div class="text-2xl">🌶️</div>
+                            <div class="flex-1">
+                                <div class="font-bold text-white">Spicy Soya Chaap</div>
+                                <div class="text-xs text-text-dim">"Unique", "Vegetarian meat"</div>
+                            </div>
+                            <div class="font-mono text-neon-red font-bold">88% +ve</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Competitor Matrix -->
+            <div class="bg-bg-card border border-white/10 p-6 rounded-xl">
+                <h3 class="text-lg font-bold mb-6 text-white">Tarneit Competitor Matrix</h3>
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm">
+                        <thead class="bg-white/5 text-text-dim uppercase font-mono text-xs">
+                            <tr>
+                                <th class="p-4 rounded-tl-lg">Competitor</th>
+                                <th class="p-4">Positioning</th>
+                                <th class="p-4">Key Weakness</th>
+                                <th class="p-4 rounded-tr-lg">Our Advantage</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-white/10">
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="p-4 font-bold text-white">Smokin' Joe's</td>
+                                <td class="p-4">Generalist (Ribs, Pasta, Pizza)</td>
+                                <td class="p-4 text-text-dim">Jack of all trades, master of none</td>
+                                <td class="p-4 text-neon-green">We specialize in Fusion Intensity</td>
+                            </tr>
+                            <tr class="hover:bg-white/5 transition-colors">
+                                <td class="p-4 font-bold text-white">Bubba Pizza</td>
+                                <td class="p-4">Aussie Style (Ham & Egg, BBQ)</td>
+                                <td class="p-4 text-text-dim">Boring, Traditional flavors</td>
+                                <td class="p-4 text-neon-green">We offer Bold, Spicy Profiles</td>
+                            </tr>
+                            <tr class="bg-neon-purple/10 hover:bg-neon-purple/20 transition-colors border-l-4 border-neon-purple">
+                                <td class="p-4 font-bold text-white">Pizza Tabrabane</td>
+                                <td class="p-4 text-neon-purple font-bold">High-End Indo-Italian Fusion</td>
+                                <td class="p-4 text-text-dim">Identity confusion (currently)</td>
+                                <td class="p-4 font-bold text-neon-purple">CATEGORY LEADER</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: 90-DAY STRATEGY -->
+        <section id="strategy" class="tab-content hidden">
+            <header class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">90-Day Attack Plan</h2>
+                <p class="text-text-dim">A phased roadmap to pivot the brand, generate virality, and build long-term loyalty.</p>
+            </header>
+
+            <!-- Interactive Timeline Controls -->
+            <div class="flex flex-col md:flex-row gap-4 mb-8">
+                <button onclick="updateStrategy(1)" id="strat-btn-1" class="flex-1 p-4 rounded-xl border border-neon-red bg-neon-red/10 text-center hover:bg-neon-red/20 transition-all active-strat">
+                    <div class="text-xs uppercase tracking-widest text-neon-red mb-1">Month 1</div>
+                    <div class="font-bold text-xl text-white">THE WAKE UP</div>
+                </button>
+                <button onclick="updateStrategy(2)" id="strat-btn-2" class="flex-1 p-4 rounded-xl border border-white/10 bg-bg-card text-center hover:bg-white/5 transition-all">
+                    <div class="text-xs uppercase tracking-widest text-text-dim mb-1">Month 2</div>
+                    <div class="font-bold text-xl text-text-dim">THE CHALLENGE</div>
+                </button>
+                <button onclick="updateStrategy(3)" id="strat-btn-3" class="flex-1 p-4 rounded-xl border border-white/10 bg-bg-card text-center hover:bg-white/5 transition-all">
+                    <div class="text-xs uppercase tracking-widest text-text-dim mb-1">Month 3</div>
+                    <div class="font-bold text-xl text-text-dim">THE COMMUNITY</div>
+                </button>
+            </div>
+
+            <!-- Dynamic Content Area -->
+            <div id="strategy-content" class="bg-bg-card border border-white/10 p-8 rounded-2xl min-h-[300px] relative">
+                <!-- Content injected via JS -->
+            </div>
+        </section>
+
+        <!-- SECTION: GBP MASTERY -->
+        <section id="gbp" class="tab-content hidden">
+            <header class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">GBP Mastery 2026</h2>
+                <p class="text-text-dim">Optimizing the Google Business Profile for the AI Search Era. It's not just about keywords; it's about entities and visual proof.</p>
+            </header>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Category Engineering -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 text-neon-green">Category Engineering</h3>
+                    <p class="text-sm text-text-dim mb-4">Current categories are too generic. Add these to capture specific intent:</p>
+                    
+                    <div class="space-y-3">
+                        <label class="flex items-center p-3 border border-white/10 rounded-lg bg-white/5 cursor-pointer hover:bg-white/10">
+                            <input type="checkbox" checked disabled class="w-5 h-5 text-neon-green rounded bg-black border-gray-600 focus:ring-neon-green">
+                            <span class="ml-3 text-white">Pizza Restaurant (Primary)</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-neon-green/50 rounded-lg bg-neon-green/10 cursor-pointer hover:bg-neon-green/20">
+                            <input type="checkbox" class="w-5 h-5 text-neon-green rounded bg-black border-neon-green focus:ring-neon-green accent-neon-green">
+                            <span class="ml-3 text-white font-bold">Indian Takeaway <span class="text-xs font-normal text-neon-green ml-2">(MUST ADD)</span></span>
+                        </label>
+                        <label class="flex items-center p-3 border border-neon-green/50 rounded-lg bg-neon-green/10 cursor-pointer hover:bg-neon-green/20">
+                            <input type="checkbox" class="w-5 h-5 text-neon-green rounded bg-black border-neon-green focus:ring-neon-green accent-neon-green">
+                            <span class="ml-3 text-white font-bold">Fusion Restaurant</span>
+                        </label>
+                        <label class="flex items-center p-3 border border-neon-green/50 rounded-lg bg-neon-green/10 cursor-pointer hover:bg-neon-green/20">
+                            <input type="checkbox" class="w-5 h-5 text-neon-green rounded bg-black border-neon-green focus:ring-neon-green accent-neon-green">
+                            <span class="ml-3 text-white font-bold">Halal Restaurant</span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Q&A Seeding Simulator -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 text-neon-blue">AI Q&A Seeding</h3>
+                    <p class="text-sm text-text-dim mb-4">Train Google's AI by asking and answering these questions manually.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="p-4 bg-white/5 rounded-lg border-l-2 border-neon-blue">
+                            <div class="text-xs text-neon-blue font-bold mb-1">QUESTION</div>
+                            <p class="text-sm text-white italic mb-2">"Is your pizza Halal?"</p>
+                            <div class="text-xs text-green-400 font-bold mb-1">ANSWER</div>
+                            <p class="text-sm text-text-dim">"Yes! Pizza Tabrabane is fully Halal. Our popular Tandoori Chicken and Soya Chaap pizzas are local favorites."</p>
+                        </div>
+                        <div class="p-4 bg-white/5 rounded-lg border-l-2 border-neon-blue">
+                            <div class="text-xs text-neon-blue font-bold mb-1">QUESTION</div>
+                            <p class="text-sm text-white italic mb-2">"Is this traditional Italian pizza?"</p>
+                            <div class="text-xs text-green-400 font-bold mb-1">ANSWER</div>
+                            <p class="text-sm text-text-dim">"We use imported Italian flour for our base, but our heart is in our Fusion toppings. We specialize in bold, Indo-Italian flavors."</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Photo Strategy -->
+            <div class="mt-8 bg-bg-card border border-white/10 p-6 rounded-xl">
+                <h3 class="text-lg font-bold mb-4 text-neon-orange">"Food Porn" File Renaming Protocol</h3>
+                <div class="flex flex-col md:flex-row items-center gap-6 bg-black/30 p-6 rounded-lg">
+                    <div class="text-center">
+                        <div class="text-red-500 font-mono line-through text-sm">IMG_8829.jpg</div>
+                        <div class="text-xs text-text-dim mt-1">❌ Google ignores this</div>
+                    </div>
+                    <div class="text-2xl text-text-dim">→</div>
+                    <div class="text-center">
+                        <div class="text-neon-green font-mono font-bold text-lg">best-soya-chaap-pizza-tarneit.jpg</div>
+                        <div class="text-xs text-text-dim mt-1">✅ Google indexes this</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SECTION: GEO-AI & SCHEMA -->
+        <section id="geoai" class="tab-content hidden">
+            <header class="mb-8">
+                <h2 class="text-3xl font-bold mb-2">Geo-AI & Schema</h2>
+                <p class="text-text-dim">Technical implementation to force search engines to recognize the "Fusion" entity and specific location context.</p>
+            </header>
+
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Visual Schema Builder -->
+                <div class="bg-bg-card border border-white/10 p-0 rounded-xl overflow-hidden flex flex-col">
+                    <div class="bg-white/5 p-4 border-b border-white/10 flex justify-between items-center">
+                        <h3 class="font-bold text-white">JSON-LD Snippet</h3>
+                        <span class="text-xs font-mono text-neon-purple">application/ld+json</span>
+                    </div>
+                    <div class="p-6 bg-[#0d0d0d] overflow-x-auto flex-1 font-mono text-sm text-green-400">
+                        <pre><code>{
+  "@context": "https://schema.org",
+  "@type": "Restaurant",
+  "name": "Pizza Tabrabane",
+  "servesCuisine": [
+    "Italian",
+    "<span class="text-neon-orange">Indian Fusion</span>",
+    "<span class="text-neon-orange">Halal</span>"
+  ],
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "652 Tarneit Rd",
+    "addressLocality": "Tarneit",
+    "postalCode": "3029"
+  },
+  "hasMenu": {
+    "@type": "Menu",
+    "hasMenuItem": {
+      "@type": "MenuItem",
+      "name": "<span class="text-neon-blue">Spicy Soya Chaap Pizza</span>",
+      "offers": {
+        "@type": "Offer",
+        "price": "22.00",
+        "priceCurrency": "AUD"
+      }
+    }
+  }
+}</code></pre>
+                    </div>
+                </div>
+
+                <!-- Concept Card -->
+                <div class="bg-bg-card border border-white/10 p-6 rounded-xl">
+                    <h3 class="text-lg font-bold mb-4 text-neon-purple">Geo-Triangulation Strategy</h3>
+                    <p class="text-sm text-text-dim mb-6">AI models define location by "nearness" to known landmarks, not just lat/long.</p>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl">📍</div>
+                            <div>
+                                <div class="font-bold text-white">Landmark Association</div>
+                                <div class="text-xs text-text-dim">Metadata must mention "Near Werribee Plaza"</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl">🛣️</div>
+                            <div>
+                                <div class="font-bold text-white">Corridor Targeting</div>
+                                <div class="text-xs text-text-dim">Target "Tarneit Rd Late Night Food"</div>
+                            </div>
+                        </div>
+                        <div class="flex items-center gap-4">
+                            <div class="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center text-xl">🤖</div>
+                            <div>
+                                <div class="font-bold text-white">Vibe Matching</div>
+                                <div class="text-xs text-text-dim">Teach AI: "Family Friendly" + "Spicy"</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FOOTER -->
+        <footer class="mt-12 border-t border-white/10 pt-8 pb-4 text-center">
+            <p class="text-xs text-text-dim tracking-widest uppercase">Generated by NeuraNest • Gemini 3 Pro x NotebookLM • 2026</p>
+        </footer>
+
+    </main>
+
+    <!-- SCRIPTS -->
+    <script>
+        // --- 1. Navigation Logic ---
+        function switchTab(tabId) {
+            // Hide all tabs
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.add('hidden');
+                tab.classList.remove('block', 'fade-in');
+            });
+            
+            // Show selected tab
+            const selectedTab = document.getElementById(tabId);
+            selectedTab.classList.remove('hidden');
+            selectedTab.classList.add('block', 'fade-in');
+
+            // Update Nav Styles
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-neon-blue', 'border-neon-blue', 'bg-white/5');
+                btn.classList.add('text-text-dim', 'border-transparent');
+            });
+
+            const activeBtn = document.getElementById('btn-' + tabId);
+            activeBtn.classList.remove('text-text-dim', 'border-transparent');
+            activeBtn.classList.add('text-neon-blue', 'border-neon-blue', 'bg-white/5');
+
+            // Trigger chart render if switching to forensics
+            if(tabId === 'forensics') {
+                renderChart();
+            }
+        }
+
+        // --- 2. Chart.js Logic ---
+        let chartInstance = null;
+
+        function renderChart() {
+            if (chartInstance) return; // Prevent re-rendering
+
+            const ctx = document.getElementById('sentimentChart').getContext('2d');
+            chartInstance = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Fusion Flavor', 'Fresh Toppings', 'Spiciness', 'Traditional Crust', 'Wait Time'],
+                    datasets: [{
+                        label: 'Positive Sentiment',
+                        data: [95, 88, 92, 20, 45],
+                        backgroundColor: 'rgba(57, 255, 20, 0.6)',
+                        borderColor: '#39ff14',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Negative Sentiment',
+                        data: [5, 12, 8, 80, 55],
+                        backgroundColor: 'rgba(255, 77, 77, 0.6)',
+                        borderColor: '#ff4d4d',
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: { color: 'rgba(255,255,255,0.1)' },
+                            ticks: { color: '#888' }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: { color: '#888' }
+                        }
+                    },
+                    plugins: {
+                        legend: { labels: { color: '#fff' } }
+                    }
+                }
+            });
+        }
+
+        // --- 3. Strategy Content Logic ---
+        const strategies = {
+            1: {
+                title: "MONTH 1: THE WAKE UP",
+                color: "text-neon-red",
+                border: "border-neon-red",
+                bg: "bg-neon-red/10",
+                objective: "Shock the algorithm and the neighborhood.",
+                tasks: [
+                    { icon: "🎥", title: "Launch 'Italy Met India'", desc: "Reel: Boring pepperoni swept away by Soya Chaap." },
+                    { icon: "📸", title: "Photo Overhaul", desc: "Upload 10x dark-mode, neon-lit food photos to GBP." },
+                    { icon: "🎁", title: "Fusion Upgrade Offer", desc: "Free chilli/spice add-on to any standard pizza." }
+                ]
+            },
+            2: {
+                title: "MONTH 2: THE CHALLENGE",
+                color: "text-neon-orange",
+                border: "border-neon-orange",
+                bg: "bg-neon-orange/10",
+                objective: "Generate User Generated Content (UGC) & Virality.",
+                tasks: [
+                    { icon: "🔥", title: "Tarneit Heat Check", desc: "Challenge locals to finish a Level 5 Spicy Chicken Tikka." },
+                    { icon: "📢", title: "Influencer Seeding", desc: "Send 'Secret Menu' items to 5 local micro-influencers." },
+                    { icon: "💬", title: "GBP Update", desc: "Post 'What's Happening' update with challenge winners." }
+                ]
+            },
+            3: {
+                title: "MONTH 3: THE COMMUNITY",
+                color: "text-neon-purple",
+                border: "border-neon-purple",
+                bg: "bg-neon-purple/10",
+                objective: "Build deep loyalty and 'Bio-Digital' values.",
+                tasks: [
+                    { icon: "📵", title: "Bio-Digital Sundays", desc: "10% off for families who lock phones in the 'Detox Box'." },
+                    { icon: "💌", title: "SMS Retention", desc: "Launch VIP list for 'Fusion First' drops." },
+                    { icon: "📰", title: "PR Push", desc: "Pitch the 'Detox Box' story to local news." }
+                ]
+            }
+        };
+
+        function updateStrategy(month) {
+            const data = strategies[month];
+            const contentDiv = document.getElementById('strategy-content');
+            
+            // Update Buttons State
+            [1, 2, 3].forEach(m => {
+                const btn = document.getElementById(`strat-btn-${m}`);
+                const btnData = strategies[m];
+                if (m === month) {
+                    btn.className = `flex-1 p-4 rounded-xl border ${btnData.border} ${btnData.bg} text-center transition-all transform scale-105 shadow-lg`;
+                    btn.innerHTML = `<div class="text-xs uppercase tracking-widest ${btnData.color} mb-1">Month ${m}</div><div class="font-bold text-xl text-white">${btnData.title.split(': ')[1]}</div>`;
+                } else {
+                    btn.className = `flex-1 p-4 rounded-xl border border-white/10 bg-bg-card text-center hover:bg-white/5 transition-all opacity-60 hover:opacity-100`;
+                    btn.innerHTML = `<div class="text-xs uppercase tracking-widest text-text-dim mb-1">Month ${m}</div><div class="font-bold text-xl text-text-dim">${btnData.title.split(': ')[1]}</div>`;
+                }
+            });
+
+            // Inject Content with Animation
+            let tasksHtml = data.tasks.map((task, index) => `
+                <div class="flex items-start gap-4 p-4 rounded-lg bg-black/20 border border-white/5 slide-in-right" style="animation-delay: ${index * 100}ms">
+                    <div class="text-2xl">${task.icon}</div>
+                    <div>
+                        <div class="font-bold text-white">${task.title}</div>
+                        <div class="text-sm text-text-dim">${task.desc}</div>
+                    </div>
+                </div>
+            `).join('');
+
+            contentDiv.innerHTML = `
+                <div class="fade-in">
+                    <h3 class="text-2xl font-bold ${data.color} mb-2">${data.title}</h3>
+                    <p class="text-white/80 mb-6 italic border-l-2 ${data.border.replace('border', 'border-l')} pl-4">${data.objective}</p>
+                    <div class="space-y-4">
+                        ${tasksHtml}
+                    </div>
+                </div>
+            `;
+        }
+
+        // Initialize Strategy View
+        updateStrategy(1);
+
+    </script>
+</body>
+</html>

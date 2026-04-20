@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>THE AGENTS | GLOBAL STANDARD AUDIT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            /* World Class Color Palette - Dark Mode Base */
+            --bg-dark: #0b1120; /* Deepest Navy/Black */
+            --bg-sidebar: #0f172a;
+            --bg-card: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            
+            /* Data Visualization Colors - The "Variant" System */
+            --ai-primary: #8b5cf6; /* Gemini Purple */
+            --ai-secondary: #c084fc;
+            --ai-bg: rgba(139, 92, 246, 0.1);
+            
+            --geo-primary: #0ea5e9; /* Sky Blue */
+            --geo-secondary: #38bdf8;
+            --geo-bg: rgba(14, 165, 233, 0.1);
+            
+            --opt-primary: #10b981; /* Emerald */
+            --opt-secondary: #34d399;
+            --opt-bg: rgba(16, 185, 129, 0.1);
+
+            --alert-primary: #f59e0b; /* Amber */
+            --alert-danger: #ef4444; /* Red for Critical */
+            --brand-accent: #f97316; /* Spicy Orange */
+            
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* --- LAYOUT --- */
+        .container {
+            display: grid;
+            grid-template-columns: 260px 1fr;
+            min-height: 100vh;
+        }
+
+        /* --- SIDEBAR --- */
+        .sidebar {
+            background-color: var(--bg-sidebar);
+            padding: 30px 20px;
+            position: sticky;
+            top: 0;
+            height: 100vh;
+            border-right: 1px solid rgba(255,255,255,0.05);
+            display: flex;
+            flex-direction: column;
+        }
+        .brand-logo {
+            font-size: 1.8rem;
+            font-weight: 900;
+            letter-spacing: -1px;
+            margin-bottom: 50px;
+            line-height: 1;
+            background: linear-gradient(135deg, #fff 0%, var(--text-muted) 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        .brand-logo span { color: var(--brand-accent); -webkit-text-fill-color: var(--brand-accent); }
+
+        .nav-menu { flex-grow: 1; }
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 14px 15px;
+            margin-bottom: 8px;
+            border-radius: 12px;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            border: 1px solid transparent;
+        }
+        .nav-item:hover {
+            background: rgba(255,255,255,0.03);
+            color: #fff;
+            transform: translateX(5px);
+        }
+        .nav-item.active {
+            background: rgba(255,255,255,0.08);
+            color: #fff;
+            font-weight: 600;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            border-color: rgba(255,255,255,0.1);
+        }
+        
+        /* Nav Variants */
+        .nav-item[data-target="ai-section"].active { border-left: 4px solid var(--ai-primary); background: linear-gradient(90deg, rgba(139,92,246,0.1), transparent); }
+        .nav-item[data-target="geo-section"].active { border-left: 4px solid var(--geo-primary); background: linear-gradient(90deg, rgba(14,165,233,0.1), transparent); }
+        .nav-item[data-target="opt-section"].active { border-left: 4px solid var(--opt-primary); background: linear-gradient(90deg, rgba(16,185,129,0.1), transparent); }
+        .nav-item[data-target="alerts-section"].active { border-left: 4px solid var(--alert-primary); background: linear-gradient(90deg, rgba(245, 158, 11, 0.1), transparent); }
+        .nav-item[data-target="overview-section"].active { border-left: 4px solid #fff; }
+
+        .client-badge {
+            margin-top: auto;
+            padding: 20px;
+            background: rgba(0,0,0,0.2);
+            border-radius: 16px;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        /* --- MAIN CONTENT --- */
+        main {
+            padding: 40px;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .header-section {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .header-title h1 { font-size: 2.5rem; margin: 0; font-weight: 800; letter-spacing: -0.5px; }
+        .header-subtitle { color: var(--brand-accent); font-weight: 700; letter-spacing: 1.5px; font-size: 0.9rem; text-transform: uppercase; margin-bottom: 5px; display: block; }
+        
+        .grade-card {
+            background: linear-gradient(135deg, var(--bg-card), #2d3748);
+            padding: 15px 25px;
+            border-radius: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            text-align: right;
+            box-shadow: 0 10px 30px -10px rgba(0,0,0,0.5);
+        }
+
+        /* --- SECTIONS (TAB LOGIC) --- */
+        .dashboard-section {
+            display: none; /* Hidden by default */
+            animation: fadeIn 0.5s ease-out;
+        }
+        .dashboard-section.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- CARDS --- */
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .card {
+            background: var(--bg-card);
+            border-radius: 16px;
+            padding: 30px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px -10px rgba(0,0,0,0.3); border-color: rgba(255,255,255,0.15); }
+        
+        /* Card Variants */
+        .card.ai-variant { border-top: 4px solid var(--ai-primary); }
+        .card.ai-variant:hover { background: linear-gradient(180deg, rgba(139,92,246,0.05) 0%, var(--bg-card) 100%); }
+        .card.geo-variant { border-top: 4px solid var(--geo-primary); }
+        .card.geo-variant:hover { background: linear-gradient(180deg, rgba(14,165,233,0.05) 0%, var(--bg-card) 100%); }
+        .card.opt-variant { border-top: 4px solid var(--opt-primary); }
+        .card.alert-variant { border-top: 4px solid var(--alert-primary); }
+        
+        .card-full { grid-column: 1 / -1; }
+        .card-2-3 { grid-column: span 2; }
+        @media(max-width: 1024px) { .card-2-3 { grid-column: span 1; } }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            opacity: 0.8;
+        }
+
+        /* --- TYPOGRAPHY & METRICS --- */
+        .big-number { font-size: 3.5rem; font-weight: 800; line-height: 1; margin-bottom: 10px; color: #fff; }
+        .sub-text { font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px; }
+        
+        /* --- PROGRESS BAR --- */
+        .progress-bar { height: 8px; background: rgba(255,255,255,0.1); border-radius: 4px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 4px; transition: width 1s ease-out; }
+        
+        /* --- GEO HEATMAP GRID --- */
+        .heatmap-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-top: 20px; }
+        .zone-box {
+            padding: 15px 10px;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            border: 1px solid transparent;
+            transition: transform 0.2s;
+        }
+        .zone-box:hover { transform: scale(1.05); cursor: help; }
+        .zone-strong { background: rgba(16, 185, 129, 0.15); color: #34d399; border-color: rgba(16, 185, 129, 0.3); }
+        .zone-med { background: rgba(245, 158, 11, 0.15); color: #fbbf24; border-color: rgba(245, 158, 11, 0.3); }
+        .zone-weak { background: rgba(239, 68, 68, 0.15); color: #f87171; border-color: rgba(239, 68, 68, 0.3); }
+
+        /* --- CHECKLIST ITEMS --- */
+        .checklist-item {
+            display: flex;
+            gap: 20px;
+            padding: 20px;
+            background: rgba(255,255,255,0.02);
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 1px solid transparent;
+            transition: var(--transition);
+        }
+        .checklist-item:hover { background: rgba(255,255,255,0.05); border-color: rgba(255,255,255,0.1); }
+        
+        .check-circle {
+            min-width: 32px; height: 32px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid var(--text-muted);
+            color: var(--text-muted);
+            display: flex; align-items: center; justify-content: center;
+            font-weight: bold;
+        }
+        .checklist-item.priority .check-circle { border-color: var(--brand-accent); color: var(--brand-accent); }
+        
+        /* Alerts Styling */
+        .alert-item {
+            border-left: 3px solid var(--alert-danger);
+            background: linear-gradient(90deg, rgba(239, 68, 68, 0.05) 0%, transparent 100%);
+        }
+        .alert-item .check-circle { border-color: var(--alert-danger); color: var(--alert-danger); }
+        
+        .tags { display: flex; gap: 8px; margin-bottom: 8px; }
+        .tag { font-size: 0.7rem; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; font-weight: 700; }
+        
+        /* --- GBP PREVIEW --- */
+        .gbp-mockup {
+            background: #ffffff;
+            color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            font-family: Arial, sans-serif;
+            border: 1px solid #dfe1e5;
+        }
+        .gbp-actions { display: flex; gap: 10px; margin: 15px 0; }
+        .gbp-btn { flex: 1; border: 1px solid #dfe1e5; padding: 8px; border-radius: 18px; text-align: center; color: #1a73e8; font-size: 0.9rem; font-weight: 500; }
+        
+        /* --- MODAL (NEW) --- */
+        .modal-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: none; justify-content: center; align-items: center;
+            z-index: 1000;
+            backdrop-filter: blur(5px);
+            animation: fadeIn 0.2s ease-out;
+        }
+        .modal-content {
+            background: var(--bg-card);
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%; max-width: 600px;
+            border: 1px solid rgba(255,255,255,0.1);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .code-block {
+            background: #0f1115;
+            padding: 20px;
+            border-radius: 8px;
+            font-family: 'Monaco', 'Consolas', monospace;
+            font-size: 0.8rem;
+            color: #a5b4fc;
+            overflow-x: auto;
+            margin: 15px 0;
+            border: 1px solid rgba(255,255,255,0.1);
+            white-space: pre;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .modal-close {
+            position: absolute; top: 15px; right: 15px;
+            background: transparent; border: none; color: var(--text-muted);
+            font-size: 1.2rem; cursor: pointer; transition: 0.2s;
+        }
+        .modal-close:hover { color: #fff; }
+
+        /* --- UTILS --- */
+        .hidden { display: none; }
+        .btn-action {
+            display: inline-block;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-decoration: none;
+            margin-top: 15px;
+            font-size: 0.9rem;
+            cursor: pointer;
+            border: none;
+            transition: var(--transition);
+        }
+        .btn-primary { background: var(--brand-accent); color: white; }
+        .btn-primary:hover { filter: brightness(1.1); box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4); }
+        .btn-copy { background: var(--ai-primary); color: white; border: none; padding: 8px 16px; border-radius: 6px; cursor: pointer; font-size: 0.85rem; font-weight: 600; }
+        .btn-copy:hover { background: var(--ai-secondary); }
+
+        .theme-toggle {
+            margin-top: 20px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toggle-switch {
+            width: 40px; height: 20px; background: rgba(255,255,255,0.1); border-radius: 20px; position: relative;
+        }
+        .toggle-dot {
+            width: 16px; height: 16px; background: #fff; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: 0.3s;
+        }
+        .neon-mode .toggle-dot { left: 22px; background: var(--brand-accent); }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+        <div class="brand-logo">REBRAND<br><span>WITHAI.</span></div>
+        
+        <nav class="nav-menu">
+            <div class="nav-item active" onclick="switchTab('overview-section', this)">
+                <i class="fas fa-chart-pie"></i> Audit Overview
+            </div>
+            <div class="nav-item" data-target="ai-section" onclick="switchTab('ai-section', this)">
+                <i class="fas fa-brain" style="color: var(--ai-secondary)"></i> AI Search Visibility
+            </div>
+            <div class="nav-item" data-target="geo-section" onclick="switchTab('geo-section', this)">
+                <i class="fas fa-map-marked-alt" style="color: var(--geo-secondary)"></i> Geo-Location Map
+            </div>
+            <div class="nav-item" data-target="opt-section" onclick="switchTab('opt-section', this)">
+                <i class="fas fa-tasks" style="color: var(--opt-secondary)"></i> Optimization Plan
+            </div>
+            <!-- FIXED: CLICKABLE ALERT SECTION -->
+            <div class="nav-item" data-target="alerts-section" onclick="switchTab('alerts-section', this)">
+                <i class="fas fa-bell" style="color: var(--alert-primary)"></i> Critical Alerts <span style="background:var(--alert-primary); color:black; padding:2px 6px; border-radius:10px; font-size:0.7rem; margin-left:auto;">3</span>
+            </div>
+        </nav>
+
+        <div class="client-badge">
+            <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Client Profile</div>
+            <div style="font-weight: 800; font-size: 1.1rem; margin-top: 5px;">THE AGENTS</div>
+            <div style="font-size: 0.8rem; color: #fff; opacity: 0.7; margin-top: 2px;"><i class="fas fa-map-marker-alt"></i> Tarneit, VIC</div>
+            <div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1); font-size: 0.7rem;">
+                <span style="color: var(--ai-primary);"><i class="fas fa-robot"></i> Gemini Protocol: Active</span>
+            </div>
+        </div>
+
+        <div class="theme-toggle" onclick="toggleTheme()">
+            <div class="toggle-switch"><div class="toggle-dot"></div></div>
+            <span>Neon Mode</span>
+        </div>
+    </aside>
+
+    <!-- MAIN CONTENT AREA -->
+    <main>
+        <div class="header-section">
+            <div>
+                <span class="header-subtitle">Digital True & Pure Audit</span>
+                <div class="header-title">
+                    <h1 id="page-title">Performance Dashboard</h1>
+                </div>
+            </div>
+            <div class="grade-card">
+                <div style="font-size: 0.7rem; color: var(--text-muted); text-transform: uppercase;">Overall Health</div>
+                <div style="font-size: 2.5rem; font-weight: 800; color: var(--alert-primary); line-height: 1;">B-</div>
+                <div style="font-size: 0.8rem; color: #fff;">Improving</div>
+            </div>
+        </div>
+
+        <!-- === SECTION 1: OVERVIEW === -->
+        <div id="overview-section" class="dashboard-section active">
+            <div class="dashboard-grid">
+                <!-- AI Metric -->
+                <div class="card ai-variant">
+                    <div class="card-header">
+                        <span style="color:var(--ai-secondary)">AI Entity Recognition</span>
+                        <i class="fas fa-brain" style="color:var(--ai-primary)"></i>
+                    </div>
+                    <div class="big-number">42%</div>
+                    <div class="sub-text">AI Confusion: High. Often mistaken for generic agents.</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 42%; background: var(--ai-primary);"></div></div>
+                </div>
+
+                <!-- Geo Metric -->
+                <div class="card geo-variant">
+                    <div class="card-header">
+                        <span style="color:var(--geo-secondary)">Local Map Dominance</span>
+                        <i class="fas fa-map-marker-alt" style="color:var(--geo-primary)"></i>
+                    </div>
+                    <div class="big-number">68%</div>
+                    <div class="sub-text">Tarneit: Strong. Surrounding Areas: Weak.</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 68%; background: var(--geo-primary);"></div></div>
+                </div>
+
+                <!-- Tech Metric -->
+                <div class="card opt-variant">
+                    <div class="card-header">
+                        <span style="color:var(--opt-secondary)">Mobile Speed</span>
+                        <i class="fas fa-bolt" style="color:var(--opt-primary)"></i>
+                    </div>
+                    <div class="big-number" style="color: #ef4444;">3.4s</div>
+                    <div class="sub-text">Critical Issue. 40% of traffic bounces before load.</div>
+                    <div class="progress-bar"><div class="progress-fill" style="width: 40%; background: #ef4444;"></div></div>
+                </div>
+            </div>
+
+            <!-- Quick Action -->
+            <div class="card card-full" style="background: linear-gradient(90deg, var(--bg-card) 0%, rgba(249, 115, 22, 0.1) 100%);">
+                <div style="display: flex; justify-content: space-between; align-items: center;">
+                    <div>
+                        <h3 style="margin: 0 0 5px 0;">🚀 Immediate Action Required</h3>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">The audit detected 3 critical leaks in your Google Business Profile.</p>
+                    </div>
+                    <button class="btn-action btn-primary" onclick="switchTab('alerts-section', document.querySelector('[data-target=\'alerts-section\']'))">View Alerts</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- === SECTION 2: AI SEARCH DEEP DIVE === -->
+        <div id="ai-section" class="dashboard-section">
+            <div class="dashboard-grid">
+                <div class="card card-2-3 ai-variant">
+                    <div class="card-header">
+                        <span>Semantic Entity Analysis</span>
+                        <span>Gemini/ChatGPT</span>
+                    </div>
+                    <p>When a user asks: <em>"Who is the best agent in Tarneit?"</em>, the AI looks for "Entity Authority." currently, your digital footprint is fragmented.</p>
+                    
+                    <div style="margin-top: 20px; background: rgba(0,0,0,0.2); padding: 15px; border-radius: 8px;">
+                        <div style="font-size: 0.8rem; margin-bottom: 5px; color: var(--ai-secondary);">SIMULATED AI RESPONSE:</div>
+                        <div style="font-style: italic; color: #d1d5db;">"There are several agents in Tarneit. Major franchises like Ray White and Barry Plant are active. 'The Agents' is also a local agency with high ratings..."</div>
+                    </div>
+                    <p style="font-size: 0.8rem; margin-top: 10px; color: var(--alert-danger);"><i class="fas fa-exclamation-triangle"></i> Issue: The AI treats you as a "Participant" not a "Leader".</p>
+                </div>
+
+                <div class="card ai-variant">
+                    <div class="card-header">Voice Search Readiness</div>
+                    <div class="big-number">Low</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">Siri & Google Assistant rely on Q&A schema. Your site lacks the "Question/Answer" structure needed for voice results.</p>
+                </div>
+                
+                <div class="card card-full ai-variant">
+                    <div class="card-header">Knowledge Graph "Cementing" Plan</div>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; text-align: center;">
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px;">
+                            <i class="fas fa-project-diagram" style="font-size: 2rem; color: var(--ai-primary); margin-bottom: 10px;"></i>
+                            <div style="font-weight: bold;">1. Schema Injection</div>
+                            <div style="font-size: 0.8rem; margin-top: 5px;">Deploy JSON-LD to define "The Agents" as a unique Brand.</div>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px;">
+                            <i class="fas fa-hashtag" style="font-size: 2rem; color: var(--ai-primary); margin-bottom: 10px;"></i>
+                            <div style="font-weight: bold;">2. Social Cohesion</div>
+                            <div style="font-size: 0.8rem; margin-top: 5px;">Link LinkedIn, Insta, and FB with "sameAs" tags.</div>
+                        </div>
+                        <div style="background: rgba(139, 92, 246, 0.1); padding: 20px; border-radius: 8px;">
+                            <i class="fas fa-rss" style="font-size: 2rem; color: var(--ai-primary); margin-bottom: 10px;"></i>
+                            <div style="font-weight: bold;">3. Data Syndication</div>
+                            <div style="font-size: 0.8rem; margin-top: 5px;">Push consistent N.A.P (Name, Address, Phone) data to 20 directories.</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === SECTION 3: GEO-LOCATION === -->
+        <div id="geo-section" class="dashboard-section">
+            <div class="dashboard-grid">
+                <div class="card card-2-3 geo-variant">
+                    <div class="card-header">
+                        <span>Digital Pincer Heatmap</span>
+                        <span style="color:var(--geo-secondary)">Live Status</span>
+                    </div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted);">This map simulates your visibility when a user searches "Real Estate Agent near me" in these zones.</p>
+                    
+                    <div class="heatmap-grid">
+                        <div class="zone-box zone-strong">Tarneit<br>North</div>
+                        <div class="zone-box zone-strong">Tarneit<br>Central</div>
+                        <div class="zone-box zone-strong">Williams<br>Landing</div>
+                        <div class="zone-box zone-weak">Truganina<br>South</div>
+                        
+                        <div class="zone-box zone-med">Werribee<br>East</div>
+                        <div class="zone-box zone-weak">Hoppers<br>Crossing</div>
+                        <div class="zone-box zone-weak">Point Cook<br>Coastal</div>
+                        <div class="zone-box zone-weak">Wyndham<br>Vale</div>
+                    </div>
+                    
+                    <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.1);">
+                        <strong style="color: var(--geo-secondary);">The "Pincer" Fix:</strong>
+                        <p style="font-size: 0.85rem; margin-top: 5px;">You are currently relying on the physical location of your office. You must manually add "Service Areas" in GBP for Truganina and Hoppers Crossing to force the algorithm to extend your border.</p>
+                    </div>
+                </div>
+
+                <div class="card geo-variant">
+                    <div class="card-header">GBP Health Check</div>
+                    <div class="gbp-mockup">
+                        <div style="font-weight: bold; font-size: 1.1rem;">The Agents</div>
+                        <div style="color: #e7711b; font-size: 0.8rem;">4.9 ★★★★★ (High Trust)</div>
+                        <div class="gbp-actions">
+                            <div class="gbp-btn">Call</div>
+                            <div class="gbp-btn">Directions</div>
+                            <div class="gbp-btn">Website</div>
+                        </div>
+                        <div style="background: #fef2f2; border: 1px solid #fee2e2; padding: 10px; border-radius: 4px; font-size: 0.8rem; color: #b91c1c;">
+                            <strong>⚠️ Missing "Products"</strong><br>
+                            Your listings are missing from the Products tab. Competitors are using this to show images directly on Maps.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- === SECTION 4: OPTIMIZATION PLAN === -->
+        <div id="opt-section" class="dashboard-section">
+            <div class="card card-full opt-variant">
+                <div class="card-header">
+                    <span>True & Pure Optimization Protocol</span>
+                    <span style="color:var(--opt-secondary)">Execute in Order</span>
+                </div>
+
+                <div class="checklist-item priority">
+                    <div class="check-circle">1</div>
+                    <div style="flex-grow: 1;">
+                        <div class="tags">
+                            <span class="tag" style="background: var(--ai-bg); color: var(--ai-secondary)">AI CORE</span>
+                            <span class="tag" style="background: rgba(239, 68, 68, 0.1); color: #f87171">URGENT</span>
+                        </div>
+                        <h4 style="margin: 0 0 5px 0;">Inject "LocalBusiness" Schema</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Paste the JSON-LD script into the website header. This tells Google exactly who you are, what you do, and where you serve. It fixes the "Generic Entity" problem.</p>
+                    </div>
+                    <!-- FIXED BUTTON: NOW CALLS FUNCTION -->
+                    <button class="btn-action btn-primary" style="padding: 5px 15px; font-size: 0.8rem; height: fit-content; align-self: center;" onclick="openSchemaModal()">Get Code</button>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="check-circle">2</div>
+                    <div>
+                        <div class="tags"><span class="tag" style="background: var(--geo-bg); color: var(--geo-secondary)">GEO MAPS</span></div>
+                        <h4 style="margin: 0 0 5px 0;">The "Service Area" Expansion</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Log into Google Business Profile > Edit Profile > Location > Service Areas. Add: <strong>Truganina, Hoppers Crossing, Werribee</strong>. Do not delete Tarneit.</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="check-circle">3</div>
+                    <div>
+                        <div class="tags"><span class="tag" style="background: var(--opt-bg); color: var(--opt-secondary)">UX SPEED</span></div>
+                        <h4 style="margin: 0 0 5px 0;">WebP Image Conversion</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Bulk convert all homepage assets to WebP. Enable "Lazy Load" for all images below the fold.</p>
+                    </div>
+                </div>
+
+                <div class="checklist-item">
+                    <div class="check-circle">4</div>
+                    <div>
+                        <div class="tags"><span class="tag" style="background: var(--brand-accent); color: white;">SPICE</span></div>
+                        <h4 style="margin: 0 0 5px 0;">Commercial Data Lead Magnet</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);">Create the "Why Invest in Melbourne West" PDF. Place it on the Commercial Landing page to capture investor emails.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- === SECTION 5: CRITICAL ALERTS (NEW) === -->
+        <div id="alerts-section" class="dashboard-section">
+            <div class="card card-full alert-variant">
+                <div class="card-header">
+                    <span style="color: var(--alert-primary)">War Room: Critical Interventions</span>
+                    <i class="fas fa-radiation" style="color: var(--alert-primary)"></i>
+                </div>
+                
+                <p style="margin-bottom: 25px; color: var(--text-muted);">These 3 issues are currently hemorrhaging digital traffic. Immediate fix required to stop the leak.</p>
+
+                <!-- Alert 1 -->
+                <div class="checklist-item alert-item">
+                    <div class="check-circle"><i class="fas fa-images"></i></div>
+                    <div style="flex-grow: 1;">
+                        <div class="tags"><span class="tag" style="background: var(--alert-danger); color: white">HIGH IMPACT</span></div>
+                        <h4 style="color: #fff; margin: 0 0 5px 0;">Google Maps "Products" Gap</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);"><strong>The Issue:</strong> Your GBP has no "Products" listed. Mobile users scroll right past your profile to competitors who show house prices and photos directly on the map card.<br>
+                        <strong>The Fix:</strong> Upload top 3 listings as "Products" with Price and "View" button.</p>
+                    </div>
+                </div>
+
+                <!-- Alert 2 -->
+                <div class="checklist-item alert-item">
+                    <div class="check-circle"><i class="fas fa-tachometer-alt"></i></div>
+                    <div style="flex-grow: 1;">
+                        <div class="tags"><span class="tag" style="background: var(--alert-danger); color: white">REVENUE BLOCKER</span></div>
+                        <h4 style="color: #fff; margin: 0 0 5px 0;">Mobile Speed Lag (3.4s)</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);"><strong>The Issue:</strong> 40% of users on 4G networks in Tarneit bounce before the page loads.<br>
+                        <strong>The Fix:</strong> The hero banner image is 4MB. Compress to WebP (150KB) immediately.</p>
+                    </div>
+                </div>
+
+                <!-- Alert 3 -->
+                <div class="checklist-item alert-item">
+                    <div class="check-circle"><i class="fas fa-id-card-alt"></i></div>
+                    <div style="flex-grow: 1;">
+                        <div class="tags"><span class="tag" style="background: var(--alert-primary); color: black">BRAND RISK</span></div>
+                        <h4 style="color: #fff; margin: 0 0 5px 0;">Generic Entity Confusion</h4>
+                        <p style="margin: 0; font-size: 0.9rem; color: var(--text-muted);"><strong>The Issue:</strong> AI search engines think "The Agents" is a description, not a name.<br>
+                        <strong>The Fix:</strong> Inject the "Organization" Schema code with specific <code>"name": "The Agents Real Estate"</code> tags.</p>
+                    </div>
+                </div>
+                
+            </div>
+        </div>
+
+    </main>
+
+    <!-- SCHEMA MODAL -->
+    <div id="schemaModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close" onclick="closeSchemaModal()"><i class="fas fa-times"></i></button>
+            <h3 style="margin-top: 0; color: var(--ai-secondary);">JSON-LD Schema Generator</h3>
+            <p style="font-size: 0.9rem; color: var(--text-muted);">Copy this code and paste it into the <code>&lt;head&gt;</code> section of your website to cement your Google Entity status.</p>
+            
+            <div id="schemaCode" class="code-block">&lt;script type="application/ld+json"&gt;
+{
+  "@context": "https://schema.org",
+  "@type": "RealEstateAgent",
+  "name": "The Agents Real Estate",
+  "image": "https://theagents.vic.edu.au/assets/logo.png",
+  "url": "https://theagents.vic.edu.au",
+  "telephone": "+61 3 0000 0000",
+  "priceRange": "$$$",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "Tarneit Road",
+    "addressLocality": "Tarneit",
+    "addressRegion": "VIC",
+    "postalCode": "3029",
+    "addressCountry": "AU"
+  },
+  "geo": {
+    "@type": "GeoCoordinates",
+    "latitude": -37.8,
+    "longitude": 144.6
+  },
+  "areaServed": ["Tarneit", "Truganina", "Williams Landing", "Werribee"],
+  "openingHoursSpecification": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+    "opens": "09:00",
+    "closes": "17:30"
+  },
+  "sameAs": [
+    "https://www.facebook.com/theagents",
+    "https://www.instagram.com/theagents",
+    "https://www.linkedin.com/company/theagents"
+  ]
+}
+&lt;/script&gt;</div>
+            
+            <div style="text-align: right;">
+                <button id="copyBtn" class="btn-copy" onclick="copySchema()"><i class="fas fa-copy"></i> Copy Code</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function switchTab(sectionId, element) {
+        // 1. Hide all sections
+        document.querySelectorAll('.dashboard-section').forEach(sec => {
+            sec.classList.remove('active');
+        });
+
+        // 2. Show target section
+        const targetSection = document.getElementById(sectionId);
+        if (targetSection) {
+            targetSection.classList.add('active');
+        }
+
+        // 3. Update Nav UI
+        document.querySelectorAll('.nav-item').forEach(nav => {
+            nav.classList.remove('active');
+        });
+        if (element) {
+            element.classList.add('active');
+        }
+
+        // 4. Update Header Title based on section
+        const titles = {
+            'overview-section': 'Performance Dashboard',
+            'ai-section': 'AI Search & Entity Audit',
+            'geo-section': 'Geo-Location Strategy',
+            'opt-section': 'Optimization Master Plan',
+            'alerts-section': 'CRITICAL INTERVENTIONS'
+        };
+        document.getElementById('page-title').innerText = titles[sectionId] || 'Dashboard';
+    }
+
+    function toggleTheme() {
+        document.body.classList.toggle('neon-mode');
+        // Simple logic to boost saturation/contrast for "Neon Mode"
+        const root = document.documentElement;
+        if (document.body.classList.contains('neon-mode')) {
+            root.style.setProperty('--bg-dark', '#000000');
+            root.style.setProperty('--bg-card', '#111111');
+            root.style.setProperty('--ai-primary', '#a855f7');
+            root.style.setProperty('--geo-primary', '#06b6d4');
+            root.style.setProperty('--brand-accent', '#ff3366');
+            root.style.setProperty('--alert-primary', '#ffaa00');
+        } else {
+            // Reset to default
+            root.style.setProperty('--bg-dark', '#0b1120');
+            root.style.setProperty('--bg-card', '#1e293b');
+            root.style.setProperty('--ai-primary', '#8b5cf6');
+            root.style.setProperty('--geo-primary', '#0ea5e9');
+            root.style.setProperty('--brand-accent', '#f97316');
+            root.style.setProperty('--alert-primary', '#f59e0b');
+        }
+    }
+
+    // --- MODAL FUNCTIONS ---
+    function openSchemaModal() {
+        document.getElementById('schemaModal').style.display = 'flex';
+    }
+    
+    function closeSchemaModal() {
+        document.getElementById('schemaModal').style.display = 'none';
+    }
+    
+    function copySchema() {
+        const codeText = document.getElementById('schemaCode').innerText;
+        navigator.clipboard.writeText(codeText).then(() => {
+            const btn = document.getElementById('copyBtn');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fas fa-check"></i> Copied!';
+            btn.style.background = '#10b981';
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '';
+            }, 2000);
+        });
+    }
+
+    // Close modal on click outside
+    window.onclick = function(event) {
+        const modal = document.getElementById('schemaModal');
+        if (event.target == modal) {
+            closeSchemaModal();
+        }
+    }
+</script>
+
+</body>
+</html>

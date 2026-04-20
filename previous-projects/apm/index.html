@@ -1,0 +1,70 @@
+
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2026 Vision</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Epilogue:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            "primary": "#b3293b",
+            "background-light": "#f1f2f4",
+            "background-dark": "#1d2330",
+            "tech-blue": "#89CFF0",
+            "glass-dark": "rgba(37, 45, 58, 0.7)",
+          },
+          fontFamily: {
+            "display": ["Epilogue", "sans-serif"]
+          },
+        }
+      }
+    }
+  </script>
+  <style>
+    .glass-card {
+      background: rgba(30, 41, 59, 0.6);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border: 1px solid rgba(137, 207, 240, 0.15);
+      box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    }
+    .pulse-glow {
+      animation: pulse-border 4s infinite;
+    }
+    @keyframes pulse-border {
+      0% { box-shadow: 0 0 0 0 rgba(137, 207, 240, 0.0); }
+      50% { box-shadow: 0 0 10px 0 rgba(137, 207, 240, 0.1); }
+      100% { box-shadow: 0 0 0 0 rgba(137, 207, 240, 0.0); }
+    }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #3E4957; border-radius: 4px; }
+    body { background-color: #1d2330; }
+  </style>
+
+<link rel="stylesheet" href="/index.css">
+<script type="importmap">
+{
+  "imports": {
+    "react-dom/": "https://esm.sh/react-dom@^19.2.3/",
+    "@google/genai": "https://esm.sh/@google/genai@^1.36.0",
+    "react/": "https://esm.sh/react@^19.2.3/",
+    "react": "https://esm.sh/react@^19.2.3"
+  }
+}
+</script>
+  <script type="module" crossorigin src="./assets/index-Z35uhJE_.js"></script>
+</head>
+<body class="font-display antialiased text-white overflow-x-hidden">
+  <div id="root"></div>
+</body>
+</html>
