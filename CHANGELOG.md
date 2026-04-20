@@ -5,6 +5,62 @@ Format: version | date | what changed
 
 ---
 
+## v1.7.9 — 2026-04-20
+
+### Fixed
+- **Services page — Gemini grounding now working** (was silently broken since launch)
+  - Root cause diagnosed: all 3 prior keys were free-tier quota-exhausted; `gemini-2.0-flash` blocked for new API keys
+  - Switched to `AIzaSyBvCYn3qzOXbHAb6rPkZNVXd7wpjxnuoiE` (verified working via curl test)
+  - Model updated to `gemini-2.5-flash` (confirmed available + supports Google Search grounding)
+  - Error messages now show actual API error text (not generic "Error fetching…")
+- All 4 API keys tested in real-time; working key confirmed before deploy
+
+---
+
+## v1.7.8 — 2026-04-20
+
+### Fixed
+- **Services page — Gemini API key not loading** (previous fix attempt)
+  - Changed `process.env.GEMINI_API_KEY` → `import.meta.env.VITE_GEMINI_API_KEY` (Vite requires VITE_ prefix)
+  - Removed `{ googleMaps: {} }` tool (not a real Gemini API tool — replaced with googleSearch + location prompt)
+  - Fixed model names: `gemini-3.1-pro-preview` / `gemini-3-flash-preview` → `gemini-2.0-flash` (valid models)
+
+---
+
+## v1.7.7 — 2026-04-20
+
+### Added
+- **Animated glowing favicon** — "K" on dark background, pulses cyan glow with JavaScript canvas animation
+  - Implemented via `requestAnimationFrame` loop in `index.html` — updates favicon dynamically every frame
+  - Glow breathes in/out (shadowBlur 6→20) with opacity 0.55→1.0 cycle
+  - `public/favicon.svg` created as static fallback
+- **Infographic Gallery grid + lightbox** — replaced single full-width image with interactive gallery
+  - Header shows "INFOGRAPHIC GALLERY — 4 / 20" counter
+  - "VIEW GALLERY →" button opens full-screen lightbox
+  - 2×2 thumbnail grid of first 4 infographics with hover expand labels
+  - "+ 16 MORE INFOGRAPHICS — VIEW ALL →" link
+  - Full lightbox: left/right arrows, dot navigation strip, animated slide transitions
+- **About page — blue neon text styling** on both description paragraphs
+  - `color: #00d4ff` + `textShadow` glow effect matching rest of site neon style
+
+### Changed
+- **Footer** — "© 2024" → "© 2026"
+
+---
+
+## v1.7.6 — 2026-04-20
+
+### Added
+- **Infographic Gallery — 20 images** (first version — single image with left/right navigation)
+  - Original "Architect of the AI Empire" infographic preserved as image #1
+  - 19 new infographics added from `NOTEBOOKLM-DIVISION/KHALID-RIND-PROFILE/INFOGRAPHIC -GALERY/`
+    - `unnamed (14).png` → `unnamed (32).png` — all hosted at `public/gallery/infographics/`
+  - Left/right arrow navigation with AnimatePresence slide transition
+  - Dot navigation strip (20 dots, click any to jump)
+  - Counter label updates: "1 / 20", "2 / 20" etc.
+
+---
+
 ## v1.7.5 — 2026-04-20
 
 ### Added
