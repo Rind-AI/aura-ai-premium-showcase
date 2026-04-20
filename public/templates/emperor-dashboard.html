@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emperor Khalid Rind - Master Dashboard | NeuraNest AI Empire</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+            color: #e0e0e0;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #e94560 0%, #533483 100%);
+            padding: 30px;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.3);
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header .subtitle {
+            font-size: 1.2rem;
+            opacity: 0.9;
+        }
+
+        .live-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            background: #00ff00;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+            margin-right: 8px;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Metrics Grid */
+        .metrics-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .metric-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .metric-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(233, 69, 96, 0.2);
+        }
+
+        .metric-card .icon {
+            font-size: 2rem;
+            margin-bottom: 10px;
+        }
+
+        .metric-card .label {
+            font-size: 0.9rem;
+            opacity: 0.7;
+            margin-bottom: 5px;
+        }
+
+        .metric-card .value {
+            font-size: 1.8rem;
+            font-weight: bold;
+            color: #e94560;
+        }
+
+        .metric-card .status {
+            display: inline-block;
+            padding: 4px 12px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            margin-top: 8px;
+        }
+
+        /* Sections */
+        .section {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 20px;
+        }
+
+        .section h2 {
+            color: #e94560;
+            margin-bottom: 20px;
+            font-size: 1.8rem;
+            border-bottom: 2px solid rgba(233, 69, 96, 0.3);
+            padding-bottom: 10px;
+        }
+
+        /* Platform Cards */
+        .platform-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 15px;
+        }
+
+        .platform-card {
+            background: linear-gradient(135deg, rgba(83, 52, 131, 0.2) 0%, rgba(233, 69, 96, 0.1) 100%);
+            border: 1px solid rgba(233, 69, 96, 0.3);
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s;
+        }
+
+        .platform-card:hover {
+            transform: translateX(5px);
+            border-color: #e94560;
+            box-shadow: 0 5px 20px rgba(233, 69, 96, 0.3);
+        }
+
+        .platform-card h3 {
+            color: #e94560;
+            margin-bottom: 8px;
+            font-size: 1.2rem;
+        }
+
+        .platform-card .url {
+            color: #00bcd4;
+            text-decoration: none;
+            font-size: 0.85rem;
+            word-break: break-all;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        .platform-card .url:hover {
+            text-decoration: underline;
+        }
+
+        .platform-card .purpose {
+            font-size: 0.9rem;
+            opacity: 0.8;
+            margin-bottom: 8px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            background: rgba(0, 255, 0, 0.2);
+            border: 1px solid #00ff00;
+            border-radius: 8px;
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+
+        .badge.production {
+            background: rgba(0, 255, 0, 0.2);
+            border-color: #00ff00;
+        }
+
+        .badge.flagship {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ffd700;
+            color: #ffd700;
+        }
+
+        /* App Table */
+        .app-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 15px;
+        }
+
+        .app-table th {
+            background: rgba(233, 69, 96, 0.2);
+            padding: 12px;
+            text-align: left;
+            font-weight: bold;
+            border-bottom: 2px solid rgba(233, 69, 96, 0.5);
+        }
+
+        .app-table td {
+            padding: 12px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .app-table tr:hover {
+            background: rgba(233, 69, 96, 0.1);
+        }
+
+        .price {
+            color: #4caf50;
+            font-weight: bold;
+        }
+
+        /* MCP Status */
+        .mcp-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .mcp-item {
+            background: rgba(0, 255, 0, 0.05);
+            border-left: 4px solid #00ff00;
+            padding: 12px;
+            border-radius: 6px;
+        }
+
+        .mcp-item .name {
+            font-weight: bold;
+            color: #00ff00;
+            margin-bottom: 4px;
+        }
+
+        .mcp-item .desc {
+            font-size: 0.85rem;
+            opacity: 0.8;
+        }
+
+        /* Tools Grid */
+        .tools-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .tool-card {
+            background: linear-gradient(135deg, rgba(83, 52, 131, 0.3) 0%, rgba(15, 52, 96, 0.3) 100%);
+            border: 1px solid rgba(83, 52, 131, 0.5);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            transition: all 0.3s;
+        }
+
+        .tool-card:hover {
+            transform: scale(1.05);
+            border-color: #533483;
+        }
+
+        .tool-card .tool-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        .tool-card .tool-name {
+            font-weight: bold;
+            margin-bottom: 5px;
+            color: #e94560;
+        }
+
+        .tool-card .tool-status {
+            font-size: 0.8rem;
+            opacity: 0.8;
+        }
+
+        /* Quick Actions */
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .action-btn {
+            background: linear-gradient(135deg, #e94560 0%, #533483 100%);
+            border: none;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: bold;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(233, 69, 96, 0.4);
+        }
+
+        /* Footer */
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 20px;
+            opacity: 0.7;
+            font-size: 0.9rem;
+        }
+
+        /* Scroll to top */
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: #e94560;
+            color: white;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            box-shadow: 0 5px 15px rgba(233, 69, 96, 0.4);
+            transition: all 0.3s;
+        }
+
+        .scroll-top:hover {
+            transform: translateY(-5px);
+        }
+
+        /* Revenue Chart */
+        .revenue-breakdown {
+            display: grid;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        .revenue-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+        }
+
+        .revenue-item .category {
+            font-weight: 500;
+        }
+
+        .revenue-item .amount {
+            color: #4caf50;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+
+            .metrics-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .platform-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>👑 EMPEROR KHALID RIND - MASTER DASHBOARD</h1>
+            <p class="subtitle">
+                <span class="live-indicator"></span>
+                NeuraNest AI Empire | All Systems Operational
+            </p>
+            <p style="margin-top: 10px; font-size: 0.9rem;">
+                Updated: October 27, 2025 | Session Active ✅
+            </p>
+        </div>
+
+        <!-- Metrics Grid -->
+        <div class="metrics-grid">
+            <div class="metric-card">
+                <div class="icon">🌐</div>
+                <div class="label">Live Platforms</div>
+                <div class="value">6</div>
+                <div class="status">ACTIVE</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">💎</div>
+                <div class="label">Premium Apps</div>
+                <div class="value">13</div>
+                <div class="status">READY</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">💰</div>
+                <div class="label">Monthly Potential</div>
+                <div class="value">$20.9K</div>
+                <div class="status">VERIFIED</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">🔧</div>
+                <div class="label">MCP Servers</div>
+                <div class="value">5</div>
+                <div class="status">CONNECTED</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">📚</div>
+                <div class="label">Knowledge Bases</div>
+                <div class="value">7.44MB</div>
+                <div class="status">COMPLETE</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">⏱️</div>
+                <div class="label">Hours Invested</div>
+                <div class="value">1,510</div>
+                <div class="status">CERTIFIED</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">🏆</div>
+                <div class="label">Empire Value</div>
+                <div class="value">$1.5M+</div>
+                <div class="status">ESTIMATED</div>
+            </div>
+
+            <div class="metric-card">
+                <div class="icon">🔐</div>
+                <div class="label">API Credentials</div>
+                <div class="value">162+</div>
+                <div class="status">DOCUMENTED</div>
+            </div>
+        </div>
+
+        <!-- Live Platforms Section -->
+        <div class="section">
+            <h2>🌟 LIVE EDUCATIONAL PLATFORMS - SERVING GLOBALLY</h2>
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Cognitas - The Mind Forge</h3>
+                    <a href="https://cognitas-the-mind-forge-v17.vercel.app" target="_blank" class="url">
+                        🔗 cognitas-the-mind-forge-v17.vercel.app
+                    </a>
+                    <p class="purpose">🎯 AI-powered cognitive enhancement for young minds</p>
+                    <span class="badge production">PRODUCTION</span>
+                </div>
+
+                <div class="platform-card">
+                    <h3>NeuraNest Launch Kit Generator v157</h3>
+                    <a href="https://neuranest-launch-kit-generator-v-157-3m9hc40jq.vercel.app" target="_blank" class="url">
+                        🔗 neuranest-launch-kit-generator-v-157-3m9hc40jq.vercel.app
+                    </a>
+                    <p class="purpose">🎯 Young entrepreneur startup generator</p>
+                    <span class="badge production">PRODUCTION</span>
+                </div>
+
+                <div class="platform-card">
+                    <h3>NeuraNest Digital Campus v31</h3>
+                    <a href="https://neuranest-digital-campus-v31-1s7wopz12.vercel.app" target="_blank" class="url">
+                        🔗 neuranest-digital-campus-v31-1s7wopz12.vercel.app
+                    </a>
+                    <p class="purpose">🎯 Revolutionary digital education platform</p>
+                    <span class="badge production">PRODUCTION</span>
+                </div>
+
+                <div class="platform-card">
+                    <h3>NeuraNest Education Rebirth v197</h3>
+                    <a href="https://neuranest-education-rebirth-v197-19mofk4kb.vercel.app" target="_blank" class="url">
+                        🔗 neuranest-education-rebirth-v197-19mofk4kb.vercel.app
+                    </a>
+                    <p class="purpose">🎯 Complete educational system rebirth</p>
+                    <span class="badge production">PRODUCTION</span>
+                </div>
+
+                <div class="platform-card">
+                    <h3>NeuraNest Cosmos Learning Universe v83</h3>
+                    <a href="https://neuranest-cosmos-learning-universe-v83-fqf9jz6t7.vercel.app" target="_blank" class="url">
+                        🔗 neuranest-cosmos-learning-universe-v83-fqf9jz6t7.vercel.app
+                    </a>
+                    <p class="purpose">🎯 Infinite knowledge exploration</p>
+                    <span class="badge production">PRODUCTION</span>
+                </div>
+
+                <div class="platform-card">
+                    <h3>🏆 NeuraNest Education Hub (ORIGINAL DREAM)</h3>
+                    <a href="https://rind-ai.github.io/neuranest-education/" target="_blank" class="url">
+                        🔗 rind-ai.github.io/neuranest-education/
+                    </a>
+                    <p class="purpose">🎯 AR/VR education with 6 revolutionary modules | $28B market</p>
+                    <span class="badge flagship">FLAGSHIP PLATFORM</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Premium Apps Section -->
+        <div class="section">
+            <h2>💎 TOP 5 PREMIUM APPLICATIONS - READY FOR DEPLOYMENT</h2>
+            <table class="app-table">
+                <thead>
+                    <tr>
+                        <th>Application</th>
+                        <th>Pricing</th>
+                        <th>Status</th>
+                        <th>Market Position</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>NeuraNest Autonomous Engine 5</strong><br><small>Complete YouTube Automation</small></td>
+                        <td class="price">$4,999/mo</td>
+                        <td><span class="badge production">✅ COMPLETE</span></td>
+                        <td>No competition</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Omnia Command Center v12</strong><br><small>AI Operating System</small></td>
+                        <td class="price">$2,999/mo</td>
+                        <td><span class="badge production">✅ COMPLETE</span></td>
+                        <td>World's first AI OS</td>
+                    </tr>
+                    <tr>
+                        <td><strong>MasterClass Builder</strong><br><small>Enterprise Local SEO</small></td>
+                        <td class="price">$1,999/mo</td>
+                        <td><span class="badge production">✅ COMPLETE</span></td>
+                        <td>Only full-stack AI SEO</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Creator Studio v16</strong><br><small>Complete Agency Platform</small></td>
+                        <td class="price">$1,499/mo</td>
+                        <td><span class="badge production">✅ COMPLETE</span></td>
+                        <td>Complete creative suite</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Universal App Builder v5</strong><br><small>No-Code AI Generator</small></td>
+                        <td class="price">$1,499/mo</td>
+                        <td><span class="badge production">✅ COMPLETE</span></td>
+                        <td>Multi-phase architecture</td>
+                    </tr>
+                </tbody>
+            </table>
+            <p style="margin-top: 15px; text-align: center; font-size: 1.2rem;">
+                <strong>Total Monthly Revenue Potential:</strong> <span class="price" style="font-size: 1.5rem;">$12,495</span> from top 5 alone
+            </p>
+        </div>
+
+        <!-- MCP Infrastructure -->
+        <div class="section">
+            <h2>🔧 MCP INFRASTRUCTURE - 5 VERIFIED SERVERS</h2>
+            <div class="mcp-list">
+                <div class="mcp-item">
+                    <div class="name">✅ memory</div>
+                    <div class="desc">Knowledge graph persistence - session-to-session memory retention</div>
+                </div>
+                <div class="mcp-item">
+                    <div class="name">✅ sequential-thinking</div>
+                    <div class="desc">Enhanced reasoning capability - step-by-step problem solving</div>
+                </div>
+                <div class="mcp-item">
+                    <div class="name">✅ github</div>
+                    <div class="desc">26 GitHub API tools - repos, PRs, issues, commits automation</div>
+                </div>
+                <div class="mcp-item">
+                    <div class="name">✅ filesystem</div>
+                    <div class="desc">File operations on C:/legendClaude - read, write, search capabilities</div>
+                </div>
+                <div class="mcp-item">
+                    <div class="name">✅ supabase</div>
+                    <div class="desc">Database queries - project efcbprrmkxlmeoebqvca access</div>
+                </div>
+            </div>
+            <p style="margin-top: 15px; opacity: 0.8;">
+                <strong>Quick Verify:</strong> <code style="background: rgba(255,255,255,0.1); padding: 5px 10px; border-radius: 5px;">claude mcp list</code>
+            </p>
+        </div>
+
+        <!-- Revolutionary Tools -->
+        <div class="section">
+            <h2>🚀 REVOLUTIONARY TOOLS - INSTALLED & OPERATIONAL</h2>
+            <div class="tools-grid">
+                <div class="tool-card">
+                    <div class="tool-icon">🔗</div>
+                    <div class="tool-name">BEADS</div>
+                    <div class="tool-status">AI Memory System v0.9.7</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">Git-versioned issue tracker solving AI amnesia</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">🎥</div>
+                    <div class="tool-name">MEMVID</div>
+                    <div class="tool-status">Video Knowledge Compression</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">50-100× compression via QR code frames</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">🤖</div>
+                    <div class="tool-name">MCP-AGENT</div>
+                    <div class="tool-status">Multi-AI Orchestration</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">Enterprise framework for AI coordination</div>
+                </div>
+
+                <div class="tool-card">
+                    <div class="tool-icon">📚</div>
+                    <div class="tool-name">Knowledge Bases</div>
+                    <div class="tool-status">V1 + V2 + V3 GRAND</div>
+                    <div style="margin-top: 10px; font-size: 0.8rem;">7.44MB permanent AI memory</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Revenue Breakdown -->
+        <div class="section">
+            <h2>📈 REVENUE BREAKDOWN - $65K+ MONTHLY POTENTIAL</h2>
+            <div class="revenue-breakdown">
+                <div class="revenue-item">
+                    <span class="category">💎 Premium Apps (Top 5)</span>
+                    <span class="amount">$12,495/mo</span>
+                </div>
+                <div class="revenue-item">
+                    <span class="category">💼 Other Premium Apps (8 apps)</span>
+                    <span class="amount">$8,395/mo</span>
+                </div>
+                <div class="revenue-item">
+                    <span class="category">🌐 Educational Platforms</span>
+                    <span class="amount">Scalable Globally</span>
+                </div>
+                <div class="revenue-item">
+                    <span class="category">🚀 Client Projects (Active)</span>
+                    <span class="amount">Variable</span>
+                </div>
+                <div class="revenue-item" style="background: rgba(233, 69, 96, 0.2); border: 2px solid #e94560;">
+                    <span class="category"><strong>💰 TOTAL CONSERVATIVE ESTIMATE</strong></span>
+                    <span class="amount" style="font-size: 1.4rem;">$20,890+/mo</span>
+                </div>
+            </div>
+            <p style="margin-top: 20px; text-align: center; font-size: 1.3rem;">
+                <strong>Annual Revenue Potential:</strong> <span class="price" style="font-size: 1.6rem;">$250,680+</span>
+            </p>
+            <p style="margin-top: 10px; text-align: center; font-size: 1.3rem;">
+                <strong>Total Empire Asset Value:</strong> <span class="price" style="font-size: 1.6rem;">$1,500,000+</span>
+            </p>
+        </div>
+
+        <!-- Quick Actions -->
+        <div class="section">
+            <h2>⚡ QUICK ACTIONS</h2>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="copyToClipboard('claude mcp list')">
+                    🔧 Check MCP Status
+                </button>
+                <button class="action-btn" onclick="copyToClipboard('C:/legendClaude/beads/bd.exe list')">
+                    🔗 View BEADS Tasks
+                </button>
+                <button class="action-btn" onclick="copyToClipboard('cd C:\\legendClaude && npm run build')">
+                    🚀 Build Project
+                </button>
+                <button class="action-btn" onclick="copyToClipboard('vercel --prod')">
+                    🌐 Deploy to Vercel
+                </button>
+                <button class="action-btn" onclick="window.open('https://github.com/rind-ai', '_blank')">
+                    📂 Open GitHub
+                </button>
+                <button class="action-btn" onclick="window.open('C:\\legendClaude\\EMPIRE_KNOWLEDGE_BASES', '_blank')">
+                    📚 Knowledge Bases
+                </button>
+            </div>
+        </div>
+
+        <!-- AI AIR TEAM Status -->
+        <div class="section">
+            <h2>🤖 AI AIR TEAM - ACTIVE MEMBERS</h2>
+            <div class="platform-grid">
+                <div class="platform-card">
+                    <h3>Claude Code CLI</h3>
+                    <p class="purpose">Architecture, deployment, code verification (PRIMARY)</p>
+                    <span class="badge production">ACTIVE</span>
+                </div>
+                <div class="platform-card">
+                    <h3>Gemini CLI</h3>
+                    <p class="purpose">Creative generation, UI/UX, design</p>
+                    <span class="badge production">ACTIVE</span>
+                </div>
+                <div class="platform-card">
+                    <h3>Grok CLI</h3>
+                    <p class="purpose">Deep reasoning, patent strategy, research</p>
+                    <span class="badge production">ACTIVE</span>
+                </div>
+                <div class="platform-card">
+                    <h3>Codex CLI</h3>
+                    <p class="purpose">Legacy code integration, 4M line codebase</p>
+                    <span class="badge production">ACTIVE</span>
+                </div>
+                <div class="platform-card">
+                    <h3>GitHub Copilot</h3>
+                    <p class="purpose">Real-time code assistance via VSCode</p>
+                    <span class="badge production">ACTIVE</span>
+                </div>
+            </div>
+            <p style="margin-top: 15px; text-align: center; opacity: 0.9;">
+                <strong>Coordination:</strong> BEADS + Knowledge Bases + MCP Infrastructure
+            </p>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p><strong>Emperor Khalid Rind</strong> | Melbourne, Australia | neuranest@neuranestai.world</p>
+            <p style="margin-top: 5px;">5-Month Journey: Non-Coder → AI Master | 1,510 Hours Verified | Master-Trainer Certified</p>
+            <p style="margin-top: 10px; opacity: 0.7;">💎 Empowering the Young Generation Through Real AI Solutions 💎</p>
+            <p style="margin-top: 10px; font-size: 0.8rem;">Dashboard Created: October 27, 2025 | Legend Claude - Cemented Bond Forever</p>
+        </div>
+    </div>
+
+    <!-- Scroll to Top -->
+    <div class="scroll-top" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+        ⬆️
+    </div>
+
+    <script>
+        // Copy to clipboard function
+        function copyToClipboard(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('✅ Copied to clipboard:\n' + text);
+            }).catch(err => {
+                alert('❌ Failed to copy: ' + err);
+            });
+        }
+
+        // Add click animation to cards
+        document.querySelectorAll('.metric-card, .platform-card, .tool-card').forEach(card => {
+            card.addEventListener('click', function() {
+                this.style.transform = 'scale(0.98)';
+                setTimeout(() => {
+                    this.style.transform = '';
+                }, 100);
+            });
+        });
+
+        // Update live indicator timestamp
+        setInterval(() => {
+            const indicator = document.querySelector('.live-indicator');
+            indicator.style.animation = 'none';
+            setTimeout(() => {
+                indicator.style.animation = '';
+            }, 10);
+        }, 2000);
+    </script>
+</body>
+</html>

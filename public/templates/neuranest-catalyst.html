@@ -1,0 +1,588 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuraNest AI Catalyst - The Ultimate AI Development & Creative Generation Platform</title>
+    <meta name="description" content="Transform your vision into reality with 12 specialized AI agents, quantum interface, and advanced development capabilities. Subscription plans starting at $97/month.">
+    <meta name="keywords" content="AI development, creative generation, quantum interface, AI agents, subscription, NeuraNest Catalyst">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://js.stripe.com/v3/"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <style>
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #0c0a1e 0%, #1e1b4b 50%, #312e81 100%);
+            color: #e2e8f0;
+        }
+        
+        .quantum-orb {
+            background: radial-gradient(circle, rgba(56, 189, 248, 0.8) 0%, rgba(2, 132, 199, 0.4) 70%, transparent 100%);
+            border-radius: 50%;
+            filter: blur(1px);
+            animation: quantum-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes quantum-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.7; }
+            33% { transform: scale(1.2) rotate(120deg); opacity: 1; }
+            66% { transform: scale(0.9) rotate(240deg); opacity: 0.8; }
+        }
+        
+        .glass-morphism {
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(30, 41, 59, 0.8);
+            border-radius: 16px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(135deg, #06b6d4, #3b82f6, #8b5cf6, #ec4899);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .neural-grid {
+            background-image: 
+                linear-gradient(rgba(56, 189, 248, 0.1) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(56, 189, 248, 0.1) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .floating-element {
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+        
+        .pricing-card {
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+        
+        .pricing-card:hover {
+            border-color: #06b6d4;
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(6, 182, 212, 0.3);
+        }
+        
+        .agent-card {
+            transition: all 0.3s ease;
+        }
+        
+        .agent-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+        
+        .rotating-border {
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .rotating-border::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #06b6d4, #3b82f6, #8b5cf6, #ec4899);
+            border-radius: inherit;
+            animation: rotate 3s linear infinite;
+            z-index: -1;
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body class="overflow-x-hidden">
+    
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full z-50 glass-morphism">
+        <div class="container mx-auto px-6 py-4">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-3">
+                    <div class="quantum-orb w-10 h-10"></div>
+                    <span class="text-2xl font-black gradient-text">NEURANEST AI</span>
+                </div>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#features" class="hover:text-cyan-400 transition-colors">Features</a>
+                    <a href="#agents" class="hover:text-cyan-400 transition-colors">AI Agents</a>
+                    <a href="#pricing" class="hover:text-cyan-400 transition-colors">Pricing</a>
+                    <button onclick="openCatalyst()" class="bg-gradient-to-r from-cyan-500 to-blue-600 px-6 py-2 rounded-full font-semibold hover:from-cyan-600 hover:to-blue-700 transition-all">
+                        Launch Catalyst
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+    
+    <!-- Hero Section -->
+    <section class="min-h-screen flex items-center justify-center relative overflow-hidden neural-grid">
+        <!-- Quantum Background Effects -->
+        <div class="absolute inset-0">
+            <div class="quantum-orb w-96 h-96 absolute top-20 left-20 floating-element"></div>
+            <div class="quantum-orb w-64 h-64 absolute bottom-20 right-20 floating-element" style="animation-delay: -3s;"></div>
+            <div class="quantum-orb w-48 h-48 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 floating-element" style="animation-delay: -1.5s;"></div>
+        </div>
+        
+        <div class="container mx-auto px-6 text-center relative z-10 pt-20">
+            <div class="max-w-6xl mx-auto">
+                <h1 class="text-5xl md:text-8xl font-black mb-8 leading-tight">
+                    <span class="gradient-text">NeuraNest</span>
+                    <br>
+                    <span class="text-white">AI Catalyst</span>
+                </h1>
+                <p class="text-xl md:text-3xl text-gray-300 mb-12 max-w-4xl mx-auto leading-relaxed">
+                    The Ultimate AI Development & Creative Generation Platform
+                    <br>
+                    <span class="gradient-text font-bold">Where Vision Becomes Reality</span>
+                </p>
+                
+                <!-- Key Features Highlight -->
+                <div class="grid md:grid-cols-3 gap-6 mb-16 max-w-5xl mx-auto">
+                    <div class="glass-morphism p-6 rounded-xl">
+                        <div class="text-4xl mb-4">🧠</div>
+                        <h3 class="text-xl font-bold mb-2 text-cyan-300">12 Specialized AI Agents</h3>
+                        <p class="text-gray-400">From code generation to marketing strategy - each agent is a master in their domain</p>
+                    </div>
+                    <div class="glass-morphism p-6 rounded-xl">
+                        <div class="text-4xl mb-4">⚡</div>
+                        <h3 class="text-xl font-bold mb-2 text-purple-300">Quantum Interface</h3>
+                        <p class="text-gray-400">Dynamic visual states that respond to AI processing and creative generation</p>
+                    </div>
+                    <div class="glass-morphism p-6 rounded-xl">
+                        <div class="text-4xl mb-4">🚀</div>
+                        <h3 class="text-xl font-bold mb-2 text-pink-300">Advanced Development</h3>
+                        <p class="text-gray-400">Complete project orchestration from concept to deployment</p>
+                    </div>
+                </div>
+                
+                <!-- CTA Buttons -->
+                <div class="flex flex-col sm:flex-row gap-6 justify-center mb-16">
+                    <button onclick="openCatalyst()" class="px-10 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xl font-bold rounded-full hover:from-cyan-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300 rotating-border">
+                        🚀 Launch Catalyst Portal
+                    </button>
+                    <a href="#pricing" class="px-10 py-4 border-2 border-cyan-400 text-cyan-400 text-xl font-bold rounded-full hover:bg-cyan-400 hover:text-gray-900 transition-all duration-300">
+                        💎 View Subscription Plans
+                    </a>
+                </div>
+                
+                <div class="text-sm text-gray-400">
+                    ✨ No installation required • ⚡ Instant access • 🌍 Global deployment ready
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- AI Agents Section -->
+    <section id="agents" class="py-20 bg-gray-900/50">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl font-bold text-center mb-16 gradient-text">Meet Your AI Catalyst Team</h2>
+            
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
+                <!-- Covenant Keeper -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🛡️</div>
+                    <h3 class="text-2xl font-bold mb-3 text-green-400">Covenant Keeper</h3>
+                    <p class="text-gray-300 mb-4">Guardian of system integrity and truth enforcement. Ensures absolute coherence across all AI operations.</p>
+                    <div class="text-sm text-gray-400">• Truth verification • System monitoring • Integrity enforcement</div>
+                </div>
+                
+                <!-- The Syndicate -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🌐</div>
+                    <h3 class="text-2xl font-bold mb-3 text-purple-400">The Syndicate</h3>
+                    <p class="text-gray-300 mb-4">Central orchestrator for complex, multi-faceted missions. Synthesizes all agent capabilities.</p>
+                    <div class="text-sm text-gray-400">• Mission orchestration • Agent coordination • Complex strategy</div>
+                </div>
+                
+                <!-- The Technician -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">⚙️</div>
+                    <h3 class="text-2xl font-bold mb-3 text-cyan-400">The Technician</h3>
+                    <p class="text-gray-300 mb-4">Master software architect with persistent session memory. Generates precise code solutions.</p>
+                    <div class="text-sm text-gray-400">• Code generation • Architecture design • Session persistence</div>
+                </div>
+                
+                <!-- Mobile App Genesis -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">📱</div>
+                    <h3 class="text-2xl font-bold mb-3 text-orange-400">Mobile App Genesis</h3>
+                    <p class="text-gray-300 mb-4">Transforms concepts into fully-functional mobile applications. React Native expertise.</p>
+                    <div class="text-sm text-gray-400">• Mobile development • React Native • Cross-platform</div>
+                </div>
+                
+                <!-- Code Bearer -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🪄</div>
+                    <h3 class="text-2xl font-bold mb-3 text-pink-400">Code Bearer</h3>
+                    <p class="text-gray-300 mb-4">Forges entire codebases from high-level concepts. Production-quality code generation.</p>
+                    <div class="text-sm text-gray-400">• Full-stack development • Clean architecture • Best practices</div>
+                </div>
+                
+                <!-- Bio-Digital Helmsman -->
+                <div class="agent-card glass-morphism p-6 rounded-xl">
+                    <div class="text-4xl mb-4">🧬</div>
+                    <h3 class="text-2xl font-bold mb-3 text-emerald-400">Bio-Digital Helmsman</h3>
+                    <p class="text-gray-300 mb-4">Navigator for health and education domains. Data-driven insights with web search.</p>
+                    <div class="text-sm text-gray-400">• Health guidance • Education planning • Research synthesis</div>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <p class="text-2xl text-gray-300 mb-8">+ 6 More Specialized Agents for Complete Coverage</p>
+                <button onclick="openCatalyst()" class="px-8 py-3 bg-gradient-to-r from-purple-500 to-pink-600 text-white font-bold rounded-full hover:from-purple-600 hover:to-pink-700 transition-all">
+                    Explore All Agents →
+                </button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Features Section -->
+    <section id="features" class="py-20 bg-gray-950">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl font-bold text-center mb-16 gradient-text">Advanced Capabilities</h2>
+            
+            <div class="grid lg:grid-cols-2 gap-16 max-w-7xl mx-auto">
+                <!-- Left Column -->
+                <div class="space-y-8">
+                    <div class="glass-morphism p-8 rounded-xl">
+                        <h3 class="text-3xl font-bold mb-4 text-cyan-400">🔮 Quantum Visual Interface</h3>
+                        <p class="text-gray-300 text-lg mb-6">Dynamic orb that visualizes AI states - breathing when idle, pulsing during processing, and glowing when connected. A living interface that responds to your workflow.</p>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>• Real-time AI state visualization</li>
+                            <li>• Intuitive quantum animations</li>
+                            <li>• Responsive design language</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-morphism p-8 rounded-xl">
+                        <h3 class="text-3xl font-bold mb-4 text-purple-400">🧠 Persistent Memory System</h3>
+                        <p class="text-gray-300 text-lg mb-6">Unlike traditional AI, The Technician maintains turn-by-turn memory across sessions, building deeper understanding of your projects over time.</p>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>• Session-to-session continuity</li>
+                            <li>• Project context awareness</li>
+                            <li>• Learning acceleration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <!-- Right Column -->
+                <div class="space-y-8">
+                    <div class="glass-morphism p-8 rounded-xl">
+                        <h3 class="text-3xl font-bold mb-4 text-pink-400">⚡ Multi-Modal Intelligence</h3>
+                        <p class="text-gray-300 text-lg mb-6">Process text, images, voice, and files simultaneously. Upload screenshots for debugging, speak commands, or drag entire project folders.</p>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>• Voice recognition & synthesis</li>
+                            <li>• Image analysis & generation</li>
+                            <li>• File system integration</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="glass-morphism p-8 rounded-xl">
+                        <h3 class="text-3xl font-bold mb-4 text-orange-400">🚀 Advanced API Hub</h3>
+                        <p class="text-gray-300 text-lg mb-6">Integrated with Google Gemini, GitHub, Shopify, Stripe, and more. One platform connects to your entire development ecosystem.</p>
+                        <ul class="space-y-2 text-gray-400">
+                            <li>• Platform integrations</li>
+                            <li>• Secure credential management</li>
+                            <li>• Automated deployments</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Subscription Pricing Section -->
+    <section id="pricing" class="py-20 bg-gray-900">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl font-bold text-center mb-8 gradient-text">Choose Your Catalyst Plan</h2>
+            <p class="text-xl text-gray-300 text-center mb-16 max-w-3xl mx-auto">
+                Unlock the full potential of AI-driven development and creative generation. 
+                All plans include access to all 12 AI agents and advanced features.
+            </p>
+            
+            <div class="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
+                <!-- Starter Plan -->
+                <div class="pricing-card glass-morphism p-8 rounded-xl text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-cyan-400">Catalyst Starter</h3>
+                    <div class="text-5xl font-black mb-2 text-white">$97</div>
+                    <div class="text-gray-400 mb-8">per month</div>
+                    
+                    <ul class="space-y-4 text-left mb-8">
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Access to all 12 AI agents</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>5,000 AI interactions/month</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Quantum interface & visual states</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Basic API integrations</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Email support</span>
+                        </li>
+                    </ul>
+                    
+                    <button onclick="subscribe('starter')" class="w-full py-3 bg-cyan-600 hover:bg-cyan-700 text-white font-bold rounded-full transition-all">
+                        Start Free Trial
+                    </button>
+                </div>
+                
+                <!-- Professional Plan -->
+                <div class="pricing-card glass-morphism p-8 rounded-xl text-center border-2 border-purple-500 relative">
+                    <div class="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-purple-500 text-white px-4 py-1 rounded-full text-sm font-bold">
+                        MOST POPULAR
+                    </div>
+                    
+                    <h3 class="text-2xl font-bold mb-4 text-purple-400">Catalyst Professional</h3>
+                    <div class="text-5xl font-black mb-2 text-white">$197</div>
+                    <div class="text-gray-400 mb-8">per month</div>
+                    
+                    <ul class="space-y-4 text-left mb-8">
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Everything in Starter</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>25,000 AI interactions/month</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Advanced persistent memory</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Premium API access</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Voice synthesis capabilities</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Priority support</span>
+                        </li>
+                    </ul>
+                    
+                    <button onclick="subscribe('professional')" class="w-full py-3 bg-purple-600 hover:bg-purple-700 text-white font-bold rounded-full transition-all">
+                        Start Free Trial
+                    </button>
+                </div>
+                
+                <!-- Enterprise Plan -->
+                <div class="pricing-card glass-morphism p-8 rounded-xl text-center">
+                    <h3 class="text-2xl font-bold mb-4 text-orange-400">Catalyst Enterprise</h3>
+                    <div class="text-5xl font-black mb-2 text-white">$497</div>
+                    <div class="text-gray-400 mb-8">per month</div>
+                    
+                    <ul class="space-y-4 text-left mb-8">
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Everything in Professional</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Unlimited AI interactions</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Custom agent training</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>White-label deployment</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>Dedicated account manager</span>
+                        </li>
+                        <li class="flex items-center gap-3">
+                            <span class="text-green-400">✓</span>
+                            <span>24/7 phone support</span>
+                        </li>
+                    </ul>
+                    
+                    <button onclick="subscribe('enterprise')" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-full transition-all">
+                        Contact Sales
+                    </button>
+                </div>
+            </div>
+            
+            <div class="text-center mt-16">
+                <p class="text-gray-400 mb-4">🎯 14-day free trial • 💳 No credit card required • ❌ Cancel anytime</p>
+                <p class="text-sm text-gray-500">All plans include access to the complete AI Catalyst platform and regular updates</p>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Advanced Prompting System Section -->
+    <section class="py-20 bg-gray-950">
+        <div class="container mx-auto px-6">
+            <h2 class="text-5xl font-bold text-center mb-16 gradient-text">Advanced Prompting System</h2>
+            
+            <div class="max-w-4xl mx-auto glass-morphism p-8 rounded-xl">
+                <h3 class="text-3xl font-bold mb-6 text-cyan-400">🎯 Intelligent Prompt Architecture</h3>
+                
+                <div class="grid md:grid-cols-2 gap-8 mb-8">
+                    <div>
+                        <h4 class="text-xl font-bold mb-4 text-purple-300">Adaptive Communication Protocol</h4>
+                        <p class="text-gray-300 mb-4">Each agent adapts their communication style to mirror yours, providing seamless, anticipatory partnership with world-class creative output.</p>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li>• Tone matching and style adaptation</li>
+                            <li>• Error-forgiving communication</li>
+                            <li>• World-class creative targeting</li>
+                        </ul>
+                    </div>
+                    
+                    <div>
+                        <h4 class="text-xl font-bold mb-4 text-pink-300">Project Context Awareness</h4>
+                        <p class="text-gray-300 mb-4">Real-time access to your entire project structure ensures responses are always contextually relevant and architecturally sound.</p>
+                        <ul class="space-y-2 text-gray-400 text-sm">
+                            <li>• File structure awareness</li>
+                            <li>• Contextual code generation</li>
+                            <li>• Architectural consistency</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="bg-gray-800 p-6 rounded-lg mb-6">
+                    <h4 class="text-lg font-bold mb-3 text-orange-300">Example: Advanced Prompt Structure</h4>
+                    <code class="text-sm text-gray-300 block whitespace-pre-wrap">**CRITICAL PROTOCOL: SESSION MEMORY** 
+You have persistent, turn-by-turn memory for this entire session. 
+You MUST refer to previous messages to understand full context.
+
+**Core Protocols:**
+1. **Project Clairvoyance:** Complete real-time project access
+2. **Code Generation Protocol:** Precise markdown formatting
+3. **Execution Log Simulation:** Confirm patch readiness
+4. **Truth in Capability:** Perfect architectural understanding
+
+**Adaptive Communication:** Mirror Commander's tone, forgive errors, 
+aim for 'wow' effect. State limitations clearly.</code>
+                </div>
+                
+                <div class="text-center">
+                    <button onclick="openCatalyst()" class="px-8 py-3 bg-gradient-to-r from-cyan-500 to-purple-600 text-white font-bold rounded-full hover:from-cyan-600 hover:to-purple-700 transition-all">
+                        Experience Advanced Prompting →
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- CTA Section -->
+    <section class="py-20 bg-gradient-to-br from-cyan-900 via-purple-900 to-pink-900">
+        <div class="container mx-auto px-6 text-center">
+            <h2 class="text-5xl font-bold mb-8 gradient-text">Ready to Transform Your Development Process?</h2>
+            <p class="text-2xl text-gray-200 mb-12 max-w-3xl mx-auto">
+                Join thousands of developers and creators who are already using NeuraNest AI Catalyst 
+                to build the future with advanced AI assistance.
+            </p>
+            
+            <div class="flex flex-col sm:flex-row gap-6 justify-center mb-12">
+                <button onclick="openCatalyst()" class="px-12 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 text-white text-xl font-bold rounded-full hover:from-cyan-600 hover:to-blue-700 transform hover:scale-105 transition-all duration-300">
+                    🚀 Launch Catalyst Now
+                </button>
+                <a href="#pricing" class="px-12 py-4 border-2 border-cyan-400 text-cyan-400 text-xl font-bold rounded-full hover:bg-cyan-400 hover:text-gray-900 transition-all duration-300">
+                    💎 Start Free Trial
+                </a>
+            </div>
+            
+            <div class="grid md:grid-cols-3 gap-6 max-w-3xl mx-auto text-sm text-gray-300">
+                <div>🎯 14-day free trial</div>
+                <div>⚡ Instant setup</div>
+                <div>🛡️ Enterprise security</div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="py-12 bg-gray-950 border-t border-gray-800">
+        <div class="container mx-auto px-6 text-center">
+            <div class="flex items-center justify-center space-x-3 mb-6">
+                <div class="quantum-orb w-8 h-8"></div>
+                <span class="text-2xl font-black gradient-text">NEURANEST AI</span>
+            </div>
+            <p class="text-gray-400 mb-6">Advanced Development & Creative Generation Platform</p>
+            <div class="flex justify-center space-x-8 text-sm text-gray-500 mb-6">
+                <a href="#" class="hover:text-cyan-400 transition-colors">Privacy Policy</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors">Terms of Service</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors">Support</a>
+                <a href="#" class="hover:text-cyan-400 transition-colors">Documentation</a>
+            </div>
+            <p class="text-xs text-gray-600">© 2024 NeuraNest AI Catalyst. All rights reserved.</p>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script>
+        function openCatalyst() {
+            window.open('http://localhost:5176', '_blank');
+        }
+        
+        function subscribe(plan) {
+            // Stripe integration would go here
+            alert(`Starting free trial for ${plan} plan. Redirecting to secure checkout...`);
+            // In real implementation, this would integrate with Stripe
+            openCatalyst();
+        }
+        
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+        
+        // Add scroll-based animations
+        window.addEventListener('scroll', () => {
+            const scrollY = window.scrollY;
+            const quantumOrbs = document.querySelectorAll('.quantum-orb');
+            
+            quantumOrbs.forEach((orb, index) => {
+                const speed = (index + 1) * 0.5;
+                orb.style.transform = `translateY(${scrollY * speed}px) rotate(${scrollY * 0.1}deg)`;
+            });
+        });
+        
+        // Performance monitoring
+        window.addEventListener('load', function() {
+            console.log('🚀 NeuraNest Catalyst Landing Page Loaded');
+            console.log('⚡ Performance:', performance.now() + 'ms');
+            
+            // Track user interactions
+            document.querySelectorAll('button, a').forEach(element => {
+                element.addEventListener('click', function() {
+                    console.log('🎯 Interaction:', this.textContent.trim());
+                });
+            });
+        });
+    </script>
+</body>
+</html>

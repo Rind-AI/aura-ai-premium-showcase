@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Digital Empire Command Dashboard</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #070b1a;
+      --panel: #121932;
+      --accent: #7f5af0;
+      --text: #f5f9ff;
+      --muted: #94a3b8;
+      --grid-gap: 1.5rem;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    body {
+      margin: 0;
+      background: radial-gradient(circle at top, rgba(127, 90, 240, 0.15), transparent 60%), var(--bg);
+      color: var(--text);
+      padding: 2rem;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+    header h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+    header .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    .quick-links {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    .primary-link {
+      background: linear-gradient(135deg, var(--accent), rgba(127, 90, 240, 0.6));
+      color: var(--text);
+      text-decoration: none;
+      padding: 0.6rem 1.2rem;
+      border-radius: 999px;
+      font-size: 0.9rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      box-shadow: 0 8px 20px rgba(127, 90, 240, 0.35);
+      border: 1px solid rgba(127, 90, 240, 0.4);
+    }
+    .primary-link:hover {
+      background: linear-gradient(135deg, rgba(127, 90, 240, 0.85), var(--accent));
+    }
+    }
+    .team-roster {
+      color: var(--gold);
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 215, 0, 0.45);
+      background: rgba(255, 215, 0, 0.12);
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: var(--grid-gap);
+    }
+    .panel {
+      background: rgba(18, 25, 50, 0.85);
+      border: 1px solid rgba(127, 90, 240, 0.3);
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 12px 30px rgba(0,0,0,0.35);
+      backdrop-filter: blur(10px);
+    }
+    .panel h2 {
+      margin-top: 0;
+      margin-bottom: 1rem;
+      font-size: 1.1rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .headline-metric {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .metric-card {
+      background: rgba(127, 90, 240, 0.1);
+      border: 1px solid rgba(127, 90, 240, 0.3);
+      padding: 1.2rem;
+      border-radius: 16px;
+      text-align: center;
+    }
+    .metric-card .label {
+      color: var(--muted);
+      font-size: 0.85rem;
+      letter-spacing: 0.08em;
+    }
+    .metric-card .value {
+      margin-top: 0.4rem;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    .category-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+    }
+    .category-card {
+      background: rgba(255, 255, 255, 0.04);
+      border-radius: 12px;
+      padding: 1rem;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+    }
+    .category-name {
+      font-size: 0.95rem;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+    }
+    .category-count {
+      margin-top: 0.5rem;
+      font-size: 1.6rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      text-align: left;
+      padding: 0.5rem 0.3rem;
+      border-bottom: 1px solid rgba(148, 163, 184, 0.2);
+      font-size: 0.9rem;
+    }
+    th {
+      color: var(--muted);
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+    tbody tr:hover {
+      background: rgba(127, 90, 240, 0.12);
+    }
+    code {
+      font-family: "JetBrains Mono", "Fira Code", monospace;
+      font-size: 0.85rem;
+      color: #a5b8ff;
+    }
+    .filter-bar {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+    .filter-bar select, .filter-bar input {
+      background: rgba(18, 25, 50, 0.9);
+      border: 1px solid rgba(127, 90, 240, 0.4);
+      color: var(--text);
+      padding: 0.3rem 0.6rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+    }
+    footer {
+      margin-top: 3rem;
+      color: var(--muted);
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    @media (max-width: 640px) {
+      body { padding: 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Air Team - Digital Empire Command</h1>
+    <div class="meta">Generated 27/09/2025, 9:22:23 pm</div>
+    <div class="quick-links">
+      <a class="primary-link" href="file:///C:/legendClaude/mstaer%20dsahboard/MASTER_DASHBOARD_INDEX.html" target="_blank" rel="noopener">Open Master Dashboard Hub</a>
+      <span class="team-roster">AI AIR TEAM: GEMINI CLI · CLAUDE CODE CLI · CODEX CLI</span>
+    </div>
+  </header>
+
+  <section class="panel">
+    <div class="headline-metric">
+      <div class="metric-card">
+        <div class="label">Indexed Assets</div>
+        <div class="value">47,365</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Indexed Surface</div>
+        <div class="value">4,833 MB</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Category Span</div>
+        <div class="value">7</div>
+      </div>
+      <div class="metric-card">
+        <div class="label">Roots Mapped</div>
+        <div class="value">50</div>
+      </div>
+    </div>
+    <div class="category-grid">
+      <div class="category-card"><div class="category-name">Multi-Agent & Runtime Engines</div><div class="category-count">17,367</div></div>
+<div class="category-card"><div class="category-name">Data & Knowledge Bases</div><div class="category-count">9,852</div></div>
+<div class="category-card"><div class="category-name">Specialized & Legacy</div><div class="category-count">6,317</div></div>
+<div class="category-card"><div class="category-name">AR/VR Immersive</div><div class="category-count">5,529</div></div>
+<div class="category-card"><div class="category-name">Automation & API Platforms</div><div class="category-count">3,905</div></div>
+<div class="category-card"><div class="category-name">Mission Control / Dashboards</div><div class="category-count">3,611</div></div>
+<div class="category-card"><div class="category-name">Portfolio & Experience</div><div class="category-count">784</div></div>
+    </div>
+  </section>
+
+  <div class="grid" style="margin-top: 2rem;">
+    <div class="panel">
+      <h2>Top Project Roots</h2>
+      <table>
+        <thead><tr><th>Root</th><th>Assets</th></tr></thead>
+        <tbody><tr><td>legendClaude</td><td>15,490</td></tr>
+<tr><td>Users</td><td>13,023</td></tr>
+<tr><td>K RIND</td><td>6,427</td></tr>
+<tr><td>Python313</td><td>3,449</td></tr>
+<tr><td>GEMINI-CLI</td><td>2,612</td></tr>
+<tr><td>projects</td><td>1,939</td></tr>
+<tr><td>Microsoft VS Code</td><td>1,040</td></tr>
+<tr><td>API READY APPS</td><td>748</td></tr>
+<tr><td>cursor</td><td>576</td></tr>
+<tr><td>New APP 12th august</td><td>325</td></tr>
+<tr><td>REAL APPS</td><td>244</td></tr>
+<tr><td>GREAT APPS</td><td>196</td></tr>
+<tr><td>zivler</td><td>187</td></tr>
+<tr><td>AUTOMATION_EMPIRE</td><td>136</td></tr>
+<tr><td>TESTING APPS</td><td>134</td></tr>
+<tr><td>14th August</td><td>125</td></tr>
+<tr><td>v0-futuristic-dashboard-main</td><td>73</td></tr>
+<tr><td>verEcom1</td><td>73</td></tr>
+<tr><td>rind-digital-partner-saas (1)</td><td>53</td></tr>
+<tr><td>ALL APIs</td><td>47</td></tr>
+<tr><td>neuranest-ai_-complete-digital-solutions-vnice (11)</td><td>47</td></tr>
+<tr><td>NEW GOOGLE AI STUDIO PROJECTS</td><td>45</td></tr>
+<tr><td>Download 2</td><td>41</td></tr>
+<tr><td>AOS</td><td>33</td></tr>
+<tr><td>neuranest-ai_-complete-digital-solutions-vnice (14)</td><td>32</td></tr></tbody>
+      </table>
+    </div>
+    <div class="panel">
+      <h2>Primary Build Surfaces</h2>
+      <table>
+        <thead><tr><th>Ext</th><th>Count</th></tr></thead>
+        <tbody><tr><td>.json</td><td>10,381</td></tr>
+<tr><td>.tsx</td><td>8,302</td></tr>
+<tr><td>.py</td><td>7,762</td></tr>
+<tr><td>.js</td><td>7,324</td></tr>
+<tr><td>.md</td><td>4,036</td></tr>
+<tr><td>.ts</td><td>3,050</td></tr>
+<tr><td>.html</td><td>2,770</td></tr>
+<tr><td>.css</td><td>1,504</td></tr>
+<tr><td>.bat</td><td>610</td></tr>
+<tr><td>.sh</td><td>485</td></tr>
+<tr><td>.ps1</td><td>333</td></tr>
+<tr><td>.yaml</td><td>177</td></tr>
+<tr><td>.yml</td><td>126</td></tr>
+<tr><td>.jsx</td><td>108</td></tr>
+<tr><td>.mjs</td><td>103</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+
+  <section class="panel" style="margin-top: 2rem;">
+    <h2>Operational Feed - Latest 150 Assets</h2>
+    <div class="filter-bar">
+      <label>Category
+        <select id="categoryFilter">
+          <option value="all">All categories</option>
+        </select>
+      </label>
+      <label>Search
+        <input id="searchInput" type="search" placeholder="Filter path..." />
+      </label>
+      <div id="resultCount" style="color: var(--muted); font-size: 0.85rem;"></div>
+    </div>
+    <div style="overflow-x: auto;">
+      <table id="assetTable">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Asset</th>
+            <th>Category</th>
+            <th>Updated</th>
+            <th>Size</th>
+          </tr>
+        </thead>
+        <tbody></tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    AIR Team - Emperor Command - Claudius Codex Alliance
+  </footer>
+
+  <script type="application/json" id="empire-data">{"generatedAt":"2025-09-27T11:22:23.234Z","totalIndexedFiles":47365,"totalIndexedSizeMB":4832.95,"byCategory":{"Multi-Agent & Runtime Engines":17367,"Data & Knowledge Bases":9852,"Specialized & Legacy":6317,"AR/VR Immersive":5529,"Automation & API Platforms":3905,"Mission Control / Dashboards":3611,"Portfolio & Experience":784},"byRoot":{"legendClaude":15490,"Users":13023,"K RIND":6427,"Python313":3449,"GEMINI-CLI":2612,"projects":1939,"Microsoft VS Code":1040,"API READY APPS":748,"cursor":576,"New APP 12th august":325,"REAL APPS":244,"GREAT APPS":196,"zivler":187,"AUTOMATION_EMPIRE":136,"TESTING APPS":134,"14th August":125,"v0-futuristic-dashboard-main":73,"verEcom1":73,"rind-digital-partner-saas (1)":53,"ALL APIs":47,"neuranest-ai_-complete-digital-solutions-vnice (11)":47,"NEW GOOGLE AI STUDIO PROJECTS":45,"Download 2":41,"AOS":33,"neuranest-ai_-complete-digital-solutions-vnice (14)":32},"byExtension":{".json":10381,".tsx":8302,".py":7762,".js":7324,".md":4036,".ts":3050,".html":2770,".css":1504,".bat":610,".sh":485,".ps1":333,".yaml":177,".yml":126,".jsx":108,".mjs":103},"topAssets":[{"path":"C:\\legendClaude\\digital_empire_scan.mjs","relative":"legendClaude\\digital_empire_scan.mjs","ext":".mjs","category":"Specialized & Legacy","sizeKB":11,"lastModified":"2025-09-27T11:20:11.494Z"},{"path":"C:\\legendClaude\\DIGITAL_EMPIRE_REPORT_C_DRIVE.md","relative":"legendClaude\\DIGITAL_EMPIRE_REPORT_C_DRIVE.md","ext":".md","category":"Specialized & Legacy","sizeKB":16.9,"lastModified":"2025-09-27T11:13:52.644Z"},{"path":"C:\\legendClaude\\index_c_drive_filtered.json","relative":"legendClaude\\index_c_drive_filtered.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":38.8,"lastModified":"2025-09-27T11:12:42.112Z"},{"path":"C:\\legendClaude\\DIGITAL_EMPIRE_REPORT.md","relative":"legendClaude\\DIGITAL_EMPIRE_REPORT.md","ext":".md","category":"Specialized & Legacy","sizeKB":11.9,"lastModified":"2025-09-27T11:08:39.874Z"},{"path":"C:\\legendClaude\\index_report_filtered.json","relative":"legendClaude\\index_report_filtered.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":24.2,"lastModified":"2025-09-27T10:59:31.002Z"},{"path":"C:\\legendClaude\\index_report.json","relative":"legendClaude\\index_report.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":32.8,"lastModified":"2025-09-27T10:57:42.806Z"},{"path":"C:\\Users\\ksr11\\.claude\\todos\\fc8c3fe4-bb0c-4864-9271-9831c0ec1035-agent-fc8c3fe4-bb0c-4864-9271-9831c0ec1035.json","relative":"Users\\ksr11\\.claude\\todos\\fc8c3fe4-bb0c-4864-9271-9831c0ec1035-agent-fc8c3fe4-bb0c-4864-9271-9831c0ec1035.json","ext":".json","category":"Automation & API Platforms","sizeKB":0.6,"lastModified":"2025-09-27T10:54:45.054Z"},{"path":"C:\\legendClaude\\EMPEROR_ARCHIVE_COMPLETE_SEPT27_2025.json","relative":"legendClaude\\EMPEROR_ARCHIVE_COMPLETE_SEPT27_2025.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":7,"lastModified":"2025-09-27T10:54:25.340Z"},{"path":"C:\\legendClaude\\KHALID_DAILY_WORK_DIARY.md","relative":"legendClaude\\KHALID_DAILY_WORK_DIARY.md","ext":".md","category":"Specialized & Legacy","sizeKB":3.2,"lastModified":"2025-09-27T10:53:26.684Z"},{"path":"C:\\legendClaude\\DAILY_WORK_DIARY_SYSTEM.js","relative":"legendClaude\\DAILY_WORK_DIARY_SYSTEM.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":13,"lastModified":"2025-09-27T10:53:07.883Z"},{"path":"C:\\legendClaude\\KHALID_MASTER_MEMORY.md","relative":"legendClaude\\KHALID_MASTER_MEMORY.md","ext":".md","category":"Data & Knowledge Bases","sizeKB":13.1,"lastModified":"2025-09-27T10:49:54.862Z"},{"path":"C:\\legendClaude\\SESSION_BACKUP_SEPT27_2025.json","relative":"legendClaude\\SESSION_BACKUP_SEPT27_2025.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":4.4,"lastModified":"2025-09-27T10:48:08.629Z"},{"path":"C:\\Users\\ksr11\\.claude.json","relative":"Users\\ksr11\\.claude.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":151.4,"lastModified":"2025-09-27T10:44:56.613Z"},{"path":"C:\\legendClaude\\DASHBOARD_INTEGRATION_GUIDE.md","relative":"legendClaude\\DASHBOARD_INTEGRATION_GUIDE.md","ext":".md","category":"Mission Control / Dashboards","sizeKB":5,"lastModified":"2025-09-27T10:31:36.166Z"},{"path":"C:\\legendClaude\\mstaer dsahboard\\DASHBOARD_FEED_DATA.json","relative":"legendClaude\\mstaer dsahboard\\DASHBOARD_FEED_DATA.json","ext":".json","category":"Mission Control / Dashboards","sizeKB":4.3,"lastModified":"2025-09-27T10:30:42.790Z"},{"path":"C:\\legendClaude\\SESSION_FEEDER_SYSTEM.js","relative":"legendClaude\\SESSION_FEEDER_SYSTEM.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":10.2,"lastModified":"2025-09-27T10:30:07.550Z"},{"path":"C:\\Users\\ksr11\\.codex\\auth.json","relative":"Users\\ksr11\\.codex\\auth.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":4.4,"lastModified":"2025-09-27T10:29:04.463Z"},{"path":"C:\\legendClaude\\mstaer dsahboard\\MASTER_DASHBOARD_INDEX.html","relative":"legendClaude\\mstaer dsahboard\\MASTER_DASHBOARD_INDEX.html","ext":".html","category":"Mission Control / Dashboards","sizeKB":26.7,"lastModified":"2025-09-27T10:28:19.277Z"},{"path":"C:\\Users\\ksr11\\.codex\\version.json","relative":"Users\\ksr11\\.codex\\version.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.1,"lastModified":"2025-09-27T10:28:17.514Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\extensions.json","relative":"Users\\ksr11\\.cursor\\extensions\\extensions.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":64.4,"lastModified":"2025-09-27T10:20:33.083Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\package.json","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\package.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":3.1,"lastModified":"2025-09-27T10:20:33.029Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\highlight-code-gF7PDFo6.js","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\highlight-code-gF7PDFo6.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":1,"lastModified":"2025-09-27T10:20:27.426Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\index-BdQdd0wE.css","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\index-BdQdd0wE.css","ext":".css","category":"Specialized & Legacy","sizeKB":84.2,"lastModified":"2025-09-27T10:20:27.419Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\index-C2oOtg9T.js","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\assets\\index-C2oOtg9T.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":3388.3,"lastModified":"2025-09-27T10:20:27.414Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\out\\extension.js","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\out\\extension.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":48.5,"lastModified":"2025-09-27T10:20:27.257Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\index.html","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\webview\\index.html","ext":".html","category":"Specialized & Legacy","sizeKB":0.5,"lastModified":"2025-09-27T10:20:27.249Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\LICENSE.md","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\LICENSE.md","ext":".md","category":"Specialized & Legacy","sizeKB":0,"lastModified":"2025-09-27T10:20:27.244Z"},{"path":"C:\\Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\readme.md","relative":"Users\\ksr11\\.cursor\\extensions\\openai.chatgpt-0.4.15-universal\\readme.md","ext":".md","category":"Specialized & Legacy","sizeKB":1.2,"lastModified":"2025-09-27T10:20:27.238Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\extensions.json","relative":"Users\\ksr11\\.vscode\\extensions\\extensions.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":90.7,"lastModified":"2025-09-27T10:19:20.922Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\package.json","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\package.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":3.1,"lastModified":"2025-09-27T10:19:20.851Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\highlight-code-gF7PDFo6.js","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\highlight-code-gF7PDFo6.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":1,"lastModified":"2025-09-27T10:19:19.961Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\index-BdQdd0wE.css","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\index-BdQdd0wE.css","ext":".css","category":"Specialized & Legacy","sizeKB":84.2,"lastModified":"2025-09-27T10:19:19.956Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\index-C2oOtg9T.js","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\assets\\index-C2oOtg9T.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":3388.3,"lastModified":"2025-09-27T10:19:19.952Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\out\\extension.js","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\out\\extension.js","ext":".js","category":"Multi-Agent & Runtime Engines","sizeKB":48.5,"lastModified":"2025-09-27T10:19:19.840Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\index.html","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\webview\\index.html","ext":".html","category":"Specialized & Legacy","sizeKB":0.5,"lastModified":"2025-09-27T10:19:19.809Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\LICENSE.md","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\LICENSE.md","ext":".md","category":"Specialized & Legacy","sizeKB":0,"lastModified":"2025-09-27T10:19:19.800Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\readme.md","relative":"Users\\ksr11\\.vscode\\extensions\\openai.chatgpt-0.4.15-win32-x64\\readme.md","ext":".md","category":"Specialized & Legacy","sizeKB":1.2,"lastModified":"2025-09-27T10:19:19.790Z"},{"path":"C:\\Users\\ksr11\\.cursor\\ide_state.json","relative":"Users\\ksr11\\.cursor\\ide_state.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.2,"lastModified":"2025-09-27T10:19:12.092Z"},{"path":"C:\\legendClaude\\mstaer dsahboard\\ULTIMATE_DEEP_SCAN_EMPIRE_DASHBOARD.html","relative":"legendClaude\\mstaer dsahboard\\ULTIMATE_DEEP_SCAN_EMPIRE_DASHBOARD.html","ext":".html","category":"Mission Control / Dashboards","sizeKB":20.8,"lastModified":"2025-09-27T10:17:57.993Z"},{"path":"C:\\Users\\ksr11\\.gk\\repoMapping.json","relative":"Users\\ksr11\\.gk\\repoMapping.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.8,"lastModified":"2025-09-27T10:15:12.646Z"},{"path":"C:\\Users\\ksr11\\.claude\\todos\\fc8c3fe4-bb0c-4864-9271-9831c0ec1035-agent-53d090b4-afd3-458b-b5a0-63b043f03b64.json","relative":"Users\\ksr11\\.claude\\todos\\fc8c3fe4-bb0c-4864-9271-9831c0ec1035-agent-53d090b4-afd3-458b-b5a0-63b043f03b64.json","ext":".json","category":"Automation & API Platforms","sizeKB":0.9,"lastModified":"2025-09-27T10:10:28.223Z"},{"path":"C:\\legendClaude\\.claude\\settings.local.json","relative":"legendClaude\\.claude\\settings.local.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":8.6,"lastModified":"2025-09-27T10:08:02.337Z"},{"path":"C:\\Users\\ksr11\\.claude\\.credentials.json","relative":"Users\\ksr11\\.claude\\.credentials.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.4,"lastModified":"2025-09-27T09:32:32.518Z"},{"path":"C:\\legendClaude\\mstaer dsahboard\\ULTIMATE_LIVE_EMPIRE_DASHBOARD.html","relative":"legendClaude\\mstaer dsahboard\\ULTIMATE_LIVE_EMPIRE_DASHBOARD.html","ext":".html","category":"Mission Control / Dashboards","sizeKB":70.4,"lastModified":"2025-09-27T09:24:52.464Z"},{"path":"C:\\Users\\ksr11\\.aws\\amazonq\\agents\\default.json","relative":"Users\\ksr11\\.aws\\amazonq\\agents\\default.json","ext":".json","category":"Automation & API Platforms","sizeKB":0.8,"lastModified":"2025-09-27T09:16:56.075Z"},{"path":"C:\\Users\\ksr11\\.aws\\amazonq\\mcpAdmin\\mcp-state.json","relative":"Users\\ksr11\\.aws\\amazonq\\mcpAdmin\\mcp-state.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0,"lastModified":"2025-09-27T09:16:55.562Z"},{"path":"C:\\Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758964579970-5rz8pt.sh","relative":"Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758964579970-5rz8pt.sh","ext":".sh","category":"Multi-Agent & Runtime Engines","sizeKB":0.3,"lastModified":"2025-09-27T09:16:24.413Z"},{"path":"C:\\Users\\ksr11\\.claude\\todos\\4b4d065d-efff-42c6-8e31-7b1a768e5077-agent-4b4d065d-efff-42c6-8e31-7b1a768e5077.json","relative":"Users\\ksr11\\.claude\\todos\\4b4d065d-efff-42c6-8e31-7b1a768e5077-agent-4b4d065d-efff-42c6-8e31-7b1a768e5077.json","ext":".json","category":"Automation & API Platforms","sizeKB":0,"lastModified":"2025-09-27T09:16:20.453Z"},{"path":"C:\\legendClaude\\EMPIRE_ANALYSIS_SUMMARY.md","relative":"legendClaude\\EMPIRE_ANALYSIS_SUMMARY.md","ext":".md","category":"Specialized & Legacy","sizeKB":7.1,"lastModified":"2025-09-27T09:07:57.202Z"},{"path":"C:\\legendClaude\\KHALID_EMPIRE_KNOWLEDGE_GRAPH.json","relative":"legendClaude\\KHALID_EMPIRE_KNOWLEDGE_GRAPH.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":12.8,"lastModified":"2025-09-27T09:07:05.858Z"},{"path":"C:\\Users\\ksr11\\.gk\\cloudWorkspaces.json","relative":"Users\\ksr11\\.gk\\cloudWorkspaces.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0,"lastModified":"2025-09-27T09:00:39.131Z"},{"path":"C:\\Users\\ksr11\\.gk\\localWorkspaces.json","relative":"Users\\ksr11\\.gk\\localWorkspaces.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0,"lastModified":"2025-09-27T09:00:39.098Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\package.json","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\package.json","ext":".json","category":"AR/VR Immersive","sizeKB":35.3,"lastModified":"2025-09-27T09:00:21.064Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codicon.css","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codicon.css","ext":".css","category":"AR/VR Immersive","sizeKB":29,"lastModified":"2025-09-27T09:00:20.939Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codicon.html","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codicon.html","ext":".html","category":"AR/VR Immersive","sizeKB":162,"lastModified":"2025-09-27T09:00:20.703Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\extension.js","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\extension.js","ext":".js","category":"AR/VR Immersive","sizeKB":17241,"lastModified":"2025-09-27T09:00:15.266Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\webview\\styles.css","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\webview\\styles.css","ext":".css","category":"AR/VR Immersive","sizeKB":397,"lastModified":"2025-09-27T09:00:14.892Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\metadata_types.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\metadata_types.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.7,"lastModified":"2025-09-27T09:00:14.802Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\CHANGELOG.md","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\CHANGELOG.md","ext":".md","category":"AR/VR Immersive","sizeKB":0.2,"lastModified":"2025-09-27T09:00:14.367Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\extension.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\extension.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.6,"lastModified":"2025-09-27T09:00:14.363Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\index.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\index.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.2,"lastModified":"2025-09-27T09:00:14.359Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\gcs.test.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\gcs.test.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.1,"lastModified":"2025-09-27T09:00:13.849Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\agent.mjs","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\agent.mjs","ext":".mjs","category":"AR/VR Immersive","sizeKB":14694.9,"lastModified":"2025-09-27T09:00:13.731Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codiconsLibrary.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\codicons\\codiconsLibrary.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":26.8,"lastModified":"2025-09-27T09:00:13.396Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\generated\\git-commit.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\generated\\git-commit.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.2,"lastModified":"2025-09-27T09:00:13.287Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\index.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\index.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.2,"lastModified":"2025-09-27T09:00:12.863Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\config.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\config.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.7,"lastModified":"2025-09-27T09:00:12.693Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\settings.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\settings.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":1.2,"lastModified":"2025-09-27T09:00:12.363Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\agent.test.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\agent.test.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.1,"lastModified":"2025-09-27T09:00:12.316Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\gcs.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\gcs.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.7,"lastModified":"2025-09-27T09:00:12.169Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\webview\\app_bundle.js","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\webview\\app_bundle.js","ext":".js","category":"AR/VR Immersive","sizeKB":5952.1,"lastModified":"2025-09-27T09:00:12.162Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\logger.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\logger.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.2,"lastModified":"2025-09-27T09:00:11.871Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\agent.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\agent.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.3,"lastModified":"2025-09-27T09:00:11.866Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\types.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\types.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":2.2,"lastModified":"2025-09-27T09:00:11.824Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\testing_utils.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\testing_utils.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":2.1,"lastModified":"2025-09-27T09:00:11.821Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\task.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\task.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":2.5,"lastModified":"2025-09-27T09:00:11.754Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\endpoints.test.d.ts","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\agent\\src\\endpoints.test.d.ts","ext":".ts","category":"AR/VR Immersive","sizeKB":0.1,"lastModified":"2025-09-27T09:00:11.569Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\images\\README.md","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\images\\README.md","ext":".md","category":"AR/VR Immersive","sizeKB":0.6,"lastModified":"2025-09-27T09:00:11.565Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\uninstall_hook.js","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\dist\\uninstall_hook.js","ext":".js","category":"AR/VR Immersive","sizeKB":35.8,"lastModified":"2025-09-27T09:00:11.534Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\README.md","relative":"Users\\ksr11\\.vscode\\extensions\\google.geminicodeassist-2.51.0\\README.md","ext":".md","category":"AR/VR Immersive","sizeKB":2,"lastModified":"2025-09-27T09:00:11.373Z"},{"path":"C:\\Users\\ksr11\\.config\\configstore\\update-notifier-@google\\gemini-cli.json","relative":"Users\\ksr11\\.config\\configstore\\update-notifier-@google\\gemini-cli.json","ext":".json","category":"AR/VR Immersive","sizeKB":0.1,"lastModified":"2025-09-27T08:59:56.185Z"},{"path":"C:\\Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758963564004-jvbztc.sh","relative":"Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758963564004-jvbztc.sh","ext":".sh","category":"Multi-Agent & Runtime Engines","sizeKB":0.3,"lastModified":"2025-09-27T08:59:28.563Z"},{"path":"C:\\Users\\ksr11\\.claude\\todos\\34b6775c-5025-4eaf-9c00-e304e64eec8a-agent-34b6775c-5025-4eaf-9c00-e304e64eec8a.json","relative":"Users\\ksr11\\.claude\\todos\\34b6775c-5025-4eaf-9c00-e304e64eec8a-agent-34b6775c-5025-4eaf-9c00-e304e64eec8a.json","ext":".json","category":"Automation & API Platforms","sizeKB":0,"lastModified":"2025-09-27T08:59:24.519Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\package.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\package.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":52.1,"lastModified":"2025-09-27T08:59:00.014Z"},{"path":"C:\\Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758963528713-tnymyy.sh","relative":"Users\\ksr11\\.claude\\shell-snapshots\\snapshot-bash-1758963528713-tnymyy.sh","ext":".sh","category":"Multi-Agent & Runtime Engines","sizeKB":0.3,"lastModified":"2025-09-27T08:58:52.742Z"},{"path":"C:\\Users\\ksr11\\.claude\\todos\\f8ce0d83-b67a-4aed-9983-f21f6fc96fb7-agent-f8ce0d83-b67a-4aed-9983-f21f6fc96fb7.json","relative":"Users\\ksr11\\.claude\\todos\\f8ce0d83-b67a-4aed-9983-f21f6fc96fb7-agent-f8ce0d83-b67a-4aed-9983-f21f6fc96fb7.json","ext":".json","category":"Automation & API Platforms","sizeKB":0,"lastModified":"2025-09-27T08:58:48.875Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\SECURITY.md","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\SECURITY.md","ext":".md","category":"Specialized & Legacy","sizeKB":2.6,"lastModified":"2025-09-27T08:58:40.758Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\README.md","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\README.md","ext":".md","category":"Specialized & Legacy","sizeKB":5,"lastModified":"2025-09-27T08:58:40.749Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-RequiredConfig-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-RequiredConfig-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.611Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.4,"lastModified":"2025-09-27T08:58:40.598Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-Destination-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-Destination-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.3,"lastModified":"2025-09-27T08:58:40.578Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-ConnectionFactory-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\spring-jms-rabbitmq-servicebus\\rabbitmq-ConnectionFactory-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.3,"lastModified":"2025-09-27T08:58:40.553Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-to-azure-blob-storage-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-to-azure-blob-storage-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.512Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-s3Object-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-s3Object-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.500Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-restoreObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-restoreObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.486Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-putObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-putObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.471Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-presignedUrl-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-presignedUrl-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.2,"lastModified":"2025-09-27T08:58:40.454Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.442Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-multipartUpload-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-multipartUpload-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.3,"lastModified":"2025-09-27T08:58:40.427Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-listObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-listObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.412Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-listBucket-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-listBucket-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:40.400Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-headObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-headObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.388Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-headBucket-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-headBucket-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.378Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-gradle-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-gradle-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:40.360Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-getObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-getObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.351Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-exception-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-exception-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.338Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-deleteObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-deleteObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.324Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-deleteBucket-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-deleteBucket-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.309Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-createBucket-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-createBucket-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.295Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-copyObject-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-copyObject-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.282Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-clientBuilder-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-clientBuilder-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.270Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-applicationConfig-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-applicationConfig-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:40.258Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-accessPolicy-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\s3-to-azure-blob-storage\\s3-accessPolicy-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.244Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:40.224Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\plaintext-credential-in-config-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\plaintext-credential-in-config-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.213Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\plaintext-credential-in-code-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\plaintext-credential-to-azure-keyvault\\plaintext-credential-in-code-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.201Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\sql-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\sql-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:40.180Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:40.168Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.8,"lastModified":"2025-09-27T08:58:40.153Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\orm-xml.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\orm-xml.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":3.2,"lastModified":"2025-09-27T08:58:40.147Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\orm-xml-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\orm-xml-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.6,"lastModified":"2025-09-27T08:58:40.134Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\java-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\oracle-to-postgresql\\java-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":2.4,"lastModified":"2025-09-27T08:58:40.120Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\property-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\property-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.4,"lastModified":"2025-09-27T08:58:40.099Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.9,"lastModified":"2025-09-27T08:58:40.079Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\java-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\on-premises-user-authentication-to-microsoft-entra-id\\java-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.1,"lastModified":"2025-09-27T08:58:40.068Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\mount-local-file\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\mount-local-file\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":5.8,"lastModified":"2025-09-27T08:58:40.024Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\mount-local-file\\java-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\mount-local-file\\java-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":6.3,"lastModified":"2025-09-27T08:58:40.005Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\tls-mtls\\java-code-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\tls-mtls\\java-code-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.983Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\key-operations\\java-code-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\key-operations\\java-code-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.948Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\spring-pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\spring-pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":1.5,"lastModified":"2025-09-27T08:58:39.906Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\spring-client-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\spring-client-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:39.892Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\pom-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\pom-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.9,"lastModified":"2025-09-27T08:58:39.881Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\listSecrets-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\listSecrets-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.867Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\getSecretValue-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\getSecretValue-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:39.852Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\deleteSecret-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\deleteSecret-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:39.836Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\createSecret-putSecretValue-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\createSecret-putSecretValue-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.814Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\client-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\migrate-to-azure-keyvault\\AWS-secrets-manager\\client-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.7,"lastModified":"2025-09-27T08:58:39.790Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-servicebus-spring\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-servicebus-spring\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.770Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-servicebus-spring\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-servicebus-spring\\dependency-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.8,"lastModified":"2025-09-27T08:58:39.749Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-postgresql-spring\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-postgresql-spring\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.737Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-postgresql-spring\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-postgresql-spring\\dependency-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.708Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-mysql-spring\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-mysql-spring\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.694Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-mysql-spring\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-mysql-spring\\dependency-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.667Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-eventhub-spring\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-eventhub-spring\\properties-test.json","ext":".json","category":"Mission Control / Dashboards","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.649Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-eventhub-spring\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-eventhub-spring\\dependency-test.json","ext":".json","category":"Mission Control / Dashboards","sizeKB":0.8,"lastModified":"2025-09-27T08:58:39.632Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-azuresql-spring\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-azuresql-spring\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.618Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-azuresql-spring\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-spring\\mi-azuresql-spring\\dependency-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.599Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\properties-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\properties-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.5,"lastModified":"2025-09-27T08:58:39.577Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\dependency-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\dependency-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.545Z"},{"path":"C:\\Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\constructor-test.json","relative":"Users\\ksr11\\.vscode\\extensions\\vscjava.migrate-java-to-azure-1.5.2-win32-x64\\rag\\managed-identity-azure-sdk-public-cloud\\mi-servicebus-azure-sdk-public-cloud\\constructor-test.json","ext":".json","category":"Data & Knowledge Bases","sizeKB":0.6,"lastModified":"2025-09-27T08:58:39.527Z"}]}</script>
+  <script>
+    (function() {
+      const dataEl = document.getElementById('empire-data');
+      if (!dataEl) return;
+      const data = JSON.parse(dataEl.textContent);
+      const tableBody = document.querySelector('#assetTable tbody');
+      const categoryFilter = document.getElementById('categoryFilter');
+      const searchInput = document.getElementById('searchInput');
+      const resultCount = document.getElementById('resultCount');
+
+      const categories = Array.from(new Set(data.topAssets.map(a => a.category))).sort();
+      categories.forEach(name => {
+        const opt = document.createElement('option');
+        opt.value = name;
+        opt.textContent = name;
+        categoryFilter.appendChild(opt);
+      });
+
+      function renderRows() {
+        const filter = categoryFilter.value;
+        const searchTerm = (searchInput.value || '').toLowerCase();
+        const filtered = data.topAssets.filter(asset => {
+          const matchesCategory = filter === 'all' || asset.category === filter;
+          const matchesSearch = !searchTerm || asset.relative.toLowerCase().includes(searchTerm);
+          return matchesCategory && matchesSearch;
+        });
+        tableBody.innerHTML = '';
+        filtered.forEach((asset, index) => {
+          const tr = document.createElement('tr');
+          const date = new Date(asset.lastModified);
+          const pathCell = '<code>' + asset.relative.replace(/\\/g, '/') + '</code>';
+          const sizeCell = ((asset.sizeKB || 0).toFixed(1)) + ' KB';
+          tr.innerHTML = '<td>' + (index + 1) + '</td>' +
+            '<td>' + pathCell + '</td>' +
+            '<td>' + asset.category + '</td>' +
+            '<td>' + date.toLocaleString() + '</td>' +
+            '<td>' + sizeCell + '</td>';
+          tableBody.appendChild(tr);
+        });
+        resultCount.textContent = filtered.length + ' assets visible';
+      }
+
+      categoryFilter.addEventListener('change', renderRows);
+      searchInput.addEventListener('input', renderRows);
+      renderRows();
+    })();
+  </script>
+</body>
+</html>
