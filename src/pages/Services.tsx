@@ -22,7 +22,7 @@ export default function Services() {
       const res = await getGroundedInfo(searchQuery, "search");
       setSearchResult(res || "No results found.");
     } catch (error) {
-      setSearchResult("Error fetching search results.");
+      setSearchResult(`Error: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsSearching(false);
     }
@@ -35,7 +35,7 @@ export default function Services() {
       const res = await getGroundedInfo(mapsQuery, "maps");
       setMapsResult(res || "No results found.");
     } catch (error) {
-      setMapsResult("Error fetching maps data.");
+      setMapsResult(`Error: ${error instanceof Error ? error.message : String(error)}`);
     } finally {
       setIsMapping(false);
     }

@@ -8,9 +8,9 @@ if (!apiKey) {
 
 export const ai = apiKey ? new GoogleGenAI({ apiKey }) : null;
 
-export const CHAT_MODEL = "gemini-2.0-flash";
-export const FAST_MODEL = "gemini-2.0-flash-lite";
-export const GROUNDING_MODEL = "gemini-2.0-flash";
+export const CHAT_MODEL = "gemini-2.5-flash";
+export const FAST_MODEL = "gemini-2.5-flash";
+export const GROUNDING_MODEL = "gemini-2.5-flash";
 
 export interface Message {
   role: "user" | "model";
@@ -43,7 +43,7 @@ export async function getGroundedInfo(query: string, type: "search" | "maps") {
   if (!ai) throw new Error("AI not initialized");
 
   const prompt = type === "maps"
-    ? `Find location-based information, businesses, or geographical insights for: ${query}. Provide specific details including addresses, ratings, and practical information where available.`
+    ? `Find detailed location-based information, businesses, and geographical insights for: ${query}. Include specific addresses, ratings, opening hours, and practical visitor information where available.`
     : query;
 
   const response = await ai.models.generateContent({
