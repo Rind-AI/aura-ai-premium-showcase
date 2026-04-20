@@ -42,10 +42,10 @@ export default function About() {
               WE BUILD <br />
               <span className="text-white/40 italic font-display">THE UNIMAGINABLE</span>
             </h1>
-            <p className="text-white/50 text-lg leading-relaxed mb-6">
+            <p className="text-lg leading-relaxed mb-6 font-bold" style={{ color: "#00d4ff", textShadow: "0 0 18px rgba(0,212,255,0.6), 0 0 40px rgba(0,212,255,0.25)" }}>
               NeuraNest AI was founded on the principle that technology should be as beautiful as it is powerful. We don't just build websites; we create digital ecosystems that breathe life into brands.
             </p>
-            <p className="text-white/40 text-base leading-relaxed mb-8">
+            <p className="text-base leading-relaxed mb-8 font-semibold" style={{ color: "#00d4ff", textShadow: "0 0 14px rgba(0,212,255,0.5), 0 0 30px rgba(0,212,255,0.2)" }}>
               Nature is the core of everything I do. I spent years reclaiming my time — stepping away from the noise, returning to what's real. The forests, the sky, the silence of open space — that's where clarity lives. Now I build from that place. NeuraNest AI exists so others can do the same: use technology as a tool, not a trap, and rise free.
             </p>
             <div className="grid grid-cols-2 gap-8">

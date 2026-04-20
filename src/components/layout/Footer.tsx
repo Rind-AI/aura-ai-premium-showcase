@@ -5,7 +5,7 @@ export default function Footer() {
     <footer className="relative z-10 py-20 border-t border-white/5 bg-background">
       <div className="container px-6 text-center">
         <p className="font-accent text-sm font-bold text-muted-foreground uppercase tracking-[0.3em] mb-12">
-          © 2024 DIGITAL SHOWCASE ENGINE. ALL SYSTEMS NOMINAL.
+          © 2026 DIGITAL SHOWCASE ENGINE. ALL SYSTEMS NOMINAL.
         </p>
         
         <div className="flex flex-wrap justify-center gap-6 mb-12">

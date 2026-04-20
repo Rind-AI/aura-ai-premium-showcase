@@ -397,60 +397,129 @@ const infographics = [
 ];
 
 function InfographicGallery() {
+  const [open, setOpen] = useState(false);
   const [current, setCurrent] = useState(0);
-  const prev = () => setCurrent(p => (p - 1 + infographics.length) % infographics.length);
-  const next = () => setCurrent(p => (p + 1) % infographics.length);
-  const img = infographics[current];
+  const prev = (e: React.MouseEvent) => { e.stopPropagation(); setCurrent(p => (p - 1 + infographics.length) % infographics.length); };
+  const next = (e: React.MouseEvent) => { e.stopPropagation(); setCurrent(p => (p + 1) % infographics.length); };
+  const openAt = (i: number) => { setCurrent(i); setOpen(true); };
+
   return (
-    <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mb-4">
-      <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary mb-4 flex items-center gap-2">
-        <Star className="w-3 h-3" /> INFOGRAPHIC GALLERY — {current + 1} / {infographics.length}
-      </p>
-      <div className="relative rounded-2xl overflow-hidden border border-primary/20 group">
-        <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-transparent via-primary to-transparent z-10" />
-        <AnimatePresence mode="wait">
-          <motion.img
-            key={current}
-            src={img.src}
-            alt={img.alt}
-            initial={{ opacity: 0, x: 30 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -30 }}
-            transition={{ duration: 0.25 }}
-            className="w-full block"
-          />
-        </AnimatePresence>
-        {/* Left arrow */}
-        <button
-          onClick={prev}
-          className="absolute left-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-black/70 border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 hover:border-primary/50 z-20"
-        >
-          <ChevronLeft className="w-5 h-5 text-white" />
-        </button>
-        {/* Right arrow */}
-        <button
-          onClick={next}
-          className="absolute right-3 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-20"
-          style={{ background: "#00d4ff" }}
-        >
-          <ChevronRight className="w-5 h-5 text-black" />
-        </button>
-      </div>
-      {/* Dot navigation */}
-      <div className="flex justify-center gap-1.5 mt-3 flex-wrap">
-        {infographics.map((_, i) => (
+    <>
+      <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.45 }} className="mb-4">
+        {/* Header */}
+        <div className="flex items-center justify-between mb-4">
+          <p className="text-[9px] font-accent font-bold uppercase tracking-[0.35em] text-primary flex items-center gap-2">
+            <Star className="w-3 h-3" /> INFOGRAPHIC GALLERY — 4 / {infographics.length}
+          </p>
           <button
-            key={i}
-            onClick={() => setCurrent(i)}
-            className="w-1.5 h-1.5 rounded-full transition-all duration-300"
-            style={{
-              background: i === current ? "#00d4ff" : "rgba(255,255,255,0.15)",
-              transform: i === current ? "scale(1.6)" : "scale(1)",
-            }}
-          />
-        ))}
-      </div>
-    </motion.div>
+            onClick={() => openAt(0)}
+            className="flex items-center gap-2 text-[9px] font-accent font-bold uppercase tracking-widest px-4 py-2 rounded-full border border-primary/40 text-primary hover:bg-primary hover:text-black transition-all duration-200"
+          >
+            VIEW GALLERY <ChevronRight className="w-3 h-3" />
+          </button>
+        </div>
+
+        {/* 4-thumbnail grid */}
+        <div className="grid grid-cols-2 gap-3">
+          {infographics.slice(0, 4).map((img, i) => (
+            <motion.button
+              key={i}
+              onClick={() => openAt(i)}
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+              className="relative rounded-2xl overflow-hidden border border-primary/20 group cursor-pointer"
+            >
+              <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-primary to-transparent z-10" />
+              <img src={img.src} alt={img.alt} className="w-full block" />
+              <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-all duration-200 flex items-center justify-center">
+                <span className="opacity-0 group-hover:opacity-100 transition-opacity duration-200 text-[9px] font-accent font-bold uppercase tracking-widest text-white bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                  EXPAND
+                </span>
+              </div>
+              <div className="absolute bottom-2 right-2 text-[7px] font-accent font-bold text-primary/60 z-10">{i + 1}/{infographics.length}</div>
+            </motion.button>
+          ))}
+        </div>
+
+        {/* Show remaining count */}
+        <div className="mt-3 text-center">
+          <button onClick={() => openAt(4)} className="text-[9px] font-accent text-white/30 hover:text-primary transition-colors uppercase tracking-widest">
+            + {infographics.length - 4} MORE INFOGRAPHICS — VIEW ALL →
+          </button>
+        </div>
+      </motion.div>
+
+      {/* Lightbox */}
+      <AnimatePresence>
+        {open && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/97 backdrop-blur-sm"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setOpen(false)}
+          >
+            {/* Close */}
+            <button
+              className="absolute top-5 right-5 w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 flex items-center justify-center z-20 transition-all"
+              onClick={() => setOpen(false)}
+            >
+              <X className="w-5 h-5" />
+            </button>
+
+            {/* Counter */}
+            <div className="absolute top-5 left-1/2 -translate-x-1/2 text-[10px] font-accent font-bold uppercase tracking-[0.35em] z-20" style={{ color: "#00d4ff" }}>
+              INFOGRAPHIC GALLERY — {current + 1} / {infographics.length}
+            </div>
+
+            {/* Prev */}
+            <button
+              className="absolute left-4 md:left-8 w-12 h-12 rounded-full bg-white/10 hover:bg-white/20 border border-white/10 hover:border-primary/50 flex items-center justify-center z-20 transition-all"
+              onClick={prev}
+            >
+              <ChevronLeft className="w-6 h-6" />
+            </button>
+
+            {/* Image */}
+            <motion.div
+              key={current}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.95 }}
+              transition={{ duration: 0.2 }}
+              className="mx-20 max-w-4xl max-h-[85vh] flex items-center justify-center"
+              onClick={e => e.stopPropagation()}
+            >
+              <img
+                src={infographics[current].src}
+                alt={infographics[current].alt}
+                className="max-w-full max-h-[85vh] rounded-2xl object-contain shadow-2xl"
+                style={{ boxShadow: "0 0 60px rgba(0,212,255,0.12)" }}
+              />
+            </motion.div>
+
+            {/* Next */}
+            <button
+              className="absolute right-4 md:right-8 w-12 h-12 rounded-full flex items-center justify-center z-20 transition-all"
+              style={{ background: "#00d4ff" }}
+              onClick={next}
+            >
+              <ChevronRight className="w-6 h-6 text-black" />
+            </button>
+
+            {/* Dot strip */}
+            <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-1.5 flex-wrap justify-center max-w-xs px-4" onClick={e => e.stopPropagation()}>
+              {infographics.map((_, i) => (
+                <button key={i} onClick={() => setCurrent(i)}
+                  className="w-1.5 h-1.5 rounded-full transition-all duration-300"
+                  style={{ background: i === current ? "#00d4ff" : "rgba(255,255,255,0.2)", transform: i === current ? "scale(1.6)" : "scale(1)" }}
+                />
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }
 

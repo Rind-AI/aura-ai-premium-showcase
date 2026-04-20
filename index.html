@@ -6,7 +6,39 @@
     <meta name="theme-color" content="#00d4ff" />
     <meta name="msapplication-navbutton-color" content="#00d4ff" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" id="favicon-link" />
     <title>Khalid Rind | AI & Data Intelligence</title>
+    <script>
+      (function() {
+        var canvas = document.createElement('canvas');
+        canvas.width = 32; canvas.height = 32;
+        var ctx = canvas.getContext('2d');
+        var glow = 0; var dir = 1;
+        function draw() {
+          ctx.clearRect(0,0,32,32);
+          var g = ctx.createRadialGradient(16,16,2,16,16,16);
+          g.addColorStop(0,'#0a1628'); g.addColorStop(1,'#050d1a');
+          ctx.fillStyle = g; ctx.beginPath();
+          ctx.roundRect(0,0,32,32,7); ctx.fill();
+          ctx.strokeStyle = 'rgba(0,212,255,0.4)'; ctx.lineWidth = 1;
+          ctx.stroke();
+          var alpha = 0.55 + glow * 0.45;
+          ctx.shadowColor = '#00d4ff'; ctx.shadowBlur = 6 + glow * 14;
+          ctx.fillStyle = 'rgba(0,212,255,' + alpha + ')';
+          ctx.font = 'bold 20px Arial Black, Arial';
+          ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+          ctx.fillText('K', 16, 17);
+          ctx.shadowBlur = 0;
+          glow += dir * 0.04;
+          if (glow >= 1) dir = -1;
+          if (glow <= 0) dir = 1;
+          var link = document.getElementById('favicon-link');
+          if (link) link.href = canvas.toDataURL();
+          requestAnimationFrame(draw);
+        }
+        window.addEventListener('DOMContentLoaded', function() { draw(); });
+      })();
+    </script>
   </head>
   <body>
     <div id="root"></div>
