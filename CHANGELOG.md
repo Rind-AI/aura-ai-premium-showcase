@@ -5,6 +5,19 @@ Format: version | date | what changed
 
 ---
 
+## v1.8.3 — 2026-04-21
+
+### Changed
+- **Home page — 2nd hero video replaced** with trimmed version `KR-HEOR-VIDEO - TrimED.mp4` (34MB)
+  - New file copied to `public/videos/KR-HERO-VIDEO-TRIMMED.mp4`
+  - Replaced old `KR-HEOR-VIDEO.mp4` source reference
+- **2nd hero video — native browser controls bar added**
+  - Replaced custom click-to-play overlay (big play button) with HTML5 `controls` attribute
+  - Now shows standard control bar: play/pause, time scrubber, mute, volume slider, fullscreen, 3-dot menu
+  - Removed unused `useRef`, `useState`, `togglePlay` from `Home.tsx`
+
+---
+
 ## v1.8.2 — 2026-04-21
 
 ### Fixed
