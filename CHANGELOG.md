@@ -5,6 +5,39 @@ Format: version | date | what changed
 
 ---
 
+## v1.8.2 — 2026-04-21
+
+### Fixed
+- **Services API — 7-key bulletproof fallback system** (site can never break from a single key dying)
+  - Root cause: primary key `AIzaSyBvCYn3...` reported leaked by Google (403 PERMISSION_DENIED)
+  - Backup key `AIzaSyCE6Ykl...` also dead (403) discovered same session
+  - Batch-tested all 10 known Gemini keys via curl — identified 6 working + 1 fresh new key
+  - Fresh key `AIzaSyDPhilR...` created in AI Studio and set as new primary
+  - Built `withFallback()` wrapper in `src/lib/gemini.ts` — auto-rotates through 7 keys on 403 or 429
+  - All three API functions (`chatWithGemini`, `getGroundedInfo`, `researchWithGrounding`) now use fallback
+  - Dead keys logged: `AIzaSyBvCYn3...`, `AIzaSyCE6Ykl...`, `AIzaSyCbXbi2...`
+
+---
+
+## v1.8.1 — 2026-04-21
+
+### Fixed
+- **Services API — emergency key rotation** (superseded by v1.8.2 in the same session)
+  - Primary key `AIzaSyBvCYn3...` flagged leaked by Google, auto-revoked
+  - Promoted backup key `AIzaSyCE6Ykl...` as active
+  - Updated `.env.local`, MEMORY.md, WORKFLOW-01
+
+---
+
+## v1.8.0 — 2026-04-21
+
+### Changed
+- **Home page** — new hero video added
+- **Navbar** — removed DEPLOY button
+- **Supernova** — removed infographics 12 and 13 from gallery
+
+---
+
 ## v1.7.9 — 2026-04-20
 
 ### Fixed
