@@ -385,8 +385,6 @@ const infographics = [
   { src: "/gallery/infographics/unnamed (21).png", alt: "Infographic 21" },
   { src: "/gallery/infographics/unnamed (22).png", alt: "Infographic 22" },
   { src: "/gallery/infographics/unnamed (23).png", alt: "Infographic 23" },
-  { src: "/gallery/infographics/unnamed (24).png", alt: "Infographic 24" },
-  { src: "/gallery/infographics/unnamed (25).png", alt: "Infographic 25" },
   { src: "/gallery/infographics/unnamed (26).png", alt: "Infographic 26" },
   { src: "/gallery/infographics/unnamed (27).png", alt: "Infographic 27" },
   { src: "/gallery/infographics/unnamed (28).png", alt: "Infographic 28" },

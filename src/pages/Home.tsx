@@ -87,7 +87,7 @@ export default function Home() {
         >
           <video
             ref={videoRef}
-            src="/videos/2ND-HERO-VIDEO.mp4"
+            src="/videos/KR-HEOR-VIDEO.mp4"
             loop
             playsInline
             className="w-full h-auto block"

@@ -1,6 +1,5 @@
 import { useState, useEffect, useRef } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useApp } from "@/context/AppContext";
@@ -100,10 +99,6 @@ export default function Navbar() {
               </Link>
             )
           )}
-          <Button className="rounded-full px-6 bg-white text-black hover:bg-white/90 font-bold font-accent tracking-widest">
-            DEPLOY
-            <ChevronRight className="ml-1 w-4 h-4" />
-          </Button>
         </div>
 
       </div>
@@ -138,9 +133,6 @@ export default function Navbar() {
                 </Link>
               )
             )}
-            <Button className="ml-2 rounded-full px-4 h-7 text-[10px] bg-white text-black font-bold font-accent tracking-widest shrink-0">
-              DEPLOY
-            </Button>
           </div>
         </div>
       </div>
