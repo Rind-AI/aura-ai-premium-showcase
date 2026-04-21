@@ -2,19 +2,10 @@ import Hero from "@/components/sections/Hero";
 import { motion } from "motion/react";
 import { useApp } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
-import { useRef, useState } from "react";
 
 export default function Home() {
   const { content, isAdmin, updateContent } = useApp();
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
 
-  const togglePlay = () => {
-    const v = videoRef.current;
-    if (!v) return;
-    if (v.paused) { v.play(); setIsPlaying(true); }
-    else { v.pause(); setIsPlaying(false); }
-  };
   const handleFeatureEdit = (index: number, key: "title" | "desc") => (e: React.FormEvent<HTMLElement>) => {
     if (!isAdmin) return;
     const newFeatures = [...content.features];
@@ -82,28 +73,15 @@ export default function Home() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="relative rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_0_60px_rgba(var(--primary-rgb),0.15)] cursor-pointer group"
-          onClick={togglePlay}
+          className="relative rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_0_60px_rgba(var(--primary-rgb),0.15)]"
         >
           <video
-            ref={videoRef}
-            src="/videos/KR-HEOR-VIDEO.mp4"
+            src="/videos/KR-HERO-VIDEO-TRIMMED.mp4"
+            controls
             loop
             playsInline
             className="w-full h-auto block"
           />
-          {/* Play/Pause overlay — hides once playing */}
-          <div className={cn(
-            "absolute inset-0 flex items-center justify-center transition-opacity duration-300",
-            isPlaying ? "opacity-0 group-hover:opacity-100" : "opacity-100"
-          )}>
-            <div className="w-20 h-20 rounded-full bg-primary/90 flex items-center justify-center shadow-[0_0_40px_rgba(var(--primary-rgb),0.6)] backdrop-blur-sm">
-              {isPlaying
-                ? <svg className="w-8 h-8 text-white" fill="currentColor" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></svg>
-                : <svg className="w-8 h-8 text-white ml-1" fill="currentColor" viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>
-              }
-            </div>
-          </div>
         </motion.div>
       </section>
 
