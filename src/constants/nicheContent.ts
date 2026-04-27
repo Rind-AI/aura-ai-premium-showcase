@@ -23,9 +23,9 @@ export const nicheContent: Record<string, NicheContent> = {
   tech: {
     navText: "KHALID RIND",
     logoSrc: "",
-    heroBadge: "DATA SCIENTIST | TRUE AI INTELLIGENCE",
-    heroTitle: "I EXTRACT <span class='text-gradient'>KEY INSIGHTS</span>",
-    heroDesc: "It is surprisingly easy for any brand or industry to extract powerful insights from available real data. I deploy pure, true AI to find your winning formula and bring instant optimization to your workflow.",
+    heroBadge: "DIGITAL MARKETING CONTRACTOR | MELBOURNE, AUSTRALIA",
+    heroTitle: "I BUILD <span class='text-gradient'>MARKETING SYSTEMS</span>",
+    heroDesc: "I help Australian brands turn scattered marketing into consistent weekly growth — content, Meta ads, email flows, and clear reporting. Available for contract work now.",
     heroCta: "HIRE KHALID",
     mediaSrc: "/videos/cli-engineer.mp4",
     tickerItems: ["Health", "Education", "Sport", "Food", "Writer", "Artist", "Teacher", "School", "Council", "Road Safety", "Outdoor Activities"],
