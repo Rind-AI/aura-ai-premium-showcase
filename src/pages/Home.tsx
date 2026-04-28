@@ -76,9 +76,8 @@ export default function Home() {
           className="relative rounded-[2rem] overflow-hidden border border-primary/20 shadow-[0_0_60px_rgba(var(--primary-rgb),0.15)]"
         >
           <video
-            src="/videos/KR-HERO-VIDEO-TRIMMED.mp4"
+            src="/videos/AI-CHATTER-TO-OPERATOR.mp4"
             controls
-            loop
             playsInline
             className="w-full h-auto block"
           />

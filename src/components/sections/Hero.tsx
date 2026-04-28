@@ -8,6 +8,7 @@ import { useRef, useState, useMemo } from "react";
 export default function Hero() {
   const { theme, setTheme, bgColor, setBgColor, fontFamily, setFontFamily, niche, setNiche, isAdmin, content, updateContent } = useApp();
   const mediaInputRef = useRef<HTMLInputElement>(null);
+  const heroVideoRef = useRef<HTMLVideoElement>(null);
   const [isCustomizerMinimized, setIsCustomizerMinimized] = useState(false);
   const [showDocks, setShowDocks] = useState(true);
   const [isMediaActive, setIsMediaActive] = useState(false);
@@ -365,12 +366,16 @@ export default function Hero() {
           >
             {content.mediaSrc.includes("video") || content.mediaSrc.startsWith("data:video") ? (
               <video
+                ref={heroVideoRef}
                 src={content.mediaSrc}
-                autoPlay
-                loop
+                autoPlay={niche !== "tech"}
+                loop={niche !== "tech"}
                 muted={niche === "claude-design"}
                 controls={niche !== "claude-design"}
                 playsInline
+                onLoadedMetadata={() => {
+                  if (heroVideoRef.current) heroVideoRef.current.volume = 0.1;
+                }}
                 className={cn(
                   "w-full h-full object-cover transition-all duration-700",
                   niche === "claude-design" ? "grayscale-0 scale-105" : isMediaActive ? "grayscale-0" : "grayscale"
