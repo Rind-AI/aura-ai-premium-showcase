@@ -2,7 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { nicheContent, NicheContent } from "@/constants/nicheContent";
 
 type Theme = "cyan" | "emerald" | "magenta" | "amber" | "pastel" | "crimson" | "violet" | "gold" | "lime" | "sky" | "rose" | "orange";
-type Niche = "tech" | "creative" | "community";
+type Niche = "tech" | "creative" | "community" | "claude-design";
 type Font = "sans" | "serif" | "mono" | "display" | "accent" | "artistic" | "luxury" | "futuristic" | "wide" | "playful";
 
 interface AppContextType {

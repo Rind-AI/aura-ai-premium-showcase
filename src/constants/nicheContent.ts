@@ -115,5 +115,37 @@ export const nicheContent: Record<string, NicheContent> = {
     contactEmail: "Hello@localconnect.org",
     contactPhone: "+44-20-7946-0000",
     contactLocation: "London, UK"
+  },
+  "claude-design": {
+    navText: "KHALID RIND",
+    logoSrc: "",
+    heroBadge: "AI ARCHITECT | NEURANEST | MELBOURNE, AUSTRALIA",
+    heroTitle: "<span class='text-gradient'>AI SYSTEMS</span> THAT RESHAPE BUSINESS",
+    heroDesc: "I build enterprise AI solutions that Australian businesses actually use. NeuraNest deployments, automation pipelines, and digital transformation — delivered in weeks, not months.",
+    heroCta: "START YOUR AI JOURNEY",
+    mediaSrc: "/videos/SKY-FALL.mp4",
+    tickerItems: ["NeuraNest AI", "Automation", "Firebase", "Enterprise AI", "Digital Strategy", "Melbourne", "Australia", "AI Consulting", "Machine Learning", "Innovation"],
+    features: [
+      {
+        title: "AI Agency Systems",
+        desc: "Full NeuraNest AI deployments built and live. From APM to Vocus — enterprise AI that integrates with your existing workflow seamlessly.",
+        icon: "🤖"
+      },
+      {
+        title: "Automation Pipelines",
+        desc: "WhatsApp bots, Gemini integrations, custom AI workflows running 24/7. Your business generating value while you sleep.",
+        icon: "⚡"
+      },
+      {
+        title: "1,300+ Hours of Mastery",
+        desc: "Non-coder to multi-AI orchestrator in 5 months. Delivered as turnkey AI solutions for growth-focused Australian businesses.",
+        icon: "🌐"
+      }
+    ],
+    contactTitle: "BUILD YOUR <span class='text-gradient'>AI FUTURE</span>",
+    contactDesc: "Every day without AI automation is revenue left on the table. Let's build a system designed specifically for your business.",
+    contactEmail: "neuranest@neuranestai.world",
+    contactPhone: "+61-493348617",
+    contactLocation: "Melbourne, Australia"
   }
 };

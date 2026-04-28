@@ -1,4 +1,4 @@
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from "motion/react";
 import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Palette, Type, ChevronRight } from "lucide-react";
 import { useApp } from "@/context/AppContext";
@@ -12,6 +12,13 @@ export default function Hero() {
   const [showDocks, setShowDocks] = useState(true);
   const [isMediaActive, setIsMediaActive] = useState(false);
   const touchTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const sectionRef = useRef<HTMLElement>(null);
+  const rawMouseX = useMotionValue(0);
+  const rawMouseY = useMotionValue(0);
+  const springX = useSpring(rawMouseX, { stiffness: 80, damping: 20 });
+  const springY = useSpring(rawMouseY, { stiffness: 80, damping: 20 });
+  const rotateX = useTransform(springY, [-300, 300], [12, -12]);
+  const rotateY = useTransform(springX, [-300, 300], [-12, 12]);
 
   const handleMediaClick = () => {
     if (!isAdmin) return;
@@ -32,18 +39,46 @@ export default function Hero() {
     }
   };
 
+  const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
+    if (niche !== "claude-design") return;
+    const rect = sectionRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    rawMouseX.set(e.clientX - rect.left - rect.width / 2);
+    rawMouseY.set(e.clientY - rect.top - rect.height / 2);
+  };
+
+  const handleMouseLeave = () => {
+    rawMouseX.set(0);
+    rawMouseY.set(0);
+  };
+
   const handleTextEdit = (key: keyof typeof content) => (e: React.FormEvent<HTMLElement>) => {
     if (!isAdmin) return;
     updateContent({ [key]: e.currentTarget.innerHTML });
   };
 
   return (
-    <section className="relative min-h-screen flex items-center pt-20 overflow-hidden">
+    <section ref={sectionRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <input type="file" ref={mediaInputRef} className="hidden" onChange={handleFileChange} accept="image/*,video/*" />
+
+      {niche === "claude-design" && (
+        <div className="absolute inset-0 z-0">
+          <video
+            src={content.mediaSrc}
+            autoPlay loop muted playsInline
+            className="w-full h-full object-cover scale-105"
+            style={{ filter: "brightness(0.45) saturate(1.3)" }}
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/60 to-black/20" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-black/50" />
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 30% 50%, rgba(var(--primary-rgb),0.08) 0%, transparent 60%)" }} />
+        </div>
+      )}
       
       <div className={cn(
         "container relative z-10 px-6 transition-all duration-500",
-        niche === "creative" ? "flex flex-col items-center text-center" : 
+        niche === "claude-design" ? "flex flex-col items-start justify-center min-h-[70vh] max-w-4xl" :
+        niche === "creative" ? "flex flex-col items-center text-center" :
         niche === "community" ? "grid grid-cols-1 lg:grid-cols-[0.8fr_1.2fr] gap-16 items-center" :
         "grid grid-cols-1 lg:grid-cols-2 gap-16 items-center"
       )}>
@@ -133,21 +168,30 @@ export default function Hero() {
                   exit={{ opacity: 0, height: 0 }}
                   className="flex flex-col gap-4 mt-8 w-full max-w-4xl overflow-hidden"
                 >
-                  {/* Niche Profiles */}
-                  <div className="flex flex-wrap gap-3 p-2 glass rounded-2xl border-white/5">
-                    {(["tech", "creative", "community"] as const).map((n) => (
-                      <button
-                        key={n}
-                        onClick={() => setNiche(n)}
-                        className={cn(
-                          "flex-1 min-w-[100px] h-12 flex items-center justify-center gap-2 rounded-xl transition-all font-accent text-[10px] font-bold uppercase tracking-widest",
-                          niche === n ? "bg-primary/20 border border-primary text-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]" : "text-white/40 hover:bg-white/5"
-                        )}
-                      >
-                        <span>{n === "tech" ? "💻" : n === "creative" ? "✨" : "🌍"}</span>
-                        {n === "tech" ? "TECH" : n === "creative" ? "BRAND" : "LOCAL"}
-                      </button>
-                    ))}
+                  {/* Portfolio Versions */}
+                  <div className="flex flex-col gap-2 p-3 glass rounded-2xl border-white/5">
+                    <div className="flex items-center justify-between px-1 mb-1">
+                      <span className="text-[9px] font-bold tracking-[0.3em] text-white/30 uppercase">Portfolio Versions</span>
+                      <span className="text-[9px] font-bold tracking-[0.2em] text-primary/60 uppercase">← Switch to view each version</span>
+                    </div>
+                    <div className="flex flex-wrap gap-3">
+                      {(["tech", "creative", "community", "claude-design"] as const).map((n) => (
+                        <button
+                          key={n}
+                          onClick={() => setNiche(n)}
+                          className={cn(
+                            "relative flex-1 min-w-[90px] h-12 flex items-center justify-center gap-2 rounded-xl transition-all font-accent text-[10px] font-bold uppercase tracking-widest",
+                            niche === n ? "bg-primary/20 border border-primary text-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]" : "text-white/40 hover:bg-white/5"
+                          )}
+                        >
+                          {n === "claude-design" && (
+                            <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full bg-primary text-black text-[7px] font-black tracking-wider">NEW</span>
+                          )}
+                          <span>{n === "tech" ? "💻" : n === "creative" ? "✨" : n === "claude-design" ? "🌌" : "🌍"}</span>
+                          {n === "tech" ? "v1 TECH" : n === "creative" ? "v2 BRAND" : n === "claude-design" ? "v4 AI DESIGN" : "v3 LOCAL"}
+                        </button>
+                      ))}
+                    </div>
                   </div>
 
                   {/* Customization Dock */}
@@ -226,21 +270,32 @@ export default function Hero() {
           </motion.div>
         </div>
 
+        {niche !== "claude-design" && (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
+          style={niche === "claude-design" ? { rotateX, rotateY, transformPerspective: 1200 } : undefined}
           className={cn(
             "media-wrapper relative flex justify-center items-center perspective-1000",
             niche === "community" && "order-1"
           )}
         >
+          {niche === "claude-design" && (
+            <>
+              <div className="absolute inset-[-12px] -z-10 rounded-[2rem] border border-primary/20 animate-pulse-ring" />
+              <div className="absolute inset-[-24px] -z-10 rounded-[2.5rem] border border-primary/10 animate-pulse-ring" style={{ animationDelay: "1s" }} />
+              <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 w-2/3 h-10 bg-primary/15 blur-[35px] rounded-full" />
+            </>
+          )}
           <div
             className={cn(
-              "media-container relative w-full max-w-[500px] aspect-[4/5] overflow-hidden border-2 border-white/10 shadow-2xl transition-all duration-500",
-              niche === "creative" ? "max-w-[1000px] aspect-[21/9] rounded-[3rem]" :
+              "media-container relative w-full max-w-[500px] aspect-[4/5] overflow-hidden border-2 shadow-2xl transition-all duration-500",
+              niche === "claude-design" && "animate-float",
+              niche === "creative" ? "max-w-[1000px] aspect-[21/9] rounded-[3rem] border-white/10" :
               niche === "community" ? "aspect-square rounded-full border-primary" :
-              "rounded-2xl"
+              niche === "claude-design" ? "rounded-3xl border-primary/30 shadow-[0_0_80px_rgba(var(--primary-rgb),0.2)]" :
+              "rounded-2xl border-white/10"
             )}
             onClick={handleMediaClick}
             onMouseEnter={() => setIsMediaActive(true)}
@@ -258,11 +313,12 @@ export default function Hero() {
                 src={content.mediaSrc}
                 autoPlay
                 loop
-                controls
+                muted={niche === "claude-design"}
+                controls={niche !== "claude-design"}
                 playsInline
                 className={cn(
                   "w-full h-full object-cover transition-all duration-700",
-                  isMediaActive ? "grayscale-0" : "grayscale"
+                  niche === "claude-design" ? "grayscale-0 scale-105" : isMediaActive ? "grayscale-0" : "grayscale"
                 )}
               />
             ) : (
@@ -285,12 +341,15 @@ export default function Hero() {
           
           {/* Holographic Glow */}
           <div className={cn(
-            "absolute inset-0 -z-10 bg-conic-gradient from-transparent via-primary to-transparent opacity-30 blur-[40px] animate-spin-slow",
-            niche === "creative" ? "max-w-[1050px] aspect-[21/9] rounded-[3rem]" : 
-            niche === "community" ? "aspect-square rounded-full" : 
+            "absolute inset-0 -z-10 bg-conic-gradient from-transparent via-primary to-transparent blur-[40px] animate-spin-slow",
+            niche === "claude-design" ? "opacity-40" : "opacity-30",
+            niche === "creative" ? "max-w-[1050px] aspect-[21/9] rounded-[3rem]" :
+            niche === "community" ? "aspect-square rounded-full" :
+            niche === "claude-design" ? "max-w-[530px] aspect-[4/5] rounded-3xl" :
             "max-w-[530px] aspect-[4/5] rounded-2xl"
           )} />
         </motion.div>
+        )}
       </div>
     </section>
   );
