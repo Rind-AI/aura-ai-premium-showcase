@@ -23,31 +23,31 @@ export const nicheContent: Record<string, NicheContent> = {
   tech: {
     navText: "KHALID RIND",
     logoSrc: "",
-    heroBadge: "DIGITAL MARKETING CONTRACTOR | MELBOURNE, AUSTRALIA",
-    heroTitle: "I BUILD <span class='text-gradient'>MARKETING SYSTEMS</span>",
-    heroDesc: "I help Australian brands turn scattered marketing into consistent weekly growth — content, Meta ads, email flows, and clear reporting. Available for contract work now.",
-    heroCta: "HIRE KHALID",
+    heroBadge: "INDUSTRIAL INTELLIGENCE | AI + DATA CONSULTING",
+    heroTitle: "I BUILD <span class='text-gradient'>AI & DATA INTELLIGENCE SYSTEMS</span>",
+    heroDesc: "I help Australian businesses turn scattered tools, content, customer data, and daily operations into practical AI-powered systems. From client acquisition and local SEO to automation, reporting, and digital showcases, I build simple workflows that help owners make better decisions and win more work.",
+    heroCta: "BOOK AI CONSULT",
     mediaSrc: "/videos/cli-engineer.mp4",
-    tickerItems: ["Health", "Education", "Sport", "Food", "Writer", "Artist", "Teacher", "School", "Council", "Road Safety", "Outdoor Activities"],
+    tickerItems: ["AI Automation", "Data Intelligence", "Industrial Intelligence", "Content Systems", "Local SEO", "CRM Workflows", "Google Sheets", "Notion Systems", "Client Portals", "Digital Showcases", "Research Packs", "Business Growth"],
     features: [
       {
-        title: "Health, Food & Safety",
-        desc: "Sorting complex data is effortless. We identify trends in healthcare, optimize food distribution, and extract real intelligence for road safety ad campaigns.",
+        title: "AI & Data Intelligence",
+        desc: "Turn messy business data, documents, customer notes, and spreadsheets into clear insights, simple dashboards, and owner-friendly decisions.",
         icon: "🏥"
       },
       {
-        title: "Education & Creatives",
-        desc: "Empowering schools, teachers, writers, and artists by making it simple to analyze learning metrics and track the vast benefits of outdoor activities.",
+        title: "Industrial Intelligence Systems",
+        desc: "Build practical AI workflows for service businesses, councils, health, food, education, trades, sport, and local operators who need clearer systems.",
         icon: "🎓"
       },
       {
-        title: "Sports & Councils",
-        desc: "Extracting key points from available databases to find the winning formula for sports teams, and seamlessly optimizing local council initiatives.",
+        title: "Growth & Client Acquisition",
+        desc: "Connect content, SEO, Meta Ads, email, CRM, Google Sheets, and client-ready assets into one weekly pipeline that helps you find and convert better opportunities.",
         icon: "🏅"
       }
     ],
-    contactTitle: "INITIATE <span class='text-gradient'>COMMS</span>",
-    contactDesc: "Ready to extract real intelligence from your data or deploy a premium Digital Showcase? It is easier than you think. Secure your slot today.",
+    contactTitle: "START YOUR <span class='text-gradient'>AI INTELLIGENCE SYSTEM</span>",
+    contactDesc: "Ready to turn scattered tools, files, content, and customer data into a simple AI-powered operating system? Book a practical consultation and I will show you the fastest path from confusion to clear action.",
     contactEmail: "Info@khalidrind.io",
     contactPhone: "+61-493348617",
     contactLocation: "Melbourne, Australia"
