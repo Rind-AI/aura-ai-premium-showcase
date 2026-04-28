@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { nicheContent, NicheContent } from "@/constants/nicheContent";
 
-type Theme = "cyan" | "emerald" | "magenta" | "amber" | "pastel" | "crimson" | "violet" | "gold" | "lime" | "sky" | "rose" | "orange";
+type Theme = "cyan" | "emerald" | "magenta" | "amber" | "pastel" | "crimson" | "violet" | "gold" | "lime" | "sky" | "rose" | "orange" | "blue";
 type Niche = "tech" | "creative" | "community" | "claude-design";
 type Font = "sans" | "serif" | "mono" | "display" | "accent" | "artistic" | "luxury" | "futuristic" | "wide" | "playful";
 
@@ -37,6 +37,7 @@ const themes = {
   sky: { p: "#38bdf8", rgb: "56, 189, 248" },
   rose: { p: "#fb7185", rgb: "251, 113, 133" },
   orange: { p: "#fb923c", rgb: "251, 146, 60" },
+  blue: { p: "#0070f3", rgb: "0, 112, 243" },
 };
 
 const fonts = {
@@ -53,8 +54,8 @@ const fonts = {
 };
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [theme, setTheme] = useState<Theme>("cyan");
-  const [bgColor, setBgColor] = useState("#010205");
+  const [theme, setTheme] = useState<Theme>("blue");
+  const [bgColor, setBgColor] = useState("#030711");
   const [fontFamily, setFontFamily] = useState<Font>("sans");
   const [niche, setNiche] = useState<Niche>("tech");
   const [isAdmin, setIsAdmin] = useState(false);

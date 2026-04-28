@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { ArrowRight, Sparkles, Palette, Type, ChevronRight } from "lucide-react";
 import { useApp } from "@/context/AppContext";
 import { cn } from "@/lib/utils";
-import { useRef, useState } from "react";
+import { useRef, useState, useMemo } from "react";
 
 export default function Hero() {
   const { theme, setTheme, bgColor, setBgColor, fontFamily, setFontFamily, niche, setNiche, isAdmin, content, updateContent } = useApp();
@@ -39,6 +39,17 @@ export default function Hero() {
     }
   };
 
+  const starPositions = useMemo(() =>
+    Array.from({ length: 28 }, (_, i) => ({
+      left: `${(i * 37 + 13) % 100}%`,
+      top: `${(i * 53 + 7) % 100}%`,
+      duration: `${5 + (i * 1.3) % 8}s`,
+      delay: `-${(i * 0.9) % 6}s`,
+      size: i % 7 === 0 ? "3px" : "2px",
+    })),
+    []
+  );
+
   const handleMouseMove = (e: React.MouseEvent<HTMLElement>) => {
     if (niche !== "claude-design") return;
     const rect = sectionRef.current?.getBoundingClientRect();
@@ -60,6 +71,16 @@ export default function Hero() {
   return (
     <section ref={sectionRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave} className="relative min-h-screen flex items-center pt-20 overflow-hidden">
       <input type="file" ref={mediaInputRef} className="hidden" onChange={handleFileChange} accept="image/*,video/*" />
+
+      {/* Starfield — Tech Profile */}
+      {niche === "tech" && (
+        <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+          {starPositions.map((s, i) => (
+            <div key={i} className="star" style={{ left: s.left, top: s.top, width: s.size, height: s.size, animationDuration: s.duration, animationDelay: s.delay }} />
+          ))}
+          <div className="absolute inset-0" style={{ background: "radial-gradient(ellipse at 15% 60%, rgba(0,112,243,0.07) 0%, transparent 50%), radial-gradient(ellipse at 80% 20%, rgba(0,112,243,0.05) 0%, transparent 40%)" }} />
+        </div>
+      )}
 
       {niche === "claude-design" && (
         <div className="absolute inset-0 z-0">
@@ -87,6 +108,18 @@ export default function Hero() {
           "hero-content transition-all duration-500",
           niche === "community" && "order-2 text-right flex flex-col items-end"
         )}>
+          {niche === "tech" && (
+            <motion.div
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="flex items-center gap-2 mb-4"
+            >
+              <div className="w-2 h-2 rounded-full bg-primary animate-pulse" />
+              <span className="text-xs font-bold tracking-[0.3em] text-white/70 uppercase font-accent">Khalid Rind</span>
+              <div className="h-[1px] bg-white/20 w-12" />
+            </motion.div>
+          )}
+
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -210,7 +243,7 @@ export default function Hero() {
                     <div className="flex items-center gap-4">
                       <Palette className="w-4 h-4 text-white/40" />
                       <div className="flex flex-wrap gap-2">
-                        {(["cyan", "emerald", "magenta", "amber", "pastel", "crimson", "violet", "gold", "lime", "sky", "rose", "orange"] as const).map((t) => (
+                        {(["blue", "cyan", "emerald", "magenta", "amber", "pastel", "crimson", "violet", "gold", "lime", "sky", "rose", "orange"] as const).map((t) => (
                           <button
                             key={t}
                             onClick={() => setTheme(t)}
@@ -218,8 +251,8 @@ export default function Hero() {
                               "w-5 h-5 rounded-full border border-white/20 transition-all hover:scale-125",
                               theme === t && "scale-125 border-white shadow-[0_0_10px_currentColor]"
                             )}
-                            style={{ 
-                              backgroundColor: t === "cyan" ? "#00d4ff" : t === "emerald" ? "#00ff88" : t === "magenta" ? "#ff00ff" : t === "amber" ? "#f59e0b" : t === "crimson" ? "#dc2626" : t === "violet" ? "#8b5cf6" : t === "gold" ? "#fbbf24" : t === "lime" ? "#a3e635" : t === "sky" ? "#38bdf8" : t === "rose" ? "#fb7185" : t === "orange" ? "#fb923c" : "#ffb7b2"
+                            style={{
+                              backgroundColor: t === "blue" ? "#0070f3" : t === "cyan" ? "#00d4ff" : t === "emerald" ? "#00ff88" : t === "magenta" ? "#ff00ff" : t === "amber" ? "#f59e0b" : t === "crimson" ? "#dc2626" : t === "violet" ? "#8b5cf6" : t === "gold" ? "#fbbf24" : t === "lime" ? "#a3e635" : t === "sky" ? "#38bdf8" : t === "rose" ? "#fb7185" : t === "orange" ? "#fb923c" : "#ffb7b2"
                             }}
                           />
                         ))}
@@ -251,7 +284,7 @@ export default function Hero() {
                     <div className="flex items-center gap-4">
                       <div className="w-4 h-4 rounded-full border border-white/40" />
                       <div className="flex flex-wrap gap-2">
-                        {(["#010205", "#0a0a0a", "#1a1a1a", "#050505", "#101010", "#0f172a", "#1e1b4b", "#18181b", "#020617", "#0c0a09"] as const).map((c) => (
+                        {(["#030711", "#010205", "#040d1a", "#0a0a0a", "#050505", "#0f172a", "#1e1b4b", "#020617", "#18181b", "#0c0a09"] as const).map((c) => (
                           <button
                             key={c}
                             onClick={() => setBgColor(c)}
@@ -269,6 +302,27 @@ export default function Hero() {
               )}
             </AnimatePresence>
           </motion.div>
+
+          {/* Stats Row — Tech Profile Only */}
+          {niche === "tech" && (
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: 0.5 }}
+              className="flex flex-wrap gap-8 mt-8 pt-8 border-t border-white/10"
+            >
+              {[
+                { value: "1,510+", label: "Hours Mastered" },
+                { value: "100+", label: "AI Apps Built" },
+                { value: "8+", label: "Enterprise Clients" },
+              ].map(({ value, label }) => (
+                <div key={label}>
+                  <div className="text-3xl font-black text-white font-display">{value}</div>
+                  <div className="text-[10px] text-white/40 uppercase tracking-[0.2em] mt-1">{label}</div>
+                </div>
+              ))}
+            </motion.div>
+          )}
         </div>
 
         {niche !== "claude-design" && (
