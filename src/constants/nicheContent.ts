@@ -23,31 +23,31 @@ export const nicheContent: Record<string, NicheContent> = {
   tech: {
     navText: "KHALID RIND",
     logoSrc: "",
-    heroBadge: "INDUSTRIAL INTELLIGENCE | AI + DATA CONSULTING",
-    heroTitle: "I BUILD <span class='text-gradient'>AI & DATA INTELLIGENCE SYSTEMS</span>",
-    heroDesc: "I help Australian businesses turn scattered tools, content, customer data, and daily operations into practical AI-powered systems. From client acquisition and local SEO to automation, reporting, and digital showcases, I build simple workflows that help owners make better decisions and win more work.",
-    heroCta: "BOOK AI CONSULT",
+    heroBadge: "AI + DATA INTELLIGENCE | BRAND OPTIMISATION | MELBOURNE, AUSTRALIA",
+    heroTitle: "DATA EXTRACTION. AI SYSTEMS. <span class='text-gradient'>YOUR BRAND OPTIMISED</span>",
+    heroDesc: "I provide AI and Data Intelligence consultancy for Australian businesses. We extract your raw business data, identify the patterns and gaps, then build AI-powered systems that optimise your entire brand — from operations and client acquisition to digital showcases and automated pipelines. Not just marketing. Everything.",
+    heroCta: "START WITH DATA",
     mediaSrc: "/videos/cli-engineer.mp4",
-    tickerItems: ["AI Automation", "Data Intelligence", "Industrial Intelligence", "Content Systems", "Local SEO", "CRM Workflows", "Google Sheets", "Notion Systems", "Client Portals", "Digital Showcases", "Research Packs", "Business Growth"],
+    tickerItems: ["Data Extraction", "AI Systems", "Brand Optimisation", "Process Automation", "Business Intelligence", "Digital Showcase", "Client Pipelines", "Operations AI", "NeuraNest AI", "Melbourne", "Australia", "AI Consulting"],
     features: [
       {
-        title: "AI & Data Intelligence",
-        desc: "Turn messy business data, documents, customer notes, and spreadsheets into clear insights, simple dashboards, and owner-friendly decisions.",
-        icon: "🏥"
+        title: "Data Extraction & Intelligence",
+        desc: "We extract raw business data from your tools, documents, customer records, and operations — then turn it into actionable intelligence that drives real decisions.",
+        icon: "🔬"
       },
       {
-        title: "Industrial Intelligence Systems",
-        desc: "Build practical AI workflows for service businesses, councils, health, food, education, trades, sport, and local operators who need clearer systems.",
-        icon: "🎓"
+        title: "AI Brand Optimisation",
+        desc: "Deploy AI systems that optimise your entire brand process — from the first client touchpoint through operations, delivery, reporting, and retention.",
+        icon: "⚡"
       },
       {
-        title: "Growth & Client Acquisition",
-        desc: "Connect content, SEO, Meta Ads, email, CRM, Google Sheets, and client-ready assets into one weekly pipeline that helps you find and convert better opportunities.",
-        icon: "🏅"
+        title: "Digital Showcase Engine",
+        desc: "Build your brand's digital presence as a high-performance showcase — content, SEO, ads, CRM, and AI automation wired into one weekly growth pipeline.",
+        icon: "🌐"
       }
     ],
-    contactTitle: "START YOUR <span class='text-gradient'>AI INTELLIGENCE SYSTEM</span>",
-    contactDesc: "Ready to turn scattered tools, files, content, and customer data into a simple AI-powered operating system? Book a practical consultation and I will show you the fastest path from confusion to clear action.",
+    contactTitle: "START WITH YOUR <span class='text-gradient'>DATA</span>",
+    contactDesc: "Every optimisation starts with understanding your data. Let's extract what your business already knows, identify the gaps, and build the AI system that closes them.",
     contactEmail: "Info@khalidrind.io",
     contactPhone: "+61-493348617",
     contactLocation: "Melbourne, Australia"

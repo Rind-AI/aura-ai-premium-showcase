@@ -171,8 +171,8 @@ export default function Hero() {
                   {/* Portfolio Versions */}
                   <div className="flex flex-col gap-2 p-3 glass rounded-2xl border-white/5">
                     <div className="flex items-center justify-between px-1 mb-1">
-                      <span className="text-[9px] font-bold tracking-[0.3em] text-white/30 uppercase">Portfolio Versions</span>
-                      <span className="text-[9px] font-bold tracking-[0.2em] text-primary/60 uppercase">← Switch to view each version</span>
+                      <span className="text-[9px] font-bold tracking-[0.3em] text-white/30 uppercase">khalidrind.io Journey</span>
+                      <span className="text-[9px] font-bold tracking-[0.2em] text-primary/60 uppercase">← Explore each era</span>
                     </div>
                     <div className="flex flex-wrap gap-3">
                       {(["tech", "creative", "community", "claude-design"] as const).map((n) => (
@@ -180,15 +180,16 @@ export default function Hero() {
                           key={n}
                           onClick={() => setNiche(n)}
                           className={cn(
-                            "relative flex-1 min-w-[90px] h-12 flex items-center justify-center gap-2 rounded-xl transition-all font-accent text-[10px] font-bold uppercase tracking-widest",
+                            "relative flex-1 min-w-[90px] h-14 flex flex-col items-center justify-center gap-0.5 rounded-xl transition-all font-accent text-[9px] font-bold uppercase tracking-widest",
                             niche === n ? "bg-primary/20 border border-primary text-primary shadow-[0_0_15px_rgba(var(--primary-rgb),0.2)]" : "text-white/40 hover:bg-white/5"
                           )}
                         >
                           {n === "claude-design" && (
-                            <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full bg-primary text-black text-[7px] font-black tracking-wider">NEW</span>
+                            <span className="absolute -top-2 -right-1 px-1.5 py-0.5 rounded-full bg-primary text-black text-[7px] font-black tracking-wider">LATEST</span>
                           )}
-                          <span>{n === "tech" ? "💻" : n === "creative" ? "✨" : n === "claude-design" ? "🌌" : "🌍"}</span>
-                          {n === "tech" ? "v1 TECH" : n === "creative" ? "v2 BRAND" : n === "claude-design" ? "v4 AI DESIGN" : "v3 LOCAL"}
+                          <span className="text-base leading-none">{n === "tech" ? "🔬" : n === "creative" ? "✨" : n === "claude-design" ? "🌌" : "🌍"}</span>
+                          <span className="text-[8px] opacity-60">{n === "tech" ? "ERA 1" : n === "creative" ? "ERA 2" : n === "claude-design" ? "ERA 4" : "ERA 3"}</span>
+                          <span>{n === "tech" ? "AI+DATA" : n === "creative" ? "BRAND" : n === "claude-design" ? "AI DESIGN" : "LOCAL"}</span>
                         </button>
                       ))}
                     </div>
