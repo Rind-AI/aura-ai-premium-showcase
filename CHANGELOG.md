@@ -5,6 +5,109 @@ Format: version | date | what changed
 
 ---
 
+## v1.9.6 — 2026-04-30
+
+### Fixed
+- **Navbar: NeuraNest AI link corrected** — was broken (`https://neuranestai.agency`, missing www, no trailing slash)
+  - Updated `src/components/layout/Navbar.tsx` line 23
+  - Before: `https://neuranestai.agency`
+  - After: `https://www.neuranestai.agency/`
+  - Affects both desktop nav and mobile horizontal scroll nav (both use the same `navLinks` array)
+- Built, patched (SPA redirect + 404.html + CNAME), deployed to GitHub Pages
+- Committed: `fix: NeuraNest AI nav link updated to https://www.neuranestai.agency/` (`c3423cc`)
+
+---
+
+## v1.9.5 — 2026-04-29
+
+### Added
+- **Vercel server-side Gemini proxy** — permanent fix for API key revocation (CLIENT:002-KR-NNAI)
+  - Root cause confirmed: Vite bakes `VITE_` env vars into public JS bundle → Google auto-revokes within hours
+  - Created `api/gemini.ts` — Vercel serverless function handling chat, grounding, research
+  - Uses `process.env.GEMINI_API_KEY` (server-side only — never exposed in browser bundle)
+  - Updated `src/lib/gemini.ts` — removed all Google SDK imports, now calls `/api/gemini` proxy via `fetch`
+  - Created `vercel.json` — `outputDirectory: dist`, SPA rewrite `/(.*) → /index.html`
+  - Updated `tsconfig.json` — added `"exclude": ["api"]` so Vite ignores Node.js serverless files
+  - Vercel project: `khalidrind-io` under `neuranest-ai` team
+  - `GEMINI_API_KEY` set as server-side env var in Vercel dashboard (never in code)
+
+---
+
+## v1.9.4 — 2026-04-29
+
+### Fixed
+- **Services API — hardcoded key array removed** (root cause of all revocations found)
+  - Old `gemini.ts` had 6 hardcoded API keys committed to public GitHub repo
+  - Google automatically scans public Pages sites and revokes embedded keys within hours
+  - Removed entire fallback array — now uses ONLY `VITE_GEMINI_API_KEY` from `.env.local` (gitignored)
+  - Active key: `AIzaSyBvCYn3...` (never committed, not revoked)
+
+### Added
+- **Navbar: NeuraNest AI external link** — inserted between Supernova and AR-VR REBIRTH
+  - Path: `https://neuranestai.agency` (NOTE: this URL was broken — fixed in v1.9.6)
+  - `external: true` — opens in new tab via `<a target="_blank" rel="noopener noreferrer">`
+
+### Shipped
+- **CLIENT:000-KR-NNAI Firebase site** — standalone identity card site
+  - `firebase projects:create kr-nnai-supernova` via CLI (no browser needed)
+  - Static HTML: animated stars, stats, identity card, skills, timeline
+  - Live at https://kr-nnai-supernova.web.app
+  - Local: `C:\AI-AIR-TEAM-HQ\CLAUDE-CODE-26 DIVISION\PROJECTS\CLIENT-000-KR-NNAI\`
+
+---
+
+## v1.9.3 — 2026-04-28
+
+### Changed
+- **Home page — 2nd hero video replaced** with `AI-CHATTER-TO-OPERATOR.mp4` (13.94 MB)
+  - Previous: `KR-HERO-VIDEO-TRIMMED.mp4`
+  - Removed `loop` attribute — plays once, cleaner viewing experience
+- **First hero video (tech profile)** — playback behaviour fixed
+  - `autoPlay={false}` — user must click play (was auto-playing)
+  - `loop={false}` — plays once then stops
+  - `onLoadedMetadata` sets `volume = 0.1` (minimum sound on load)
+
+---
+
+## v1.9.2 — 2026-04-28
+
+### Added
+- **Midnight Blue default theme** — `theme="blue"` (#0070f3 electric blue) added to AppContext
+  - Default background: `#030711` (midnight navy, replaces pure black)
+  - Blue color button added first in customizer dock
+  - Background presets updated: `#030711`, `#040d1a` midnight blues as first options
+- **Starfield animation** — 28 drifting star particles + blue radial glow on tech profile hero
+- **Name badge** — "● Khalid Rind ——" above badge pill (Nate Herk style)
+- **Stats row** — 1,510+ Hours Mastered | 100+ AI Apps Built | 8+ Enterprise Clients
+
+---
+
+## v1.9.1 — 2026-04-28
+
+### Changed
+- **Tech profile hero content** — AI+Data Brand Optimizer positioning
+  - Badge: "AI + DATA INTELLIGENCE | BRAND OPTIMISATION | MELBOURNE, AUSTRALIA"
+  - Title: "DATA EXTRACTION. AI SYSTEMS. YOUR BRAND OPTIMISED"
+  - CTA: "START WITH DATA"
+  - Version switcher relabelled: "khalidrind.io Journey" — ERA 1→4
+
+---
+
+## v1.9.0 — 2026-04-28
+
+### Added
+- **4th niche profile: `claude-design`** — cinematic full-screen SKY-FALL.mp4 hero
+  - Video: `brightness(0.45) saturate(1.3)` + dual gradient overlays + radial primary glow
+  - 3D mouse tilt: `useMotionValue` + `useSpring` + `rotateX/rotateY` (Framer Motion, perspective 1200)
+  - CSS animations: `@keyframes float` (bob), `@keyframes pulse-ring` (breathing border)
+- **Portfolio Versions switcher** — now visible to clients: v1 AI+DATA / v2 BRAND / v3 LOCAL / v4 AI DESIGN
+- **Firebase config** — `firebase.json` + `.firebaserc` created for CLIENT:000 (`k-rind-neuranest-showcase`)
+
+### Fixed
+- Merged remote divergence — kept AI & Data Intelligence positioning from remote v1.8.4
+
+---
+
 ## v1.8.3 — 2026-04-21
 
 ### Changed
