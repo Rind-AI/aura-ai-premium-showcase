@@ -20,7 +20,7 @@ export default function Navbar() {
     { name: "Services", path: "/services", external: false },
     { name: "Showcase", path: "/showcase", external: false },
     { name: "Supernova", path: "/supernova", external: false },
-    { name: "NeuraNest AI", path: "https://neuranestai.agency", external: true },
+    { name: "NeuraNest AI", path: "https://www.neuranestai.agency/", external: true },
     { name: "AR-VR REBIRTH", path: "https://www.neuranestai.world", external: true },
     { name: "About", path: "/about", external: false },
     { name: "Contact", path: "/contact", external: false },
