@@ -1,0 +1,949 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Khalid Rind — AI Strategy Consultant</title>
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&display=swap" rel="stylesheet" />
+
+  <!-- CDNs -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* ===== RESET & TOKENS ===== */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --navy:       #004E7C;
+      --steel:      #7DA2A9;
+      --coral:      #D95E38;
+      --bg-deep:    #030C17;
+      --bg-mid:     #071628;
+      --text-bright:#F4F8FC;
+      --text-muted: #8BA4B8;
+      --glow-coral: rgba(217, 94, 56, 0.35);
+      --glow-steel: rgba(125, 162, 169, 0.25);
+      --font-display: 'Space Grotesk', system-ui, sans-serif;
+      --font-body:    'DM Sans', system-ui, sans-serif;
+      --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      background: var(--bg-deep);
+      color: var(--text-bright);
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* ===== CANVAS LAYER ===== */
+    #neural-canvas {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    /* ===== HERO ===== */
+    #hero {
+      position: relative;
+      z-index: 10;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: flex-start;
+      padding: clamp(80px, 12vw, 140px) clamp(24px, 8vw, 120px);
+      overflow: hidden;
+    }
+
+    /* Background gradient overlay on top of Three.js */
+    #hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 60% at 15% 50%, rgba(0, 78, 124, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 80% at 85% 30%, rgba(217, 94, 56, 0.08) 0%, transparent 60%),
+        linear-gradient(180deg, rgba(3, 12, 23, 0.55) 0%, rgba(7, 22, 40, 0.35) 50%, rgba(3, 12, 23, 0.75) 100%);
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      position: relative;
+      z-index: 2;
+      max-width: 860px;
+    }
+
+    /* ===== EYEBROW ===== */
+    .hero-eyebrow {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 28px;
+      opacity: 0;
+    }
+
+    .eyebrow-line {
+      width: 40px;
+      height: 1px;
+      background: var(--coral);
+    }
+
+    .eyebrow-text {
+      font-family: var(--font-display);
+      font-size: clamp(0.7rem, 1.2vw, 0.85rem);
+      font-weight: 500;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--coral);
+    }
+
+    /* ===== HEADLINE ===== */
+    .hero-headline {
+      font-family: var(--font-display);
+      font-size: clamp(3.2rem, 9vw, 7.5rem);
+      font-weight: 700;
+      line-height: 0.92;
+      letter-spacing: -0.03em;
+      color: var(--text-bright);
+      opacity: 0;
+      overflow: hidden;
+    }
+
+    .headline-glow {
+      display: inline-block;
+      position: relative;
+    }
+
+    .headline-glow::after {
+      content: attr(data-text);
+      position: absolute;
+      inset: 0;
+      color: transparent;
+      -webkit-text-stroke: 0px transparent;
+      filter: blur(28px);
+      opacity: 0.45;
+      background: linear-gradient(135deg, var(--steel), var(--coral));
+      -webkit-background-clip: text;
+      background-clip: text;
+      z-index: -1;
+    }
+
+    .name-first { color: var(--text-bright); }
+    .name-last {
+      display: block;
+      background: linear-gradient(135deg, var(--text-bright) 30%, var(--steel) 100%);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      position: relative;
+    }
+
+    /* ===== SUBHEADLINE ===== */
+    .hero-sub {
+      margin-top: 28px;
+      font-family: var(--font-display);
+      font-size: clamp(1rem, 2.2vw, 1.35rem);
+      font-weight: 400;
+      color: var(--steel);
+      letter-spacing: 0.01em;
+      opacity: 0;
+    }
+
+    .sub-divider {
+      display: inline-block;
+      width: 4px; height: 4px;
+      border-radius: 50%;
+      background: var(--coral);
+      vertical-align: middle;
+      margin: 0 10px;
+      position: relative;
+      top: -2px;
+    }
+
+    /* ===== TAGLINE TYPING ===== */
+    .hero-tagline {
+      margin-top: 20px;
+      font-family: var(--font-body);
+      font-size: clamp(0.9rem, 1.6vw, 1.05rem);
+      font-weight: 300;
+      font-style: italic;
+      color: var(--text-muted);
+      letter-spacing: 0.03em;
+      opacity: 0;
+      min-height: 1.6em;
+    }
+
+    .tagline-cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--coral);
+      vertical-align: text-bottom;
+      margin-left: 2px;
+      animation: blink 1s step-end infinite;
+    }
+
+    @keyframes blink {
+      50% { opacity: 0; }
+    }
+
+    /* ===== CTA BUTTONS ===== */
+    .hero-ctas {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      margin-top: 52px;
+      opacity: 0;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-family: var(--font-display);
+      font-size: clamp(0.85rem, 1.4vw, 0.95rem);
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-decoration: none;
+      border-radius: 6px;
+      padding: clamp(12px, 2vw, 16px) clamp(24px, 3vw, 32px);
+      cursor: pointer;
+      border: none;
+      outline: none;
+      transition: all 240ms var(--ease-expo);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .btn::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      opacity: 0;
+      transition: opacity 240ms ease;
+    }
+
+    .btn:hover::before { opacity: 1; }
+
+    .btn-primary {
+      background: var(--coral);
+      color: #fff;
+      box-shadow: 0 0 0 0 var(--glow-coral);
+    }
+
+    .btn-primary::before {
+      background: rgba(255,255,255,0.12);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 12px 40px var(--glow-coral), 0 4px 16px rgba(217,94,56,0.4);
+    }
+
+    .btn-ghost {
+      background: transparent;
+      color: var(--steel);
+      border: 1px solid rgba(125, 162, 169, 0.4);
+      box-shadow: inset 0 0 0 0 rgba(125,162,169,0.08);
+    }
+
+    .btn-ghost::before {
+      background: rgba(125, 162, 169, 0.08);
+    }
+
+    .btn-ghost:hover {
+      transform: translateY(-3px);
+      border-color: rgba(125, 162, 169, 0.8);
+      color: var(--text-bright);
+      box-shadow: 0 8px 30px rgba(125,162,169,0.12);
+    }
+
+    .btn-arrow {
+      font-size: 1.1em;
+      transition: transform 240ms var(--ease-expo);
+    }
+
+    .btn:hover .btn-arrow { transform: translate(3px, -2px); }
+
+    /* ===== SCROLL INDICATOR ===== */
+    .scroll-hint {
+      position: absolute;
+      bottom: 40px;
+      left: clamp(24px, 8vw, 120px);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, transparent, var(--steel), transparent);
+      animation: scrollPulse 2s ease-in-out infinite;
+    }
+
+    @keyframes scrollPulse {
+      0%, 100% { opacity: 0.3; transform: scaleY(1); }
+      50% { opacity: 1; transform: scaleY(1.2); }
+    }
+
+    .scroll-label {
+      font-family: var(--font-display);
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      writing-mode: vertical-rl;
+    }
+
+    /* ===== AMBIENT ORBS (CSS, behind Three.js layer) ===== */
+    .orb {
+      position: fixed;
+      border-radius: 50%;
+      pointer-events: none;
+      z-index: 1;
+      filter: blur(80px);
+      opacity: 0;
+    }
+
+    .orb-1 {
+      width: clamp(300px, 40vw, 600px);
+      height: clamp(300px, 40vw, 600px);
+      top: -10%;
+      right: 5%;
+      background: radial-gradient(circle, rgba(0,78,124,0.5) 0%, transparent 70%);
+    }
+
+    .orb-2 {
+      width: clamp(200px, 30vw, 450px);
+      height: clamp(200px, 30vw, 450px);
+      bottom: 10%;
+      left: -5%;
+      background: radial-gradient(circle, rgba(217,94,56,0.22) 0%, transparent 70%);
+    }
+
+    .orb-3 {
+      width: clamp(150px, 20vw, 300px);
+      height: clamp(150px, 20vw, 300px);
+      top: 40%;
+      right: 20%;
+      background: radial-gradient(circle, rgba(125,162,169,0.18) 0%, transparent 70%);
+    }
+
+    /* ===== STAT STRIP ===== */
+    .hero-stats {
+      position: absolute;
+      right: clamp(24px, 6vw, 80px);
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      flex-direction: column;
+      gap: 36px;
+      opacity: 0;
+      z-index: 2;
+    }
+
+    .stat-item {
+      text-align: right;
+    }
+
+    .stat-num {
+      font-family: var(--font-display);
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1;
+    }
+
+    .stat-num span {
+      color: var(--coral);
+    }
+
+    .stat-label {
+      font-family: var(--font-body);
+      font-size: clamp(0.68rem, 1vw, 0.78rem);
+      font-weight: 300;
+      color: var(--text-muted);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-top: 4px;
+    }
+
+    .stat-divider {
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(to left, rgba(125,162,169,0.3), transparent);
+      margin-top: 10px;
+    }
+
+    /* ===== BELOW HERO (scroll target) ===== */
+    #below-hero {
+      position: relative;
+      z-index: 10;
+      min-height: 60vh;
+      background: linear-gradient(180deg, var(--bg-deep) 0%, #040E1A 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px clamp(24px, 8vw, 120px);
+    }
+
+    .below-text {
+      max-width: 640px;
+      text-align: center;
+      opacity: 0;
+    }
+
+    .below-text h2 {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-weight: 600;
+      color: var(--text-bright);
+      margin-bottom: 20px;
+    }
+
+    .below-text p {
+      font-size: clamp(0.95rem, 1.6vw, 1.1rem);
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    .below-text .highlight { color: var(--steel); font-weight: 500; }
+
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .hero-stats { display: none; }
+
+      .hero-ctas {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .btn { width: auto; }
+    }
+
+    @media (max-width: 480px) {
+      #hero {
+        padding: 80px 24px;
+        justify-content: center;
+      }
+    }
+
+    /* ===== REDUCED MOTION ===== */
+    @media (prefers-reduced-motion: reduce) {
+      .tagline-cursor { animation: none; opacity: 1; }
+      .scroll-line { animation: none; opacity: 0.4; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient orbs -->
+  <div class="orb orb-1"></div>
+  <div class="orb orb-2"></div>
+  <div class="orb orb-3"></div>
+
+  <!-- Three.js canvas -->
+  <canvas id="neural-canvas"></canvas>
+
+  <!-- Hero Section -->
+  <section id="hero" role="banner">
+    <div class="hero-inner">
+
+      <div class="hero-eyebrow">
+        <div class="eyebrow-line"></div>
+        <span class="eyebrow-text">Melbourne, Australia &nbsp;·&nbsp; NeuraNest AI</span>
+      </div>
+
+      <h1 class="hero-headline">
+        <span class="name-first headline-glow" data-text="KHALID">KHALID</span>
+        <span class="name-last headline-glow" data-text="RIND">RIND</span>
+      </h1>
+
+      <p class="hero-sub">
+        AI Strategy Consultant
+        <span class="sub-divider"></span>
+        Melbourne, Australia
+      </p>
+
+      <p class="hero-tagline">
+        <span class="tagline-display"></span><span class="tagline-cursor"></span>
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#below-hero" class="btn btn-primary">
+          View My Work
+          <span class="btn-arrow">↓</span>
+        </a>
+        <a href="https://www.neuranestai.agency/" class="btn btn-ghost" target="_blank" rel="noopener">
+          NeuraNest AI
+          <span class="btn-arrow">↗</span>
+        </a>
+      </div>
+
+    </div>
+
+    <!-- Stat strip — desktop only -->
+    <div class="hero-stats" aria-hidden="true">
+      <div class="stat-item">
+        <div class="stat-num">2,000<span>+</span></div>
+        <div class="stat-label">Hours Invested</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">100<span>+</span></div>
+        <div class="stat-label">Apps Built</div>
+        <div class="stat-divider"></div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">$1.5<span>M</span></div>
+        <div class="stat-label">Asset Value</div>
+        <div class="stat-divider"></div>
+      </div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-hint" aria-hidden="true">
+      <div class="scroll-line"></div>
+      <span class="scroll-label">Scroll</span>
+    </div>
+  </section>
+
+  <!-- Below Hero (scroll target) -->
+  <section id="below-hero">
+    <div class="below-text">
+      <h2>Clarity Before Automation</h2>
+      <p>
+        Strategy before tools. Khalid Rind helps businesses understand <span class="highlight">why</span> before touching a single platform.
+        AI should serve your vision — not replace your judgment.
+      </p>
+    </div>
+  </section>
+
+
+  <script>
+  /* =====================================================
+     THREE.JS — NEURAL NETWORK PARTICLE FIELD
+     ===================================================== */
+
+  (function initThree() {
+    const canvas = document.getElementById('neural-canvas');
+    const renderer = new THREE.WebGLRenderer({
+      canvas,
+      antialias: true,
+      alpha: true,
+      powerPreference: 'high-performance'
+    });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setClearColor(0x000000, 0);
+
+    const scene = new THREE.Scene();
+
+    const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 100);
+    camera.position.z = 14;
+
+    /* ---- LIGHTING ---- */
+    scene.add(new THREE.AmbientLight(0x7DA2A9, 0.4));
+    const keyLight = new THREE.PointLight(0xD95E38, 3, 25);
+    keyLight.position.set(4, 6, 8);
+    scene.add(keyLight);
+    const fillLight = new THREE.PointLight(0x004E7C, 2, 30);
+    fillLight.position.set(-8, -3, 4);
+    scene.add(fillLight);
+
+    /* ---- NODE COUNT (reduce on mobile) ---- */
+    const isMobile = window.innerWidth < 768;
+    const NODE_COUNT    = isMobile ? 40 : 80;
+    const CONNECT_DIST  = isMobile ? 5.5 : 6.5;
+    const SPREAD_X      = isMobile ? 16 : 26;
+    const SPREAD_Y      = isMobile ? 10 : 16;
+    const SPREAD_Z      = isMobile ? 6  : 10;
+
+    /* ---- BUILD NODES ---- */
+    const nodes = [];
+    const nodeMeshes = [];
+    const nodeGroup = new THREE.Group();
+
+    for (let i = 0; i < NODE_COUNT; i++) {
+      const x = (Math.random() - 0.5) * SPREAD_X;
+      const y = (Math.random() - 0.5) * SPREAD_Y;
+      const z = (Math.random() - 0.5) * SPREAD_Z;
+      const size = 0.04 + Math.random() * 0.09;
+
+      nodes.push({
+        pos: new THREE.Vector3(x, y, z),
+        vel: new THREE.Vector3(
+          (Math.random() - 0.5) * 0.007,
+          (Math.random() - 0.5) * 0.007,
+          (Math.random() - 0.5) * 0.003
+        ),
+        size
+      });
+
+      // Accent nodes (coral) — 10% chance
+      const isAccent = Math.random() < 0.1;
+      const geo = new THREE.SphereGeometry(size, 8, 8);
+      const mat = new THREE.MeshStandardMaterial({
+        color: isAccent ? 0xD95E38 : 0x7DA2A9,
+        emissive: isAccent ? 0xD95E38 : 0x4A7A85,
+        emissiveIntensity: isAccent ? 0.8 : 0.3,
+        metalness: 0.6,
+        roughness: 0.3,
+      });
+      const mesh = new THREE.Mesh(geo, mat);
+      mesh.position.set(x, y, z);
+      nodeGroup.add(mesh);
+      nodeMeshes.push(mesh);
+    }
+    scene.add(nodeGroup);
+
+    /* ---- BUILD CONNECTION LINES ---- */
+    const lineGroup = new THREE.Group();
+
+    // Pre-compute connections
+    const connections = [];
+    for (let i = 0; i < nodes.length; i++) {
+      for (let j = i + 1; j < nodes.length; j++) {
+        const dist = nodes[i].pos.distanceTo(nodes[j].pos);
+        if (dist < CONNECT_DIST) {
+          const opacity = 1 - dist / CONNECT_DIST;
+          const mat = new THREE.LineBasicMaterial({
+            color: 0x7DA2A9,
+            transparent: true,
+            opacity: opacity * 0.18,
+          });
+          const geo = new THREE.BufferGeometry().setFromPoints([
+            nodes[i].pos.clone(),
+            nodes[j].pos.clone()
+          ]);
+          const line = new THREE.Line(geo, mat);
+          lineGroup.add(line);
+          connections.push({ line, geo, i, j, baseOpacity: opacity * 0.18 });
+        }
+      }
+    }
+    scene.add(lineGroup);
+
+    /* ---- LARGE BG ORBS (pure geometry, blurred light effect) ---- */
+    function addOrb(x, y, z, color, size) {
+      const geo = new THREE.SphereGeometry(size, 16, 16);
+      const mat = new THREE.MeshBasicMaterial({
+        color,
+        transparent: true,
+        opacity: 0.06,
+      });
+      const orb = new THREE.Mesh(geo, mat);
+      orb.position.set(x, y, z);
+      scene.add(orb);
+      return orb;
+    }
+
+    const bgOrb1 = addOrb(-6, 3, -5, 0x004E7C, 6);
+    const bgOrb2 = addOrb(7, -4, -3, 0xD95E38, 4);
+    const bgOrb3 = addOrb(2, 6, -8, 0x7DA2A9, 5);
+
+    /* ---- MOUSE PARALLAX ---- */
+    const mouse = { x: 0, y: 0 };
+    const target = { x: 0, y: 0 };
+
+    window.addEventListener('mousemove', (e) => {
+      mouse.x = (e.clientX / window.innerWidth - 0.5) * 2;
+      mouse.y = -(e.clientY / window.innerHeight - 0.5) * 2;
+    });
+
+    // Touch support
+    window.addEventListener('touchmove', (e) => {
+      if (e.touches.length > 0) {
+        mouse.x = (e.touches[0].clientX / window.innerWidth - 0.5) * 2;
+        mouse.y = -(e.touches[0].clientY / window.innerHeight - 0.5) * 2;
+      }
+    }, { passive: true });
+
+    /* ---- RESIZE ---- */
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    /* ---- ANIMATION LOOP ---- */
+    let frame = 0;
+    const clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      frame++;
+      const elapsed = clock.getElapsedTime();
+
+      // Smooth mouse follow
+      target.x += (mouse.x - target.x) * 0.025;
+      target.y += (mouse.y - target.y) * 0.025;
+
+      // Rotate entire scene gently + follow cursor
+      scene.rotation.y = target.x * 0.18 + elapsed * 0.012;
+      scene.rotation.x = target.y * 0.10;
+
+      // Float nodes
+      for (let i = 0; i < nodes.length; i++) {
+        const n = nodes[i];
+        n.pos.add(n.vel);
+
+        // Soft boundary bounce
+        const bx = SPREAD_X / 2, by = SPREAD_Y / 2, bz = SPREAD_Z / 2;
+        if (Math.abs(n.pos.x) > bx) n.vel.x *= -1;
+        if (Math.abs(n.pos.y) > by) n.vel.y *= -1;
+        if (Math.abs(n.pos.z) > bz) n.vel.z *= -1;
+
+        nodeMeshes[i].position.copy(n.pos);
+
+        // Gentle pulse scale
+        const pulse = 1 + Math.sin(elapsed * 1.2 + i * 0.5) * 0.08;
+        nodeMeshes[i].scale.setScalar(pulse);
+      }
+
+      // Update connection lines every 3 frames (performance)
+      if (frame % 3 === 0) {
+        for (let c = 0; c < connections.length; c++) {
+          const { line, geo, i, j } = connections[c];
+          const points = [nodes[i].pos.clone(), nodes[j].pos.clone()];
+          geo.setFromPoints(points);
+          geo.computeBoundingSphere();
+        }
+      }
+
+      // Orb drift
+      bgOrb1.position.y = 3 + Math.sin(elapsed * 0.3) * 1.5;
+      bgOrb2.position.y = -4 + Math.cos(elapsed * 0.25) * 1.2;
+      bgOrb3.position.x = 2 + Math.sin(elapsed * 0.2) * 2;
+
+      renderer.render(scene, camera);
+    }
+
+    animate();
+  })();
+
+
+  /* =====================================================
+     GSAP — ENTRANCE ANIMATIONS
+     ===================================================== */
+  gsap.registerPlugin(ScrollTrigger);
+
+  // Run after DOM ready
+  window.addEventListener('DOMContentLoaded', () => {
+
+    /* ---- AMBIENT ORBS FADE IN ---- */
+    gsap.to('.orb', {
+      opacity: 1,
+      duration: 2.5,
+      stagger: 0.4,
+      ease: 'power2.out',
+      delay: 0.3,
+    });
+
+    /* ---- HERO ENTRANCE SEQUENCE ---- */
+    const tl = gsap.timeline({ delay: 0.4 });
+
+    // Eyebrow line draws in
+    tl.fromTo('.eyebrow-line', { scaleX: 0, transformOrigin: 'left center' }, {
+      scaleX: 1, duration: 0.6, ease: 'expo.out'
+    })
+    .to('.hero-eyebrow', {
+      opacity: 1, y: 0,
+      duration: 0, // already visible via timeline — opacity handled
+    }, '<')
+    .from('.hero-eyebrow', {
+      opacity: 0, y: 10,
+      duration: 0.5, ease: 'power2.out'
+    }, '<0.1');
+
+    // Headline split entrance
+    tl.to('.hero-headline', {
+      opacity: 1, duration: 0.01
+    }, '-=0.2')
+    .from('.name-first', {
+      y: '110%',
+      opacity: 0,
+      duration: 0.9,
+      ease: 'expo.out',
+    }, '-=0.1')
+    .from('.name-last', {
+      y: '110%',
+      opacity: 0,
+      duration: 0.9,
+      ease: 'expo.out',
+    }, '-=0.65');
+
+    // Subheadline
+    tl.to('.hero-sub', {
+      opacity: 1,
+      y: 0,
+      duration: 0.7,
+      ease: 'power3.out',
+    }, '-=0.4')
+    .from('.hero-sub', {
+      y: 18,
+      duration: 0,
+    }, '<');
+
+    // Tagline (immediately show container, then type)
+    tl.to('.hero-tagline', {
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power2.out',
+    }, '-=0.3');
+
+    // CTAs
+    tl.to('.hero-ctas', {
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, '-=0.1')
+    .from('.btn', {
+      y: 20,
+      opacity: 0,
+      stagger: 0.12,
+      duration: 0.5,
+      ease: 'expo.out',
+    }, '<');
+
+    // Stats strip (desktop)
+    tl.to('.hero-stats', {
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, '-=0.6')
+    .from('.stat-item', {
+      y: 20,
+      opacity: 0,
+      stagger: 0.1,
+      duration: 0.5,
+      ease: 'expo.out',
+    }, '<');
+
+    // Scroll hint
+    tl.to('.scroll-hint', {
+      opacity: 1,
+      duration: 0.6,
+      ease: 'power2.out',
+    }, '-=0.3');
+
+
+    /* ---- TYPING ANIMATION ---- */
+    const taglineEl = document.querySelector('.tagline-display');
+    const phrases = [
+      'Clarity Before Automation.',
+      'Strategy Before Tools.',
+      'Vision Before Execution.',
+      'Human Intelligence Amplified.',
+    ];
+    let phraseIdx = 0;
+    let charIdx = 0;
+    let isDeleting = false;
+    let typingTimer;
+
+    function typeNext() {
+      const current = phrases[phraseIdx];
+
+      if (!isDeleting) {
+        taglineEl.textContent = current.substring(0, charIdx + 1);
+        charIdx++;
+        if (charIdx === current.length) {
+          isDeleting = true;
+          typingTimer = setTimeout(typeNext, 2400);
+          return;
+        }
+        typingTimer = setTimeout(typeNext, 55 + Math.random() * 30);
+      } else {
+        taglineEl.textContent = current.substring(0, charIdx - 1);
+        charIdx--;
+        if (charIdx === 0) {
+          isDeleting = false;
+          phraseIdx = (phraseIdx + 1) % phrases.length;
+          typingTimer = setTimeout(typeNext, 320);
+          return;
+        }
+        typingTimer = setTimeout(typeNext, 28);
+      }
+    }
+
+    // Start typing after headline has appeared
+    setTimeout(typeNext, 1600);
+
+
+    /* ---- SCROLLTRIGGER: HERO FADE ON SCROLL ---- */
+    gsap.to('#hero .hero-inner', {
+      y: -60,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'bottom 40%',
+        scrub: 1.2,
+      }
+    });
+
+    gsap.to('.hero-stats', {
+      y: -40,
+      opacity: 0,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'top top',
+        end: 'center top',
+        scrub: 1,
+      }
+    });
+
+    // Canvas fades as user scrolls away
+    gsap.to('#neural-canvas', {
+      opacity: 0.2,
+      ease: 'none',
+      scrollTrigger: {
+        trigger: '#hero',
+        start: 'bottom 60%',
+        end: 'bottom top',
+        scrub: 1,
+      }
+    });
+
+
+    /* ---- BELOW HERO REVEAL ---- */
+    gsap.to('.below-text', {
+      opacity: 1,
+      y: 0,
+      duration: 0.8,
+      ease: 'expo.out',
+      scrollTrigger: {
+        trigger: '#below-hero',
+        start: 'top 80%',
+        toggleActions: 'play none none none',
+      }
+    });
+
+    gsap.from('.below-text', {
+      y: 40,
+      duration: 0,
+    });
+
+  }); // end DOMContentLoaded
+  </script>
+
+</body>
+</html>
