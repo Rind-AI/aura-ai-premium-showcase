@@ -5,6 +5,13 @@ Format: version | date | what changed
 
 ---
 
+## v1.9.7 — 2026-05-21
+
+### Changed
+- Hero (tech niche): replaced rectangular brain video with circular globe animation (`globe.mp4`). Circular display with animated ring border and radial glow. All other niches and sections untouched.
+
+---
+
 ## v1.9.6 — 2026-04-30
 
 ### Fixed

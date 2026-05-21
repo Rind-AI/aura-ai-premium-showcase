@@ -326,31 +326,61 @@ export default function Hero() {
           )}
         </div>
 
-        {niche !== "claude-design" && (
+        {niche === "tech" ? (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.4 }}
-          style={niche === "claude-design" ? { rotateX, rotateY, transformPerspective: 1200 } : undefined}
+          className="media-wrapper relative flex justify-center items-center"
+        >
+          <div style={{ position: "relative" }}>
+            <div style={{
+              position: "absolute", width: "300px", height: "300px",
+              background: "radial-gradient(circle, rgba(var(--primary-rgb),0.25) 0%, transparent 70%)",
+              top: "50%", left: "50%", transform: "translate(-50%,-50%)",
+              pointerEvents: "none", zIndex: 0,
+            }} />
+            <div style={{
+              position: "relative", width: "420px", height: "420px",
+              display: "flex", alignItems: "center", justifyContent: "center",
+              zIndex: 2, borderRadius: "50%", overflow: "hidden",
+              background: "radial-gradient(circle at center, #0d1f2d 0%, #050b14 80%)",
+              boxShadow: "0 0 40px rgba(var(--primary-rgb),0.25), 0 0 80px rgba(var(--primary-rgb),0.15)",
+            }}>
+              <video
+                src="/videos/globe.mp4"
+                autoPlay loop muted playsInline
+                style={{ width: "100%", height: "100%", objectFit: "cover", borderRadius: "50%", mixBlendMode: "screen" }}
+              />
+              <div
+                className="animate-spin-slow"
+                style={{
+                  position: "absolute", top: 0, right: 0, bottom: 0, left: 0,
+                  borderRadius: "50%",
+                  border: "1px solid rgba(125,162,169,0.28)",
+                  boxShadow: "inset 0 0 60px rgba(0,78,124,0.25)",
+                  pointerEvents: "none",
+                  opacity: 0.6,
+                }}
+              />
+            </div>
+          </div>
+        </motion.div>
+        ) : niche !== "claude-design" ? (
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.4 }}
           className={cn(
             "media-wrapper relative flex justify-center items-center perspective-1000",
             niche === "community" && "order-1"
           )}
         >
-          {niche === "claude-design" && (
-            <>
-              <div className="absolute inset-[-12px] -z-10 rounded-[2rem] border border-primary/20 animate-pulse-ring" />
-              <div className="absolute inset-[-24px] -z-10 rounded-[2.5rem] border border-primary/10 animate-pulse-ring" style={{ animationDelay: "1s" }} />
-              <div className="absolute bottom-[-50px] left-1/2 -translate-x-1/2 w-2/3 h-10 bg-primary/15 blur-[35px] rounded-full" />
-            </>
-          )}
           <div
             className={cn(
               "media-container relative w-full max-w-[500px] aspect-[4/5] overflow-hidden border-2 shadow-2xl transition-all duration-500",
-              niche === "claude-design" && "animate-float",
               niche === "creative" ? "max-w-[1000px] aspect-[21/9] rounded-[3rem] border-white/10" :
               niche === "community" ? "aspect-square rounded-full border-primary" :
-              niche === "claude-design" ? "rounded-3xl border-primary/30 shadow-[0_0_80px_rgba(var(--primary-rgb),0.2)]" :
               "rounded-2xl border-white/10"
             )}
             onClick={handleMediaClick}
@@ -368,17 +398,16 @@ export default function Hero() {
               <video
                 ref={heroVideoRef}
                 src={content.mediaSrc}
-                autoPlay={niche !== "tech"}
-                loop={niche !== "tech"}
-                muted={niche === "claude-design"}
-                controls={niche !== "claude-design"}
+                autoPlay loop
+                muted={false}
+                controls
                 playsInline
                 onLoadedMetadata={() => {
                   if (heroVideoRef.current) heroVideoRef.current.volume = 0.1;
                 }}
                 className={cn(
                   "w-full h-full object-cover transition-all duration-700",
-                  niche === "claude-design" ? "grayscale-0 scale-105" : isMediaActive ? "grayscale-0" : "grayscale"
+                  isMediaActive ? "grayscale-0" : "grayscale"
                 )}
               />
             ) : (
@@ -398,18 +427,16 @@ export default function Hero() {
               </div>
             )}
           </div>
-          
+
           {/* Holographic Glow */}
           <div className={cn(
-            "absolute inset-0 -z-10 bg-conic-gradient from-transparent via-primary to-transparent blur-[40px] animate-spin-slow",
-            niche === "claude-design" ? "opacity-40" : "opacity-30",
+            "absolute inset-0 -z-10 bg-conic-gradient from-transparent via-primary to-transparent blur-[40px] animate-spin-slow opacity-30",
             niche === "creative" ? "max-w-[1050px] aspect-[21/9] rounded-[3rem]" :
             niche === "community" ? "aspect-square rounded-full" :
-            niche === "claude-design" ? "max-w-[530px] aspect-[4/5] rounded-3xl" :
             "max-w-[530px] aspect-[4/5] rounded-2xl"
           )} />
         </motion.div>
-        )}
+        ) : null}
       </div>
     </section>
   );
