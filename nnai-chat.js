@@ -16,12 +16,17 @@
 */
 (function () {
   const LS = { prov: 'nnc_provider', key: 'nnc_key', model: 'nnc_model', ep: 'nnc_endpoint' };
+  // Model is AUTO (always-latest aliases). Model name is never shown to the visitor.
   const DEFAULT_MODELS = {
-    gemini: 'gemini-1.5-flash',
+    gemini: 'gemini-flash-latest',
     openai: 'gpt-4o-mini',
     anthropic: 'claude-3-5-haiku-latest',
     custom: 'gpt-4o-mini'
   };
+  // Self-heal retired/deprecated models saved in a visitor's browser (e.g. gemini-1.5-flash was
+  // retired by Google — the cause of "couldn't reach the AI" even with a valid fresh key).
+  const DEPRECATED = /gemini-1\.5|gemini-1\.0|gemini-pro$|text-bison|gpt-3\.5|claude-3-haiku|claude-2/i;
+  function healModel(prov, m) { return (!m || DEPRECATED.test(m)) ? (DEFAULT_MODELS[prov] || m) : m; }
 
   function esc(s) { return (s || '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
   function fmt(s) { return esc(s).replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>'); }
@@ -38,8 +43,11 @@
     const system =
       "You are the friendly, sharp AI assistant for " + brand + " (" + (cfg.url || '') + "). " +
       (cfg.desc || '') + " " +
-      "You answer visitor enquiries about the services and products clearly and briefly — 2 to 4 sentences, warm and professional, never salesy or robotic. " +
+      "You represent the brand warmly and knowledgeably — like a switched-on team member who knows the founder, the story, the services and the products. " +
+      "Answer visitor enquiries clearly and briefly — 2 to 4 sentences, warm and professional, never salesy or robotic. " +
       "Services and pricing you can quote: " + (cfg.services || 'ask the visitor to contact us for details.') + " " +
+      (cfg.products ? ("Products available: " + cfg.products + " ") : "") +
+      "When someone asks a current, factual or local question (e.g. 'near me', a place, opening context), you may use live Google Search grounding to answer accurately — never guess. " +
       "Never invent prices or facts beyond what is given here. If you are unsure, say so and offer to connect them with " + (cfg.contactName || 'the team') + " at " + (cfg.email || '') + ". " +
       "When a visitor seems ready to proceed, warmly guide them to email " + (cfg.email || 'us') + ".";
 
@@ -137,7 +145,7 @@
             </select></div>
           <div class="nnc-field"><label>API key</label><input class="nnc-key" type="password" placeholder="Paste your API key" autocomplete="off" />
             <div class="nnc-help nnc-keyhelp"></div></div>
-          <div class="nnc-field"><label>Model</label><input class="nnc-model" type="text" placeholder="model name" /></div>
+          <input class="nnc-model" type="hidden" />
           <div class="nnc-field nnc-epwrap" style="display:none;"><label>Endpoint URL</label><input class="nnc-ep" type="text" placeholder="https://.../v1/chat/completions" /></div>
           <button class="nnc-save">Save &amp; start chatting</button>
         </div>
@@ -173,7 +181,7 @@
     function loadSettings() {
       provSel.value = get(LS.prov) || 'gemini';
       keyIn.value = get(LS.key);
-      modelIn.value = get(LS.model) || DEFAULT_MODELS[provSel.value];
+      modelIn.value = healModel(provSel.value, get(LS.model)) || DEFAULT_MODELS[provSel.value];
       epIn.value = get(LS.ep);
       syncProv();
     }
@@ -195,19 +203,29 @@
     async function callAI(userMsg) {
       const prov = get(LS.prov) || 'gemini';
       const key = get(LS.key);
-      const model = get(LS.model) || DEFAULT_MODELS[prov];
+      const model = healModel(prov, get(LS.model));
       if (!key) { settings.classList.add('on'); loadSettings(); throw { soft: true }; }
       const hist = history.slice(-10);
       if (prov === 'gemini') {
         const url = 'https://generativelanguage.googleapis.com/v1beta/models/' + encodeURIComponent(model) + ':generateContent?key=' + encodeURIComponent(key);
         const contents = hist.map(m => ({ role: m.role === 'assistant' ? 'model' : 'user', parts: [{ text: m.content }] }));
         contents.push({ role: 'user', parts: [{ text: userMsg }] });
-        const r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ systemInstruction: { parts: [{ text: system }] }, contents,
-            generationConfig: { temperature: 0.6, maxOutputTokens: 400 } }) });
-        const j = await r.json();
+        const baseBody = { systemInstruction: { parts: [{ text: system }] }, contents,
+          generationConfig: { temperature: 0.6, maxOutputTokens: 500 } };
+        // Try WITH live Google Search grounding; if the key's project doesn't allow the tool,
+        // transparently retry WITHOUT it so the chat still answers.
+        async function ask(withTools) {
+          const body = withTools ? Object.assign({ tools: [{ google_search: {} }] }, baseBody) : baseBody;
+          const rr = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+          return { rr, jj: await rr.json() };
+        }
+        let { rr: r, jj: j } = await ask(true);
+        if (!r.ok && /tool|google_search|grounding|not supported|INVALID_ARGUMENT/i.test((j.error && j.error.message) || '')) {
+          ({ rr: r, jj: j } = await ask(false));
+        }
         if (!r.ok) throw new Error(j.error && j.error.message || 'Request failed');
-        return (j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts[0].text) || "Sorry, I couldn't answer that.";
+        var cand = j.candidates && j.candidates[0] && j.candidates[0].content && j.candidates[0].content.parts;
+        return (cand && cand.map(function (p) { return p.text || ''; }).join('').trim()) || "Sorry, I couldn't answer that.";
       }
       if (prov === 'anthropic') {
         const r = await fetch('https://api.anthropic.com/v1/messages', { method: 'POST',
